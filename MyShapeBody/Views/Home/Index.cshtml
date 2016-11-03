@@ -1,0 +1,1597 @@
+﻿@{
+    ViewBag.Title = "3D Generation";
+}
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery-ui.min.js"></script>
+<script src="~/Scripts/bezier-spline.js"></script>
+<script src="~/Scripts/jquery.simulate.js"></script>
+<script src="~/Scripts/raphael.min.js"></script>
+<script src="~/Scripts/jquery-glowing.js"></script>
+<link href="~/Content/jquery-ui.css" rel="stylesheet" />
+<script src="~/Scripts/three.min.js"></script>
+<script type="text/javascript">
+
+    document.addEventListener("DOMContentLoaded", function() {
+
+            var pixelHeight;
+            var myJsonData;
+            var nbConversions = 0;
+            var examplefrontmale = "example_front_male.png";
+            var examplesidemale = "example_side_male.png";
+            var examplefrontfemale = "example_front_female.png";
+            var examplesidefemale = "example_side_female.png";
+            var intervalFront;
+            var intervalSide;
+            var currentFront;
+            var currentSide;
+            
+        /*********************************   CHARGEMENT IMAGES ET PHOTOS   **********************************/
+        /****************************************************************************************/
+
+        // Apparition de la boite de dialogue de choix
+            $("#load_photos_button").click(function () {
+                if(!toutesphotosload)
+                {
+                    $("#file_choose").trigger("click");
+                }
+                else
+                {
+                    alert("Your photos have already been loaded. Reload the page to retry.")
+                }
+        });
+
+        // Première photo ou pas
+        var firstPhoto = true;
+        var toutesphotosload = false;
+        var selectedimage = 1;
+        var id = generateUUID();
+
+        // Bouton rotate invisible
+        $("#rotate_button").css("display", "none");
+
+        // Gestion du choix de la photo
+        $('#file_choose').on('change', function (e) {
+            if(!toutesphotosload)
+            {
+                var files = e.target.files;
+                if (firstPhoto) {
+                    // On ne sélectionne qu'un seul fichier à la fois
+                    if (files.length == 1) {
+                        if (window.FormData !== undefined) {
+                            var data = new FormData();
+                            for (var x = 0; x < files.length; x++) {
+                                data.append("file" + x, files[x]);
+                            }
+                            $.ajax({
+                                type: "POST",
+                                url: '/Home/UploadFile?id=' + id + '&order=1',
+                                contentType: false,
+                                processData: false,
+                                data: data,
+                                success: function (result) {
+                                    $("#photo_zone_1").css("background-image", "url(/Images/pictures_profiles/" + result);
+                                    $("#photo_zone_1").css("background-repeat", "no-repeat");
+                                    $("#photo_zone_1").getBgImage(function () {
+                                    // var percent1 = Math.round($(this).width() * 100 / $("#photo_zone_1").width());
+                                    // Affichage de l'image dans la zone Photo
+                                    $("#photo_zone_1").css("background-size", "auto " + $(this).height() + "px");
+                                    $("#photo_zone_1").css("background-position-x", "0px");
+                                    $("#photo_zone_1").css("background-position-y", "0px");
+                                    });
+
+                                    $("#previous_icon").css("display", "none");
+                                    $("#next_icon").css("display", "none");
+
+                                    // La première photo est chargée
+                                    firstPhoto = false;
+                                    selectedimage = 1;
+                                    console.log("First load success !");
+
+                                    // Chargement photo exemple 1
+                                    $("#generation_3D_canvas").css("background-repeat", "no-repeat");
+                                    $("#generation_3D_canvas").css("background-size", "contain");
+                                    $("#generation_3D_canvas").css("background-position", "center center");
+
+                                    $("#generation_3D_canvas").css("background-image", "url(/Images/examples/" + examplefrontmale);
+                                    currentFront = examplefrontfemale;
+                                    intervalFront = setInterval(function () {
+                                        $("#generation_3D_canvas").fadeOut(1000, function () {
+                                            $("#generation_3D_canvas").fadeIn(10);
+                                            $("#generation_3D_canvas").css("background-image", "url(/Images/examples/" + currentFront);
+                                            if (currentFront == examplefrontfemale)
+                                            {
+                                                currentFront = examplefrontmale;
+                                            }
+                                            else if (currentFront == examplefrontmale)
+                                            {
+                                                currentFront = examplefrontfemale;
+                                            }
+                                        });
+                                    }, 10000);
+
+                                    // Affichage des points
+                                    generateFrontBones($("#photo_zone_1"));
+
+                                    // Calcul taille pixel
+                                    pixelHeight = parseInt($("#pied1_u3_1").attr("cy")) - parseInt($("#head_u1_1").attr("cy"));
+                                },
+                                error: function (xhr, status, p3, p4) {
+                                    var err = "Error " + " " + status + " " + p3 + " " + p4;
+                                    if (xhr.responseText && xhr.responseText[0] == "{")
+                                        err = JSON.parse(xhr.responseText).Message;
+                                    console.log(err);
+                                }
+                            });
+                        } else {
+                            alert("This browser doesn't support HTML5 file uploads ! Upgrade your browser...");
+                        }
+                    }
+                }
+                else {
+                    // On ne sélectionne qu'un seul fichier à la fois
+                    if (files.length == 1) {
+                        if (window.FormData !== undefined) {
+                            var data = new FormData();
+                            for (var x = 0; x < files.length; x++) {
+                                data.append("file" + x, files[x]);
+                            }
+                            $.ajax({
+                                type: "POST",
+                                url: '/Home/UploadFile?id=' + id + '&order=2',
+                                contentType: false,
+                                processData: false,
+                                data: data,
+                                success: function (result) {
+                                    // Affichage de l'image dans la zone Photo
+                                    $("#photo_zone_2").css("background-image", "url(/Images/pictures_profiles/" + result);
+                                    $("#photo_zone_2").css("background-repeat", "no-repeat");
+                                    $("#photo_zone_2").getBgImage(function () {
+                                        // var percent2 = Math.round($(this).width() * 100 / $("#photo_zone_2").width());
+                                        // Affichage de l'image dans la zone Photo
+                                        $("#photo_zone_2").css("background-size", "auto " + $(this).height() + "px");
+                                        $("#photo_zone_2").css("background-position-x", "0px");
+                                        $("#photo_zone_2").css("background-position-y", "0px");
+                                    });
+                                    toutesphotosload = true;
+                                    selectedimage = 2;
+                                    $("#photo_zone_2").css("visibility", "visible");
+                                    $("#photo_zone_2").css("display", "block");
+
+                                    $("#photo_zone_2").css("height", "600px");
+                                    $("#photo_zone_2").css("width", "90%");
+                                    $("#photo_zone_2").css("margin-top", "30px");
+                                    $("#photo_zone_2").css("margin-left", "25px");
+                                    $("#photo_zone_2").css("border", "2px groove white");
+
+                                    $("#photo_zone_1").css("visibility", "hidden");
+                                    $("#photo_zone_1").css("display", "none");
+                                    $("#photo_zone_1").insertAfter("#photo_zone_2");
+
+                                    $("#photo_zone_1").css("height", "1px");
+                                    $("#photo_zone_1").css("width", "1px");
+                                    $("#photo_zone_1").css("margin-top", "0px");
+                                    $("#photo_zone_1").css("margin-left", "0px");
+                                    $("#photo_zone_1").css("border", "0px groove white");
+
+                                    $("#previous_icon").css("display", "inline");
+                                    $("#next_icon").css("display", "none");
+
+                                    console.log("Second load success !");
+
+                                    // Chargement photo exemple 2
+                                    $("#generation_3D_canvas").css("background-repeat", "no-repeat");
+                                    $("#generation_3D_canvas").css("background-size", "contain");
+                                    $("#generation_3D_canvas").css("background-position", "center center");
+                                    
+                                    clearInterval(intervalFront);
+                                    $("#generation_3D_canvas").css("background-image", "url(/Images/examples/" + examplesidemale);
+                                    currentSide = examplesidefemale;
+                                    intervalSide = setInterval(function () {
+                                        $("#generation_3D_canvas").fadeOut(1000, function () {
+                                            $("#generation_3D_canvas").fadeIn(10);
+                                            $("#generation_3D_canvas").css("background-image", "url(/Images/examples/" + currentSide);
+                                            if (currentSide == examplesidefemale) {
+                                                currentSide = examplesidemale;
+                                            }
+                                            else if (currentSide == examplesidemale) {
+                                                currentSide = examplesidefemale;
+                                            }
+                                        });
+                                    }, 10000);
+
+                                    // Affichage des points
+                                    generateSideBones($("#photo_zone_2"), 1);
+
+                                    $("#rotate_button").css("display", "inline");
+                                },
+                                error: function (xhr, status, p3, p4) {
+                                    var err = "Error " + " " + status + " " + p3 + " " + p4;
+                                    if (xhr.responseText && xhr.responseText[0] == "{")
+                                        err = JSON.parse(xhr.responseText).Message;
+                                    console.log(err);
+                                }
+                            });
+                        } else {
+                            alert("This browser doesn't support HTML5 file uploads ! Upgrade your browser...");
+                        }
+                    }
+                }
+            }
+            else
+            {
+                alert("You have already uploaded your two photos !");
+            }
+        });
+
+        // Dimensions image de fond
+        $.fn.getBgImage = function (callback) {
+            var height = 0;
+            var path = $(this).css('background-image').replace('url', '').replace('(', '').replace(')', '').replace('"', '').replace('"', '');
+            var tempImg = $('<img />');
+            tempImg.hide();
+            tempImg.bind('load', callback);
+            $('body').append(tempImg);
+            tempImg.attr('src', path);
+            $('#tempImg').remove();
+        };
+
+        // Gestion des boutons Previous et Next
+        $("#previous_icon").click(function () {
+            if (selectedimage == 2 && toutesphotosload) {
+                $("#photo_zone_2").fadeOut(1000, function () {
+                    $("#photo_zone_1").css("visibility", "visible");
+                    $("#photo_zone_1").css("display", "block");
+                    $("#photo_zone_2").css("visibility", "hidden");
+                    $("#photo_zone_2").css("display", "none");
+
+                    $("#photo_zone_2").css("height", "1px");
+                    $("#photo_zone_2").css("width", "1px");
+                    $("#photo_zone_2").css("margin-top", "00px");
+                    $("#photo_zone_2").css("margin-left", "0px");
+                    $("#photo_zone_2").css("border", "0px groove white");
+                    $("#photo_zone_1").css("height", "600px");
+                    $("#photo_zone_1").css("width", "90%");
+                    $("#photo_zone_1").css("margin-top", "30px");
+                    $("#photo_zone_1").css("margin-left", "25px");
+                    $("#photo_zone_1").css("border", "2px groove white");
+
+                    $("#photo_zone_2").insertAfter("#photo_zone_1");
+                    selectedimage = 1;
+
+                    $("#previous_icon").css("display", "none");
+                    $("#next_icon").css("display", "inline");
+
+                    $("#rotate_button").css("display", "none");
+                });
+
+                // Chargement photo exemple 1
+                $("#generation_3D_canvas").css("background-repeat", "no-repeat");
+                $("#generation_3D_canvas").css("background-size", "contain");
+                $("#generation_3D_canvas").css("background-position", "center center");
+
+                clearInterval(intervalSide);
+                $("#generation_3D_canvas").css("background-image", "url(/Images/examples/" + examplefrontmale);
+                currentFront = examplefrontfemale;
+                intervalFront = setInterval(function () {
+                    $("#generation_3D_canvas").fadeOut(1000, function () {
+                        $("#generation_3D_canvas").fadeIn(10);
+                        $("#generation_3D_canvas").css("background-image", "url(/Images/examples/" + currentFront);
+                        if (currentFront == examplefrontfemale) {
+                            currentFront = examplefrontmale;
+                        }
+                        else if (currentFront == examplefrontmale) {
+                            currentFront = examplefrontfemale;
+                        }
+                    });
+                }, 10000);
+            }
+            //alert("Upload your two pictures first !");
+        });
+        $("#next_icon").click(function () {
+            if (selectedimage == 1 && toutesphotosload)
+            {
+                $("#photo_zone_1").fadeOut(1000, function () {
+                    $("#photo_zone_2").css("visibility", "visible");
+                    $("#photo_zone_2").css("display", "block");
+
+                    $("#photo_zone_2").css("height", "600px");
+                    $("#photo_zone_2").css("width", "90%");
+                    $("#photo_zone_2").css("margin-top", "30px");
+                    $("#photo_zone_2").css("margin-left", "25px");
+                    $("#photo_zone_2").css("border", "2px groove white");
+                    $("#photo_zone_1").css("height", "1px");
+                    $("#photo_zone_1").css("width", "1px");
+                    $("#photo_zone_1").css("margin-top", "00px");
+                    $("#photo_zone_1").css("margin-left", "0px");
+                    $("#photo_zone_1").css("border", "0px groove white");
+
+                    $("#photo_zone_1").css("visibility", "hidden");
+                    $("#photo_zone_1").css("display", "none");
+                    $("#photo_zone_1").insertAfter("#photo_zone_2");
+                    selectedimage = 2;
+
+                    $("#previous_icon").css("display", "inline");
+                    $("#next_icon").css("display", "none");
+
+                    $("#rotate_button").css("display", "inline");
+                });
+
+                // Chargement photo exemple 2
+                $("#generation_3D_canvas").css("background-repeat", "no-repeat");
+                $("#generation_3D_canvas").css("background-size", "contain");
+                $("#generation_3D_canvas").css("background-position", "center center");
+
+                clearInterval(intervalFront);
+                $("#generation_3D_canvas").css("background-image", "url(/Images/examples/" + examplesidemale);
+                currentSide = examplesidefemale;
+                intervalSide = setInterval(function () {
+                    $("#generation_3D_canvas").fadeOut(1000, function () {
+                        $("#generation_3D_canvas").fadeIn(10);
+                        $("#generation_3D_canvas").css("background-image", "url(/Images/examples/" + currentSide);
+                        if (currentSide == examplesidefemale) {
+                            currentSide = examplesidemale;
+                        }
+                        else if (currentSide == examplesidemale) {
+                            currentSide = examplesidefemale;
+                        }
+                    });
+                }, 10000);
+            }
+            //alert("Upload your two pictures first !");
+        });
+
+        // Fonctions de génération du squelette prédéfini
+        var paper1;
+        var paper2;
+
+        function GenerateDoublePoints(paper, chaine1, chaine2, funcmove, coordonnee1X, coordonnee1Y, coordonnee2X, coordonnee2Y, mymember, mypart, myWidthScreen, myHeightScreen, divPhotoScreen, ourScaleX, ourScaleY, color)
+        {
+            var rayon = 4;
+            var realcoordinate1X = coordonnee1X * ourScaleX + myWidthScreen / 2;
+            var realcoordinate2X = coordonnee2X * ourScaleX + myWidthScreen / 2;
+            var realcoordinateY = (myHeightScreen / 2 - coordonnee1Y / 30 * myHeightScreen / 2) * ourScaleY - 80;
+            //if (selectedimage == 2)
+            //{
+            //    realcoordinateY += myHeightScreen / 2 - 30;
+            //    realcoordinate1X += myWidthScreen / 2 - 30;
+            //    realcoordinate2X += myWidthScreen / 2 - 30;
+            //}
+
+            var id1 = mymember + "_" + mypart + "_1";
+            var id2 = mymember + "_" + mypart + "_2";
+            var circleCool1 = paper.circle(realcoordinate1X, realcoordinateY, rayon).drag(funcmove, start, end).attr("cursor", "pointer").attr("fill", color).attr("-webkit-tap-highlight-color", color).attr("stroke", color);
+            var circleCool2 = paper.circle(realcoordinate2X, realcoordinateY, rayon).drag(funcmove, start, end).attr("cursor", "pointer").attr("fill", color).attr("-webkit-tap-highlight-color", color).attr("stroke", color);
+            circleCool1.id = id1;
+            circleCool1.node.id = id1;
+            circleCool1.data('svgpath', chaine1 + ' ' + color);
+            circleCool2.id = id2;
+            circleCool2.node.id = id2;
+            circleCool2.data('svgpath', chaine2 + ' ' + color);
+        }
+
+        function Superman(paper, div1, div2)
+        {
+            var c1 = paper.getById(div1.attr('id'));
+            var c2 = paper.getById(div2.attr('id'));
+            if(c1.data('superman') == undefined)
+            {
+                c1.data('superman', div2.attr('id'));
+            }
+            else
+            {
+                c1.data('superman2', div2.attr('id'));
+            }
+            if (c2.data('superman') == undefined)
+            {
+                c2.data('superman', div1.attr('id'));
+            }
+            else
+            {
+                c2.data('superman2', div1.attr('id'));
+            }
+        }
+
+        function drawSimpleCatmullRom(paper, path, div1, div2, colorpath, rayonpath)
+        {
+            var c1 = paper.getById(div1.attr('id'));
+            var c2 = paper.getById(div2.attr('id'));
+            if (c1.data('lastpath') == undefined) {
+                c1.data('lastpath', path + " " + div1.attr("id") + " " + div2.attr("id") + " " + colorpath + " " + rayonpath);
+            }
+            if (c2.data('lastpath') == undefined) {
+                c2.data('lastpath', path + " " + div1.attr("id") + " " + div2.attr("id") + " " + colorpath + " " + rayonpath);
+            }
+            paper.path("M" + div1.attr("cx") + "," + div1.attr("cy") + "L" + div2.attr("cx") + "," + div2.attr("cy")).attr("stroke", colorpath).attr("stroke-width", 3).node.id = path;
+        }
+
+        function drawCatmullRom5(paper, path, div1, div2, div3, div4, div5, colorpath, rayonpath)
+        {
+            paper.path("M " + div1.attr("cx") + " " + div1.attr("cy") + " \ R " + div2.attr("cx") + " " + div2.attr("cy") + " \ " + div3.attr("cx") + " " + div3.attr("cy") + " \ " + div4.attr("cx") + " " + div4.attr("cy") + " \ " + div5.attr("cx") + " " + div5.attr("cy")).attr("stroke", colorpath).attr("stroke-width", 3).node.id = path;
+        }
+
+        function drawCatmullRom4(paper, path, div1, div2, div3, div4, colorpath, rayonpath) {
+            paper.path("M " + div1.attr("cx") + " " + div1.attr("cy") + " \ R " + div2.attr("cx") + " " + div2.attr("cy") + " \ " + div3.attr("cx") + " " + div3.attr("cy") + " \ " + div4.attr("cx") + " " + div4.attr("cy")).attr("stroke", colorpath).attr("stroke-width", 3).node.id = path;
+        }
+
+        function drawCatmullRom3(paper, path, div1, div2, div3, colorpath, rayonpath) {
+            paper.path("M " + div1.attr("cx") + " " + div1.attr("cy") + " \ R " + div2.attr("cx") + " " + div2.attr("cy") + " \ " + div3.attr("cx") + " " + div3.attr("cy")).attr("stroke", colorpath).attr("stroke-width", 3).node.id = path;
+        }
+
+        function generateFrontBones(divPhoto)
+        {
+            $("#photo_zone_1").empty();
+
+            paper1 = new Raphael("photo_zone_1", "100%", "100%");
+
+            var widthTotal = divPhoto.width();
+            var heightTotal = divPhoto.height();
+            var moitieWidth = widthTotal / 2;
+            var myrayon = 4;
+
+            var chain1;
+            var chain2;
+
+            // Head
+            chain1 = "path_head_1 head_u1_1 head_u2_1 head_u3_1 head_u4_1 head_u5_1";
+            chain2 = "path_head_2 head_u1_2 head_u2_2 head_u3_2 head_u4_2 head_u5_2";
+            GenerateDoublePoints(paper1, chain1, chain2, move5, 0, 25.65, 0, 25.65, "head", "u1", widthTotal, heightTotal, divPhoto, 35, 2.2, 'red');
+            GenerateDoublePoints(paper1, chain1, chain2, move5 , - 0.95, 25, 0.95, 25, "head", "u2", widthTotal, heightTotal, divPhoto, 35, 2.2, 'red');
+            GenerateDoublePoints(paper1, chain1, chain2, move5 , - 1.14181, 23.87, 1.14181, 23.87, "head", "u3", widthTotal, heightTotal, divPhoto, 35, 2.2, 'red');
+            GenerateDoublePoints(paper1, chain1, chain2, move5 , - 0.74, 22.56, 0.74, 22.56, "head", "u4", widthTotal, heightTotal, divPhoto, 35, 2.2, 'red');
+            GenerateDoublePoints(paper1, chain1, chain2, move5, 0, 21.81, 0, 21.81, "head", "u5", widthTotal, heightTotal, divPhoto, 35, 2.2, 'red');
+            drawCatmullRom5(paper1, "path_head_1", $("#head_u1_1"), $("#head_u2_1"), $("#head_u3_1"), $("#head_u4_1"), $("#head_u5_1"), "red", myrayon);
+            drawCatmullRom5(paper1, "path_head_2", $("#head_u1_2"), $("#head_u2_2"), $("#head_u3_2"), $("#head_u4_2"), $("#head_u5_2"), "red", myrayon);
+
+            // Double points tête
+            Superman(paper1, $("#head_u1_1"), $("#head_u1_2"));
+            Superman(paper1, $("#head_u5_1"), $("#head_u5_2"));
+
+            // Neck
+            chain1 = "path_neck_1 neck_u1_1 neck_u2_1 neck_u3_1";
+            chain2 = "path_neck_2 neck_u1_2 neck_u2_2 neck_u3_2";
+            GenerateDoublePoints(paper1, chain1, chain2, move3, -0.74, 22.56, 0.74, 22.56, "neck", "u1", widthTotal, heightTotal, divPhoto, 35, 2.2, 'red');
+            GenerateDoublePoints(paper1, chain1, chain2, move3, -0.6, 21.81, 0.6, 21.81, "neck", "u2", widthTotal, heightTotal, divPhoto, 35, 2.2, 'red');
+            GenerateDoublePoints(paper1, chain1, chain2, move3, -1.8, 21.06, 1.8, 21.06, "neck", "u3", widthTotal, heightTotal, divPhoto, 30, 2.5, 'red');
+            drawCatmullRom3(paper1, "path_neck_1", $("#neck_u1_1"), $("#neck_u2_1"), $("#neck_u3_1"), "red", myrayon);
+            drawCatmullRom3(paper1, "path_neck_2", $("#neck_u1_2"), $("#neck_u2_2"), $("#neck_u3_2"), "red", myrayon);
+
+            // Doubles points tête - cou
+            Superman(paper1, $("#head_u4_1"), $("#neck_u1_1"));
+            Superman(paper1, $("#head_u4_2"), $("#neck_u1_2"));
+
+            // Thorax
+            chain1 = "path_thorax_1 thorax_u1_1 thorax_u2_1 thorax_u3_1";
+            chain2 = "path_thorax_2 thorax_u1_2 thorax_u2_2 thorax_u3_2";
+            GenerateDoublePoints(paper1, chain1, chain2, move3, -1.8, 21.06, 1.8, 21.06, "thorax", "u1", widthTotal, heightTotal, divPhoto, 30, 2.5, 'green');
+            GenerateDoublePoints(paper1, chain1, chain2, move3, -2.6, 19.85, 2.6, 19.85, "thorax", "u2", widthTotal, heightTotal, divPhoto, 20, 2.5, 'green');
+            GenerateDoublePoints(paper1, chain1, chain2, move3, -2.01, 17.13, 2.01, 17.13, "thorax", "u3", widthTotal, heightTotal, divPhoto, 25, 2.5, 'green');
+            drawCatmullRom3(paper1, "path_thorax_1", $("#thorax_u1_1"), $("#thorax_u2_1"), $("#thorax_u3_1"), "green", myrayon);
+            drawCatmullRom3(paper1, "path_thorax_2", $("#thorax_u1_2"), $("#thorax_u2_2"), $("#thorax_u3_2"), "green", myrayon);
+
+            // Doubles points thorax - cou
+            Superman(paper1, $("#thorax_u1_1"), $("#neck_u3_1"));
+            Superman(paper1, $("#thorax_u1_2"), $("#neck_u3_2"));
+
+            // Abdos
+            chain1 = "path_abdo_1 abdo_u1_1 abdo_u2_1 abdo_u3_1";
+            chain2 = "path_abdo_2 abdo_u1_2 abdo_u2_2 abdo_u3_2";
+            GenerateDoublePoints(paper1, chain1, chain2, move3, -2.01, 17.13, 2.01, 17.13, "abdo", "u1", widthTotal, heightTotal, divPhoto, 25, 2.5, 'green');
+            GenerateDoublePoints(paper1, chain1, chain2, move3, -2.18, 15, 2.18, 15, "abdo", "u2", widthTotal, heightTotal, divPhoto, 25, 2.5, 'green');
+            GenerateDoublePoints(paper1, chain1, chain2, move3, -2.33, 14.42, 2.33, 14.42, "abdo", "u3", widthTotal, heightTotal, divPhoto, 25, 2.5, 'green');
+            drawCatmullRom3(paper1, "path_abdo_1", $("#abdo_u1_1"), $("#abdo_u2_1"), $("#abdo_u3_1"), "green", myrayon);
+            drawCatmullRom3(paper1, "path_abdo_2", $("#abdo_u1_2"), $("#abdo_u2_2"), $("#abdo_u3_2"), "green", myrayon);
+
+            // Doubles points thorax - abdo
+            Superman(paper1, $("#thorax_u3_1"), $("#abdo_u1_1"));
+            Superman(paper1, $("#thorax_u3_2"), $("#abdo_u1_2"));
+
+            // Fesses
+            chain1 = "path_fesse_1 fesse_u1_1 fesse_u2_1 fesse_u3_1";
+            chain2 = "path_fesse_2 fesse_u1_2 fesse_u2_2 fesse_u3_2";
+            GenerateDoublePoints(paper1, chain1, chain2, move3, -2.33, 14.42, 2.33, 14.42, "fesse", "u1", widthTotal, heightTotal, divPhoto, 25, 2.5, 'yellow');
+            GenerateDoublePoints(paper1, chain1, chain2, move3, - 2.25, 13.64, 2.25, 13.64, "fesse", "u2", widthTotal, heightTotal, divPhoto, 25, 2.5, 'yellow');
+            GenerateDoublePoints(paper1, chain1, chain2, move3, - 2.33, 12.95, 2.33, 12.95, "fesse", "u3", widthTotal, heightTotal, divPhoto, 25, 2.5, 'yellow');
+            drawCatmullRom3(paper1, "path_fesse_1", $("#fesse_u1_1"), $("#fesse_u2_1"), $("#fesse_u3_1"), "yellow", myrayon);
+            drawCatmullRom3(paper1, "path_fesse_2", $("#fesse_u1_2"), $("#fesse_u2_2"), $("#fesse_u3_2"), "yellow", myrayon);
+
+            // Doubles points fesse - abdo
+            Superman(paper1, $("#abdo_u3_1"), $("#fesse_u1_1"));
+            Superman(paper1, $("#abdo_u3_2"), $("#fesse_u1_2"));
+
+            // Cuisses
+            chain1 = "path_cuisse1_1 cuisse1_u1_1 cuisse1_u2_1 cuisse1_u3_1";
+            chain2 = "path_cuisse1_2 cuisse1_u1_2 cuisse1_u2_2 cuisse1_u3_2";
+            GenerateDoublePoints(paper1, chain1, chain2, move3, -2.33, 12.95, 2.33, 12.95, "cuisse1", "u1", widthTotal, heightTotal, divPhoto, 25, 2.5, 'orange');
+            GenerateDoublePoints(paper1, chain1, chain2, move3, -2.36, 9.6, 2.36, 9.6, "cuisse1", "u2", widthTotal, heightTotal, divPhoto, 25, 2.3, 'orange');
+            GenerateDoublePoints(paper1, chain1, chain2, move3, -1.89, 7.6, 1.89, 7.6, "cuisse1", "u3", widthTotal, heightTotal, divPhoto, 25, 2.3, 'orange');
+            drawCatmullRom3(paper1, "path_cuisse1_1", $("#cuisse1_u1_1"), $("#cuisse1_u2_1"), $("#cuisse1_u3_1"), "orange", myrayon);
+            drawCatmullRom3(paper1, "path_cuisse1_2", $("#cuisse1_u1_2"), $("#cuisse1_u2_2"), $("#cuisse1_u3_2"), "orange", myrayon);
+            chain1 = "path_cuisse2_1 cuisse2_u1_1 cuisse2_u2_1 cuisse2_u3_1";
+            chain2 = "path_cuisse2_2 cuisse2_u1_2 cuisse2_u2_2 cuisse2_u3_2";
+            GenerateDoublePoints(paper1, chain1, chain2, move3, 0, 12.95, 0, 12.95, "cuisse2", "u1", widthTotal, heightTotal, divPhoto, 25, 2.5, 'orange');
+            GenerateDoublePoints(paper1, chain1, chain2, move3, -0.19, 9.6, 0.19, 9.6, "cuisse2", "u2", widthTotal, heightTotal, divPhoto, 25, 2.3, 'orange');
+            GenerateDoublePoints(paper1, chain1, chain2, move3, -0.24, 7.6, 0.24, 7.6, "cuisse2", "u3", widthTotal, heightTotal, divPhoto, 25, 2.3, 'orange');
+            drawCatmullRom3(paper1, "path_cuisse2_1", $("#cuisse2_u1_1"), $("#cuisse2_u2_1"), $("#cuisse2_u3_1"), "orange", myrayon);
+            drawCatmullRom3(paper1, "path_cuisse2_2", $("#cuisse2_u1_2"), $("#cuisse2_u2_2"), $("#cuisse2_u3_2"), "orange", myrayon);
+
+            // Doubles points fesse - cuisse
+            Superman(paper1, $("#cuisse1_u1_1"), $("#fesse_u3_1"));
+            Superman(paper1, $("#cuisse1_u1_2"), $("#fesse_u3_2"));
+            Superman(paper1, $("#cuisse2_u1_1"), $("#cuisse2_u1_2"));
+
+            // Jambes
+            chain1 = "path_jambe1_1 jambe1_u1_1 jambe1_u2_1 jambe1_u3_1";
+            chain2 = "path_jambe1_2 jambe1_u1_2 jambe1_u2_2 jambe1_u3_2";
+            GenerateDoublePoints(paper1, chain1, chain2, move3, -1.89, 7.6, 1.89, 7.6, "jambe1", "u1", widthTotal, heightTotal, divPhoto, 25, 2.3, 'pink');
+            GenerateDoublePoints(paper1, chain1, chain2, move3, -2.09, 5.64, 2.09, 5.64, "jambe1", "u2", widthTotal, heightTotal, divPhoto, 25, 2.3, 'pink');
+            GenerateDoublePoints(paper1, chain1, chain2, move3, -1.25, 2.38, 1.25, 2.38, "jambe1", "u3", widthTotal, heightTotal, divPhoto, 25, 2.2, 'pink');
+            drawCatmullRom3(paper1, "path_jambe1_1", $("#jambe1_u1_1"), $("#jambe1_u2_1"), $("#jambe1_u3_1"), "pink", myrayon);
+            drawCatmullRom3(paper1, "path_jambe1_2", $("#jambe1_u1_2"), $("#jambe1_u2_2"), $("#jambe1_u3_2"), "pink", myrayon);
+            chain1 = "path_jambe2_1 jambe2_u1_1 jambe2_u2_1 jambe2_u3_1";
+            chain2 = "path_jambe2_2 jambe2_u1_2 jambe2_u2_2 jambe2_u3_2";
+            GenerateDoublePoints(paper1, chain1, chain2, move3, -0.24, 7.6, 0.24, 7.6, "jambe2", "u1", widthTotal, heightTotal, divPhoto, 25, 2.3, 'pink');
+            GenerateDoublePoints(paper1, chain1, chain2, move3, -0.24, 5.64, 0.24, 5.64, "jambe2", "u2", widthTotal, heightTotal, divPhoto, 25, 2.3, 'pink');
+            GenerateDoublePoints(paper1, chain1, chain2, move3, -0.46, 2.38, 0.46, 2.38, "jambe2", "u3", widthTotal, heightTotal, divPhoto, 25, 2.2, 'pink');
+            drawCatmullRom3(paper1, "path_jambe2_1", $("#jambe2_u1_1"), $("#jambe2_u2_1"), $("#jambe2_u3_1"), "pink", myrayon);
+            drawCatmullRom3(paper1, "path_jambe2_2", $("#jambe2_u1_2"), $("#jambe2_u2_2"), $("#jambe2_u3_2"), "pink", myrayon);
+
+            // Doubles points jambe - cuisse
+            Superman(paper1, $("#cuisse1_u3_1"), $("#jambe1_u1_1"));
+            Superman(paper1, $("#cuisse1_u3_2"), $("#jambe1_u1_2"));
+            Superman(paper1, $("#cuisse2_u3_1"), $("#jambe2_u1_1"));
+            Superman(paper1, $("#cuisse2_u3_2"), $("#jambe2_u1_2"));
+
+            // Pieds
+            chain1 = "path_pied1_1 pied1_u1_1 pied1_u2_1 pied1_u3_1";
+            chain2 = "path_pied1_2 pied1_u1_2 pied1_u2_2 pied1_u3_2";
+            GenerateDoublePoints(paper1, chain1, chain2, move3, -1.25, 2.38, 1.25, 2.38, "pied1", "u1", widthTotal, heightTotal, divPhoto, 25, 2.2, 'purple');
+            GenerateDoublePoints(paper1, chain1, chain2, move3, -1.25, 1.57, 1.25, 1.57, "pied1", "u2", widthTotal, heightTotal, divPhoto, 25, 2.2, 'purple');
+            GenerateDoublePoints(paper1, chain1, chain2, move3, -2.28, 0.05, 2.28, 0.05, "pied1", "u3", widthTotal, heightTotal, divPhoto, 25, 2.2, 'purple');
+            drawCatmullRom3(paper1, "path_pied1_1", $("#pied1_u1_1"), $("#pied1_u2_1"), $("#pied1_u3_1"), "purple", myrayon);
+            drawCatmullRom3(paper1, "path_pied1_2", $("#pied1_u1_2"), $("#pied1_u2_2"), $("#pied1_u3_2"), "purple", myrayon);
+            chain1 = "path_pied2_1 pied2_u1_1 pied2_u2_1 pied2_u3_1";
+            chain2 = "path_pied2_2 pied2_u1_2 pied2_u2_2 pied2_u3_2";
+            GenerateDoublePoints(paper1, chain1, chain2, move3, -0.46, 2.38, 0.46, 2.38, "pied2", "u1", widthTotal, heightTotal, divPhoto, 25, 2.2, 'purple');
+            GenerateDoublePoints(paper1, chain1, chain2, move3, -0.37, 1.57, 0.37, 1.57, "pied2", "u2", widthTotal, heightTotal, divPhoto, 25, 2.2, 'purple');
+            GenerateDoublePoints(paper1, chain1, chain2, move3, -0.51, 0.05, 0.51, 0.05, "pied2", "u3", widthTotal, heightTotal, divPhoto, 25, 2.2, 'purple');
+            drawCatmullRom3(paper1, "path_pied2_1", $("#pied2_u1_1"), $("#pied2_u2_1"), $("#pied2_u3_1"), "purple", myrayon);
+            drawCatmullRom3(paper1, "path_pied2_2", $("#pied2_u1_2"), $("#pied2_u2_2"), $("#pied2_u3_2"), "purple", myrayon);
+            drawSimpleCatmullRom(paper1, "path_rely_rightfoot", $("#pied1_u3_2"), $("#pied2_u3_2"), "purple", myrayon);
+            drawSimpleCatmullRom(paper1, "path_rely_leftfoot", $("#pied2_u3_1"), $("#pied1_u3_1"), "purple", myrayon);
+
+            // Doubles points jambe - pied
+            Superman(paper1, $("#pied1_u1_1"), $("#jambe1_u3_1"));
+            Superman(paper1, $("#pied1_u1_2"), $("#jambe1_u3_2"));
+            Superman(paper1, $("#pied2_u1_1"), $("#jambe2_u3_1"));
+            Superman(paper1, $("#pied2_u1_2"), $("#jambe2_u3_2"));
+
+            // Main gauche
+            chain1 = "path_maingauche_1 maingauche_u1_1 maingauche_u2_1 maingauche_u3_1 maingauche_u4_1";
+            chain2 = "path_maingauche_2 maingauche_u1_2 maingauche_u2_2 maingauche_u3_2 maingauche_u4_2";
+            GenerateDoublePoints(paper1, chain1, chain2, move4, -3.55, 13.58, -4.5, 13.72, "maingauche", "u1", widthTotal, heightTotal, divPhoto, 25, 2.5, 'brown');
+            GenerateDoublePoints(paper1, chain1, chain2, move4, -3.6, 12.54, -4.82, 12.63, "maingauche", "u2", widthTotal, heightTotal, divPhoto, 25, 2.5, 'brown');
+            GenerateDoublePoints(paper1, chain1, chain2, move4, -3.51, 11.37, -5.13, 11.35, "maingauche", "u3", widthTotal, heightTotal, divPhoto, 25, 2.5, 'brown');
+            GenerateDoublePoints(paper1, chain1, chain2, move4, -4.5, 10.87, -4.5, 10.87, "maingauche", "u4", widthTotal, heightTotal, divPhoto, 25, 2.5, 'brown');
+            drawCatmullRom4(paper1, "path_maingauche_1", $("#maingauche_u1_1"), $("#maingauche_u2_1"), $("#maingauche_u3_1"), $("#maingauche_u4_1"), "brown", myrayon);
+            drawCatmullRom4(paper1, "path_maingauche_2", $("#maingauche_u1_2"), $("#maingauche_u2_2"), $("#maingauche_u3_2"), $("#maingauche_u4_2"), "brown", myrayon);
+
+            // Main droite
+            chain1 = "path_maindroite_1 maindroite_u1_1 maindroite_u2_1 maindroite_u3_1 maindroite_u4_1";
+            chain2 = "path_maindroite_2 maindroite_u1_2 maindroite_u2_2 maindroite_u3_2 maindroite_u4_2";
+            GenerateDoublePoints(paper1, chain1, chain2, move4, 3.55, 13.58, 4.5, 13.72, "maindroite", "u1", widthTotal, heightTotal, divPhoto, 25, 2.5, 'brown');
+            GenerateDoublePoints(paper1, chain1, chain2, move4, 3.6, 12.54, 4.82, 12.63, "maindroite", "u2", widthTotal, heightTotal, divPhoto, 25, 2.5, 'brown');
+            GenerateDoublePoints(paper1, chain1, chain2, move4, 3.51, 11.37, 5.13, 11.35, "maindroite", "u3", widthTotal, heightTotal, divPhoto, 25, 2.5, 'brown');
+            GenerateDoublePoints(paper1, chain1, chain2, move4, 4.5, 10.87, 4.5, 10.87, "maindroite", "u4", widthTotal, heightTotal, divPhoto, 25, 2.5, 'brown');
+            drawCatmullRom4(paper1, "path_maindroite_1", $("#maindroite_u1_1"), $("#maindroite_u2_1"), $("#maindroite_u3_1"), $("#maindroite_u4_1"), "brown", myrayon);
+            drawCatmullRom4(paper1, "path_maindroite_2", $("#maindroite_u1_2"), $("#maindroite_u2_2"), $("#maindroite_u3_2"), $("#maindroite_u4_2"), "brown", myrayon);
+
+            // Avant bras gauche
+            chain1 = "path_avantbrasgauche_1 avantbrasgauche_u1_1 avantbrasgauche_u2_1 avantbrasgauche_u3_1";
+            chain2 = "path_avantbrasgauche_2 avantbrasgauche_u1_2 avantbrasgauche_u2_2 avantbrasgauche_u3_2";
+            GenerateDoublePoints(paper1, chain1, chain2, move3, -2.62, 16.98, -3.9, 17.16, "avantbrasgauche", "u1", widthTotal, heightTotal, divPhoto, 25, 2.5, 'blue');
+            GenerateDoublePoints(paper1, chain1, chain2, move3, -2.83, 15.49, -4.28, 15.71, "avantbrasgauche", "u2", widthTotal, heightTotal, divPhoto, 25, 2.5, 'blue');
+            GenerateDoublePoints(paper1, chain1, chain2, move3, -3.55, 13.58, -4.5, 10.87, "avantbrasgauche", "u3", widthTotal, heightTotal, divPhoto, 25, 2.5, 'blue');
+            drawCatmullRom3(paper1, "path_avantbrasgauche_1", $("#avantbrasgauche_u1_1"), $("#avantbrasgauche_u2_1"), $("#avantbrasgauche_u3_1"), "blue", myrayon);
+            drawCatmullRom3(paper1, "path_avantbrasgauche_2", $("#avantbrasgauche_u1_2"), $("#avantbrasgauche_u2_2"), $("#avantbrasgauche_u3_2"), "blue", myrayon);
+
+            // Avant bras droit
+            chain1 = "path_avantbrasdroit_1 avantbrasdroit_u1_1 avantbrasdroit_u2_1 avantbrasdroit_u3_1";
+            chain2 = "path_avantbrasdroit_2 avantbrasdroit_u1_2 avantbrasdroit_u2_2 avantbrasdroit_u3_2";
+            GenerateDoublePoints(paper1, chain1, chain2, move3, 2.62, 16.98, 3.9, 17.16, "avantbrasdroit", "u1", widthTotal, heightTotal, divPhoto, 25, 2.5, 'blue');
+            GenerateDoublePoints(paper1, chain1, chain2, move3, 2.83, 15.49, 4.28, 15.71, "avantbrasdroit", "u2", widthTotal, heightTotal, divPhoto, 25, 2.5, 'blue');
+            GenerateDoublePoints(paper1, chain1, chain2, move3, 3.55, 13.58, 4.5, 10.87, "avantbrasdroit", "u3", widthTotal, heightTotal, divPhoto, 25, 2.5, 'blue');
+            drawCatmullRom3(paper1, "path_avantbrasdroit_1", $("#avantbrasdroit_u1_1"), $("#avantbrasdroit_u2_1"), $("#avantbrasdroit_u3_1"), "blue", myrayon);
+            drawCatmullRom3(paper1, "path_avantbrasdroit_2", $("#avantbrasdroit_u1_2"), $("#avantbrasdroit_u2_2"), $("#avantbrasdroit_u3_2"), "blue", myrayon);
+
+            // Doubles points main - avant bras
+            Superman(paper1, $("#avantbrasdroit_u3_1"), $("#maindroite_u1_1"));
+            Superman(paper1, $("#avantbrasdroit_u3_2"), $("#maindroite_u1_2"));
+            Superman(paper1, $("#avantbrasgauche_u3_1"), $("#maingauche_u1_1"));
+            Superman(paper1, $("#avantbrasgauche_u3_2"), $("#maingauche_u1_2"));
+            Superman(paper1, $("#maingauche_u4_1"), $("#maingauche_u4_2"));
+            Superman(paper1, $("#maindroite_u4_1"), $("#maindroite_u4_2"));
+
+            // Bras gauche
+            chain1 = "path_brasgauche_1 brasgauche_u1_1 brasgauche_u2_1 brasgauche_u3_1 brasgauche_u4_1";
+            chain2 = "path_brasgauche_2 brasgauche_u1_2 brasgauche_u2_2 brasgauche_u3_2 brasgauche_u4_2";
+            GenerateDoublePoints(paper1, chain1, chain2, move4, -0.6, 21.81, -0.6, 21.81, "brasgauche", "u1", widthTotal, heightTotal, divPhoto, 35, 2.2, 'lightblue');
+            GenerateDoublePoints(paper1, chain1, chain2, move4, -1.8, 21.06, -2.55, 19.85, "brasgauche", "u2", widthTotal, heightTotal, divPhoto, 30, 2.5, 'lightblue');
+            GenerateDoublePoints(paper1, chain1, chain2, move4, -2.55, 18.79, -3.55, 18.88, "brasgauche", "u3", widthTotal, heightTotal, divPhoto, 25, 2.5, 'lightblue');
+            GenerateDoublePoints(paper1, chain1, chain2, move4, -2.62, 16.98, -3.9, 17.16, "brasgauche", "u4", widthTotal, heightTotal, divPhoto, 25, 2.5, 'lightblue');
+            drawCatmullRom4(paper1, "path_brasgauche_1", $("#brasgauche_u1_1"), $("#brasgauche_u2_1"), $("#brasgauche_u3_1"), $("#brasgauche_u4_1"), "lightblue", myrayon);
+            drawCatmullRom4(paper1, "path_brasgauche_2", $("#brasgauche_u1_2"), $("#brasgauche_u2_2"), $("#brasgauche_u3_2"), $("#brasgauche_u4_2"), "lightblue", myrayon);
+
+            // Bras droit
+            chain1 = "path_brasdroit_1 brasdroit_u1_1 brasdroit_u2_1 brasdroit_u3_1 brasdroit_u4_1";
+            chain2 = "path_brasdroit_2 brasdroit_u1_2 brasdroit_u2_2 brasdroit_u3_2 brasdroit_u4_2";
+            GenerateDoublePoints(paper1, chain1, chain2, move4, 0.6, 21.81, 0.6, 21.81, "brasdroit", "u1", widthTotal, heightTotal, divPhoto, 35, 2.2, 'lightblue');
+            GenerateDoublePoints(paper1, chain1, chain2, move4, 1.8, 21.06, 2.55, 19.85, "brasdroit", "u2", widthTotal, heightTotal, divPhoto, 30, 2.5, 'lightblue');
+            GenerateDoublePoints(paper1, chain1, chain2, move4, 2.55, 18.79, 3.55, 18.88, "brasdroit", "u3", widthTotal, heightTotal, divPhoto, 25, 2.5, 'lightblue');
+            GenerateDoublePoints(paper1, chain1, chain2, move4, 2.62, 16.98, 3.9, 17.16, "brasdroit", "u4", widthTotal, heightTotal, divPhoto, 25, 2.5, 'lightblue');
+            drawCatmullRom4(paper1, "path_brasdroit_1", $("#brasdroit_u1_1"), $("#brasdroit_u2_1"), $("#brasdroit_u3_1"), $("#brasdroit_u4_1"), "lightblue", myrayon);
+            drawCatmullRom4(paper1, "path_brasdroit_2", $("#brasdroit_u1_2"), $("#brasdroit_u2_2"), $("#brasdroit_u3_2"), $("#brasdroit_u4_2"), "lightblue", myrayon);
+
+            // Doubles points bras - avant bras
+            Superman(paper1, $("#brasdroit_u4_1"), $("#avantbrasdroit_u1_1"));
+            Superman(paper1, $("#brasdroit_u4_2"), $("#avantbrasdroit_u1_2"));
+            Superman(paper1, $("#brasgauche_u4_1"), $("#avantbrasgauche_u1_1"));
+            Superman(paper1, $("#brasgauche_u4_2"), $("#avantbrasgauche_u1_2"));
+
+            // Bras et cou complexe
+            Superman(paper1, $("#brasgauche_u2_1"), $("#neck_u3_1"));
+            Superman(paper1, $("#thorax_u1_1"), $("#brasgauche_u2_1"));
+            Superman(paper1, $("#brasdroit_u2_1"), $("#neck_u3_2"));
+            Superman(paper1, $("#thorax_u1_2"), $("#brasdroit_u2_1"));
+
+            Superman(paper1, $("#neck_u2_1"), $("#brasgauche_u1_1"));
+            Superman(paper1, $("#neck_u2_1"), $("#brasgauche_u1_2"));
+            Superman(paper1, $("#neck_u2_2"), $("#brasdroit_u1_2"));
+            Superman(paper1, $("#neck_u2_2"), $("#brasdroit_u1_1"));
+            Superman(paper1, $("#brasgauche_u1_2"), $("#brasgauche_u1_1"));
+            Superman(paper1, $("#brasdroit_u1_2"), $("#brasdroit_u1_1"));
+        }
+
+        function generateSideBones(divPhoto, side)
+        {
+            $("#photo_zone_2").empty();
+
+            paper2 = new Raphael("photo_zone_2", "100%", "100%");
+
+            var widthTotal = divPhoto.width();
+            var heightTotal = divPhoto.height();
+            var moitieWidth = widthTotal / 2;
+            var myrayon = 4;
+
+            var chain1;
+            var chain2;
+
+            // Head
+            chain1 = "path_headv_1 head_v1_1 head_v2_1 head_v3_1 head_v4_1 head_v5_1";
+            chain2 = "path_headv_2 head_v1_2 head_v2_2 head_v3_2 head_v4_2 head_v5_2";
+            GenerateDoublePoints(paper2, chain1, chain2, move5, 0, 25.65, 0, 25.65, "head", "v1", widthTotal, heightTotal, divPhoto, 35, 2.2, 'red');
+            GenerateDoublePoints(paper2, chain1, chain2, move5, -1.06 * side, 25, 1.06 * side, 25, "head", "v2", widthTotal, heightTotal, divPhoto, 35, 2.2, 'red');
+            GenerateDoublePoints(paper2, chain1, chain2, move5, -1.45 * side, 23.87, 1.45 * side, 23.87, "head", "v3", widthTotal, heightTotal, divPhoto, 35, 2.2, 'red');
+            GenerateDoublePoints(paper2, chain1, chain2, move5, -0.82 * side, 22.56, 1.05 * side, 22.56, "head", "v4", widthTotal, heightTotal, divPhoto, 35, 2.2, 'red');
+            GenerateDoublePoints(paper2, chain1, chain2, move5, 0, 21.81, 0, 21.81, "head", "v5", widthTotal, heightTotal, divPhoto, 35, 2.2, 'red');
+            drawCatmullRom5(paper2, "path_headv_1", $("#head_v1_1"), $("#head_v2_1"), $("#head_v3_1"), $("#head_v4_1"), $("#head_v5_1"), "red", myrayon);
+            drawCatmullRom5(paper2, "path_headv_2", $("#head_v1_2"), $("#head_v2_2"), $("#head_v3_2"), $("#head_v4_2"), $("#head_v5_2"), "red", myrayon);
+
+            // Double points tête
+            Superman(paper2, $("#head_v1_1"), $("#head_v1_2"));
+            Superman(paper2, $("#head_v5_1"), $("#head_v5_2"));
+
+            // Neck
+            chain1 = "path_neckv_1 neck_v1_1 neck_v2_1 neck_v3_1";
+            chain2 = "path_neckv_2 neck_v1_2 neck_v2_2 neck_v3_2";
+            GenerateDoublePoints(paper2, chain1, chain2, move3, -0.82 * side, 22.56, 1.05 * side, 22.56, "neck", "v1", widthTotal, heightTotal, divPhoto, 35, 2.2, 'red');
+            GenerateDoublePoints(paper2, chain1, chain2, move3, -0.86 * side, 21.81, 0.67 * side, 21.81, "neck", "v2", widthTotal, heightTotal, divPhoto, 35, 2.2, 'red');
+            GenerateDoublePoints(paper2, chain1, chain2, move3, -1.05 * side, 21.33, 0.60 * side, 21.33, "neck", "v3", widthTotal, heightTotal, divPhoto, 30, 2.4, 'red');
+            drawCatmullRom3(paper2, "path_neckv_1", $("#neck_v1_1"), $("#neck_v2_1"), $("#neck_v3_1"), "red", myrayon);
+            drawCatmullRom3(paper2, "path_neckv_2", $("#neck_v1_2"), $("#neck_v2_2"), $("#neck_v3_2"), "red", myrayon);
+
+            // Double points tête - cou
+            Superman(paper2, $("#head_v4_1"), $("#neck_v1_1"));
+            Superman(paper2, $("#head_v4_2"), $("#neck_v1_2"));
+
+            // Thorax
+            chain1 = "path_thoraxv_1 thorax_v1_1 thorax_v2_1 thorax_v3_1";
+            chain2 = "path_thoraxv_2 thorax_v1_2 thorax_v2_2 thorax_v3_2";
+            GenerateDoublePoints(paper2, chain1, chain2, move3, -1.05 * side, 21.33, 0.60 * side, 21.33, "thorax", "v1", widthTotal, heightTotal, divPhoto, 30, 2.4, 'green');
+            GenerateDoublePoints(paper2, chain1, chain2, move3, -1.57 * side, 19.85, 1.8 * side, 19.85, "thorax", "v2", widthTotal, heightTotal, divPhoto, 20, 2.4, 'green');
+            GenerateDoublePoints(paper2, chain1, chain2, move3, -0.92 * side, 17.13, 2.16 * side, 17.13, "thorax", "v3", widthTotal, heightTotal, divPhoto, 25, 2.4, 'green');
+            drawCatmullRom3(paper2, "path_thoraxv_1", $("#thorax_v1_1"), $("#thorax_v2_1"), $("#thorax_v3_1"), "green", myrayon);
+            drawCatmullRom3(paper2, "path_thoraxv_2", $("#thorax_v1_2"), $("#thorax_v2_2"), $("#thorax_v3_2"), "green", myrayon);
+
+            // Double points thorax - cou
+            Superman(paper2, $("#neck_v3_1"), $("#thorax_v1_1"));
+            Superman(paper2, $("#neck_v3_2"), $("#thorax_v1_2"));
+
+            // Abdos
+            chain1 = "path_abdov_1 abdo_v1_1 abdo_v2_1 abdo_v3_1";
+            chain2 = "path_abdov_2 abdo_v1_2 abdo_v2_2 abdo_v3_2";
+            GenerateDoublePoints(paper2, chain1, chain2, move3, -0.92 * side, 17.13, 2.16 * side, 17.13, "abdo", "v1", widthTotal, heightTotal, divPhoto, 25, 2.4, 'green');
+            GenerateDoublePoints(paper2, chain1, chain2, move3, -0.65 * side, 15, 2.26 * side, 15, "abdo", "v2", widthTotal, heightTotal, divPhoto, 25, 2.4, 'green');
+            GenerateDoublePoints(paper2, chain1, chain2, move3, -1.28 * side, 14.42, 2.18 * side, 14.42, "abdo", "v3", widthTotal, heightTotal, divPhoto, 25, 2.4, 'green');
+            drawCatmullRom3(paper2, "path_abdov_1", $("#abdo_v1_1"), $("#abdo_v2_1"), $("#abdo_v3_1"), "green", myrayon);
+            drawCatmullRom3(paper2, "path_abdov_2", $("#abdo_v1_2"), $("#abdo_v2_2"), $("#abdo_v3_2"), "green", myrayon);
+
+            // Double points thorax - abdo
+            Superman(paper2, $("#thorax_v3_1"), $("#abdo_v1_1"));
+            Superman(paper2, $("#thorax_v3_2"), $("#abdo_v1_2"));
+
+            // Fesses
+            chain1 = "path_fessev_1 fesse_v1_1 fesse_v2_1 fesse_v3_1";
+            chain2 = "path_fessev_2 fesse_v1_2 fesse_v2_2 fesse_v3_2";
+            GenerateDoublePoints(paper2, chain1, chain2, move3, -1.28 * side, 14.42, 2.18 * side, 14.42, "fesse", "v1", widthTotal, heightTotal, divPhoto, 25, 2.4, 'yellow');
+            GenerateDoublePoints(paper2, chain1, chain2, move3, -1.28 * side, 13.64, 2.09 * side, 13.64, "fesse", "v2", widthTotal, heightTotal, divPhoto, 25, 2.4, 'yellow');
+            GenerateDoublePoints(paper2, chain1, chain2, move3, -0.68 * side, 12.95, 1.91 * side, 12.95, "fesse", "v3", widthTotal, heightTotal, divPhoto, 25, 2.4, 'yellow');
+            drawCatmullRom3(paper2, "path_fessev_1", $("#fesse_v1_1"), $("#fesse_v2_1"), $("#fesse_v3_1"), "yellow", myrayon);
+            drawCatmullRom3(paper2, "path_fessev_2", $("#fesse_v1_2"), $("#fesse_v2_2"), $("#fesse_v3_2"), "yellow", myrayon);
+
+            // Double points fesse - abdo
+            Superman(paper2, $("#abdo_v3_1"), $("#fesse_v1_1"));
+            Superman(paper2, $("#abdo_v3_2"), $("#fesse_v1_2"));
+
+            // Cuisses
+            chain1 = "path_cuissev_1 cuisse_v1_1 cuisse_v2_1 cuisse_v3_1";
+            chain2 = "path_cuissev_2 cuisse_v1_2 cuisse_v2_2 cuisse_v3_2";
+            GenerateDoublePoints(paper2, chain1, chain2, move3, -0.68 * side, 12.95, 1.91 * side, 12.95, "cuisse", "v1", widthTotal, heightTotal, divPhoto, 25, 2.4, 'orange');
+            GenerateDoublePoints(paper2, chain1, chain2, move3, -0.73 * side, 9.6, 1.94 * side, 9.6, "cuisse", "v2", widthTotal, heightTotal, divPhoto, 25, 2.3, 'orange');
+            GenerateDoublePoints(paper2, chain1, chain2, move3, -0.24 * side, 7.6, 1.49 * side, 7.6, "cuisse", "v3", widthTotal, heightTotal, divPhoto, 25, 2.3, 'orange');
+            drawCatmullRom3(paper2, "path_cuissev_1", $("#cuisse_v1_1"), $("#cuisse_v2_1"), $("#cuisse_v3_1"), "orange", myrayon);
+            drawCatmullRom3(paper2, "path_cuissev_2", $("#cuisse_v1_2"), $("#cuisse_v2_2"), $("#cuisse_v3_2"), "orange", myrayon);
+
+            // Double points fesse - cuisse
+            Superman(paper2, $("#fesse_v3_1"), $("#cuisse_v1_1"));
+            Superman(paper2, $("#fesse_v3_2"), $("#cuisse_v1_2"));
+
+            // Jambes
+            chain1 = "path_jambev_1 jambe_v1_1 jambe_v2_1 jambe_v3_1";
+            chain2 = "path_jambev_2 jambe_v1_2 jambe_v2_2 jambe_v3_2";
+            GenerateDoublePoints(paper2, chain1, chain2, move3, -0.24 * side, 7.6, 1.49 * side, 7.6, "jambe", "v1", widthTotal, heightTotal, divPhoto, 25, 2.3, 'pink');
+            GenerateDoublePoints(paper2, chain1, chain2, move3, -0.70 * side, 5.64, 1.08 * side, 5.64, "jambe", "v2", widthTotal, heightTotal, divPhoto, 25, 2.3, 'pink');
+            GenerateDoublePoints(paper2, chain1, chain2, move3, -0.74 * side, 2.38, 0.59 * side, 2.38, "jambe", "v3", widthTotal, heightTotal, divPhoto, 28, 2.2, 'pink');
+            drawCatmullRom3(paper2, "path_jambev_1", $("#jambe_v1_1"), $("#jambe_v2_1"), $("#jambe_v3_1"), "pink", myrayon);
+            drawCatmullRom3(paper2, "path_jambev_2", $("#jambe_v1_2"), $("#jambe_v2_2"), $("#jambe_v3_2"), "pink", myrayon);
+
+            // Double points jambe - cuisse
+            Superman(paper2, $("#cuisse_v3_1"), $("#jambe_v1_1"));
+            Superman(paper2, $("#cuisse_v3_2"), $("#jambe_v1_2"));
+
+            // Pieds
+            chain1 = "path_piedv_1 pied_v1_1 pied_v2_1 pied_v3_1";
+            chain2 = "path_piedv_2 pied_v1_2 pied_v2_2 pied_v3_2";
+            GenerateDoublePoints(paper2, chain1, chain2, move3, -0.74 * side, 2.38, 0.59 * side, 2.38, "pied", "v1", widthTotal, heightTotal, divPhoto, 28, 2.2, 'purple');
+            GenerateDoublePoints(paper2, chain1, chain2, move3, -0.74 * side, 1.57, 0.85 * side, 1.57, "pied", "v2", widthTotal, heightTotal, divPhoto, 28, 2.2, 'purple');
+            GenerateDoublePoints(paper2, chain1, chain2, move3, -0.85 * side, 0.05, 1.8 * side, 0.05, "pied", "v3", widthTotal, heightTotal, divPhoto, 28, 2.2, 'purple');
+            drawCatmullRom3(paper2, "path_piedv_1", $("#pied_v1_1"), $("#pied_v2_1"), $("#pied_v3_1"), "purple", myrayon);
+            drawCatmullRom3(paper2, "path_piedv_2", $("#pied_v1_2"), $("#pied_v2_2"), $("#pied_v3_2"), "purple", myrayon);
+            drawSimpleCatmullRom(paper2, "path_rely_sidefoot", $("#pied_v3_1"), $("#pied_v3_2"), "purple", myrayon);
+
+            // Double points jambe - pied
+            Superman(paper2, $("#jambe_v3_1"), $("#pied_v1_1"));
+            Superman(paper2, $("#jambe_v3_2"), $("#pied_v1_2"));
+
+            // Main
+            chain1 = "path_mainv_1 main_v1_1 main_v2_1 main_v3_1";
+            chain2 = "path_mainv_2 main_v1_2 main_v2_2 main_v3_2";
+            GenerateDoublePoints(paper2, chain1, chain2, move3, 0.5, 13.72, 0.48 * side + 0.5, 13.72, "main", "v1", widthTotal, heightTotal, divPhoto, 25, 2.5, 'brown');
+            GenerateDoublePoints(paper2, chain1, chain2, move3, 0.5, 12.63, 0.3 * side + 0.5, 12.63, "main", "v2", widthTotal, heightTotal, divPhoto, 25, 2.5, 'brown');
+            GenerateDoublePoints(paper2, chain1, chain2, move3, 0.5, 11.37, 0.5, 11.35, "main", "v3", widthTotal, heightTotal, divPhoto, 25, 2.5, 'brown');
+            drawCatmullRom3(paper2, "path_mainv_1", $("#main_v1_1"), $("#main_v2_1"), $("#main_v3_1"), "brown", myrayon);
+            drawCatmullRom3(paper2, "path_mainv_2", $("#main_v1_2"), $("#main_v2_2"), $("#main_v3_2"), "brown", myrayon);
+
+            // Avant bras
+            chain1 = "path_avantbrasv_1 avantbras_v1_1 avantbras_v2_1 avantbras_v3_1";
+            chain2 = "path_avantbrasv_2 avantbras_v1_2 avantbras_v2_2 avantbras_v3_2";
+            GenerateDoublePoints(paper2, chain1, chain2, move3, -0.92 * side + 1, 17.16, 0.32 * side + 0.5, 17.16, "avantbras", "v1", widthTotal, heightTotal, divPhoto, 25, 2.5, 'blue');
+            GenerateDoublePoints(paper2, chain1, chain2, move3, -0.20 * side + 0.5, 15.71, 0.42 * side + 0.5, 15.71, "avantbras", "v2", widthTotal, heightTotal, divPhoto, 25, 2.5, 'blue');
+            GenerateDoublePoints(paper2, chain1, chain2, move3, 0.5, 13.72, 0.48 * side + 0.5, 13.72, "avantbras", "v3", widthTotal, heightTotal, divPhoto, 25, 2.5, 'blue');
+            drawCatmullRom3(paper2, "path_avantbrasv_1", $("#avantbras_v1_1"), $("#avantbras_v2_1"), $("#avantbras_v3_1"), "blue", myrayon);
+            drawCatmullRom3(paper2, "path_avantbrasv_2", $("#avantbras_v1_2"), $("#avantbras_v2_2"), $("#avantbras_v3_2"), "blue", myrayon);
+
+            // Double points main - avant bras
+            Superman(paper2, $("#avantbras_v3_1"), $("#main_v1_1"));
+            Superman(paper2, $("#avantbras_v3_2"), $("#main_v1_2"));
+            Superman(paper2, $("#main_v3_1"), $("#main_v3_2"));
+
+            // Bras
+            chain1 = "path_brasv_1 bras_v3_1 bras_v2_1 bras_v4_1";
+            chain2 = "path_brasv_2 bras_v3_2 bras_v2_2 bras_v4_2";
+            GenerateDoublePoints(paper2, chain1, chain2, move3, -1 * side + 0.5, 21.33, 0.3, 21.33, "bras", "v4", widthTotal, heightTotal, divPhoto, 25, 2.5, 'lightblue');
+            GenerateDoublePoints(paper2, chain1, chain2, move3, -1.34 * side + 1, 18.84, 0.6 * side + 0., 18.84, "bras", "v2", widthTotal, heightTotal, divPhoto, 25, 2.5, 'lightblue');
+            GenerateDoublePoints(paper2, chain1, chain2, move3, -0.92 * side + 1, 17.16, 0.32 * side + 0.5, 17.16, "bras", "v3", widthTotal, heightTotal, divPhoto, 25, 2.5, 'lightblue');
+            drawCatmullRom3(paper2, "path_brasv_1", $("#bras_v3_1"), $("#bras_v2_1"), $("#bras_v4_1"), "lightblue", myrayon);
+            drawCatmullRom3(paper2, "path_brasv_2", $("#bras_v3_2"), $("#bras_v2_2"), $("#bras_v4_2"), "lightblue", myrayon);
+            drawSimpleCatmullRom(paper2, "path_rely_bras", $("#bras_v4_1"), $("#bras_v4_2"), "lightblue", myrayon);
+
+            // Double points bras - avant bras
+            Superman(paper2, $("#bras_v3_1"), $("#avantbras_v1_1"));
+            Superman(paper2, $("#bras_v3_2"), $("#avantbras_v1_2"));
+        }
+
+        function start(x, y, e)
+        {
+
+        }
+
+        function end(e)
+        {
+
+        }
+
+        function move5(nowdx, nowdy, nowx, nowy, e)
+        {
+            var patternArray = this.data('svgpath').split(" ");
+
+            var offset = $(this.paper.canvas).parent().offset(),
+                px = nowx - offset.left,
+                py = nowy - offset.top;
+
+            this.attr({ cx: px, cy: py });
+
+            $("#" + patternArray[0]).remove();
+            this.paper.path("M " + $("#" + patternArray[1]).attr("cx") + " " + $("#" + patternArray[1]).attr("cy") + " \ R " + $("#" + patternArray[2]).attr("cx") + " " + $("#" + patternArray[2]).attr("cy") + " \ " + $("#" + patternArray[3]).attr("cx") + " " + $("#" + patternArray[3]).attr("cy") + " \ " + $("#" + patternArray[4]).attr("cx") + " " + $("#" + patternArray[4]).attr("cy") + " \ " + $("#" + patternArray[5]).attr("cx") + " " + $("#" + patternArray[5]).attr("cy")).attr("stroke", patternArray[6]).attr("stroke-width", "3").node.id = patternArray[0];
+
+            // Superman management
+            if (this.data('superman') != undefined) {
+                var supermanPatternArray = this.paper.getById(this.data('superman')).data('svgpath').split(" ");
+                var count = supermanPatternArray.length;
+                var pathString = "";
+                for (var i = 2; i < count - 1; i++) {
+                    if (i < count - 2) {
+                        pathString = pathString + $("#" + supermanPatternArray[i]).attr("cx") + " " + $("#" + supermanPatternArray[i]).attr("cy") + " \ ";
+                    }
+                    else if (i == count - 2) {
+                        pathString = pathString + $("#" + supermanPatternArray[i]).attr("cx") + " " + $("#" + supermanPatternArray[i]).attr("cy");
+                    }
+                }
+                this.paper.getById(this.data('superman')).attr("cx", this.attr("cx"));
+                this.paper.getById(this.data('superman')).attr("cy", this.attr("cy"));
+                $("#" + supermanPatternArray[0]).remove();
+                this.paper.path("M " + $("#" + supermanPatternArray[1]).attr("cx") + " " + $("#" + supermanPatternArray[1]).attr("cy") + " \ R " + pathString).attr("stroke", supermanPatternArray[count - 1]).attr("stroke-width", "3").node.id = supermanPatternArray[0];
+            }
+            if (this.data('superman2') != undefined) {
+                var supermanPatternArray = this.paper.getById(this.data('superman2')).data('svgpath').split(" ");
+                var count = supermanPatternArray.length;
+                var pathString = "";
+                for (var i = 2; i < count - 1; i++) {
+                    if (i < count - 2) {
+                        pathString = pathString + $("#" + supermanPatternArray[i]).attr("cx") + " " + $("#" + supermanPatternArray[i]).attr("cy") + " \ ";
+                    }
+                    else if (i == count - 2) {
+                        pathString = pathString + $("#" + supermanPatternArray[i]).attr("cx") + " " + $("#" + supermanPatternArray[i]).attr("cy");
+                    }
+                }
+                this.paper.getById(this.data('superman2')).attr("cx", this.attr("cx"));
+                this.paper.getById(this.data('superman2')).attr("cy", this.attr("cy"));
+                $("#" + supermanPatternArray[0]).remove();
+                this.paper.path("M " + $("#" + supermanPatternArray[1]).attr("cx") + " " + $("#" + supermanPatternArray[1]).attr("cy") + " \ R " + pathString).attr("stroke", supermanPatternArray[count - 1]).attr("stroke-width", "3").node.id = supermanPatternArray[0];
+            }
+            if (this.data('lastpath') != undefined) {
+                var supermanPatternArray = this.data('lastpath').split(" ");
+                $("#" + supermanPatternArray[0]).remove();
+                this.paper.path("M" + $("#" + supermanPatternArray[1]).attr("cx") + "," + $("#" + supermanPatternArray[1]).attr("cy") + "L" + $("#" + supermanPatternArray[2]).attr("cx") + "," + $("#" + supermanPatternArray[2]).attr("cy")).attr("stroke", supermanPatternArray[3]).attr("stroke-width", "3").node.id = supermanPatternArray[0];
+            }
+        }
+
+        function move4(nowdx, nowdy, nowx, nowy, e) {
+            var patternArray = this.data('svgpath').split(" ");
+
+            var offset = $(this.paper.canvas).parent().offset(),
+                px = nowx - offset.left,
+                py = nowy - offset.top;
+
+            this.attr({ cx: px, cy: py });
+
+            $("#" + patternArray[0]).remove();
+            this.paper.path("M " + $("#" + patternArray[1]).attr("cx") + " " + $("#" + patternArray[1]).attr("cy") + " \ R " + $("#" + patternArray[2]).attr("cx") + " " + $("#" + patternArray[2]).attr("cy") + " \ " + $("#" + patternArray[3]).attr("cx") + " " + $("#" + patternArray[3]).attr("cy") + " \ " + $("#" + patternArray[4]).attr("cx") + " " + $("#" + patternArray[4]).attr("cy")).attr("stroke", patternArray[5]).attr("stroke-width", "3").node.id = patternArray[0];
+
+            // Superman management
+            if (this.data('superman') != undefined) {
+                var supermanPatternArray = this.paper.getById(this.data('superman')).data('svgpath').split(" ");
+                var count = supermanPatternArray.length;
+                var pathString = "";
+                for (var i = 2; i < count - 1; i++) {
+                    if (i < count - 2) {
+                        pathString = pathString + $("#" + supermanPatternArray[i]).attr("cx") + " " + $("#" + supermanPatternArray[i]).attr("cy") + " \ ";
+                    }
+                    else if (i == count - 2) {
+                        pathString = pathString + $("#" + supermanPatternArray[i]).attr("cx") + " " + $("#" + supermanPatternArray[i]).attr("cy");
+                    }
+                }
+                this.paper.getById(this.data('superman')).attr("cx", this.attr("cx"));
+                this.paper.getById(this.data('superman')).attr("cy", this.attr("cy"));
+                $("#" + supermanPatternArray[0]).remove();
+                this.paper.path("M " + $("#" + supermanPatternArray[1]).attr("cx") + " " + $("#" + supermanPatternArray[1]).attr("cy") + " \ R " + pathString).attr("stroke", supermanPatternArray[count - 1]).attr("stroke-width", "3").node.id = supermanPatternArray[0];
+            }
+            if (this.data('superman2') != undefined) {
+                var supermanPatternArray = this.paper.getById(this.data('superman2')).data('svgpath').split(" ");
+                var count = supermanPatternArray.length;
+                var pathString = "";
+                for (var i = 2; i < count - 1; i++) {
+                    if (i < count - 2) {
+                        pathString = pathString + $("#" + supermanPatternArray[i]).attr("cx") + " " + $("#" + supermanPatternArray[i]).attr("cy") + " \ ";
+                    }
+                    else if (i == count - 2) {
+                        pathString = pathString + $("#" + supermanPatternArray[i]).attr("cx") + " " + $("#" + supermanPatternArray[i]).attr("cy");
+                    }
+                }
+                this.paper.getById(this.data('superman2')).attr("cx", this.attr("cx"));
+                this.paper.getById(this.data('superman2')).attr("cy", this.attr("cy"));
+                $("#" + supermanPatternArray[0]).remove();
+                this.paper.path("M " + $("#" + supermanPatternArray[1]).attr("cx") + " " + $("#" + supermanPatternArray[1]).attr("cy") + " \ R " + pathString).attr("stroke", supermanPatternArray[count - 1]).attr("stroke-width", "3").node.id = supermanPatternArray[0];
+            }
+            if (this.data('lastpath') != undefined) {
+                var supermanPatternArray = this.data('lastpath').split(" ");
+                $("#" + supermanPatternArray[0]).remove();
+                this.paper.path("M" + $("#" + supermanPatternArray[1]).attr("cx") + "," + $("#" + supermanPatternArray[1]).attr("cy") + "L" + $("#" + supermanPatternArray[2]).attr("cx") + "," + $("#" + supermanPatternArray[2]).attr("cy")).attr("stroke", supermanPatternArray[3]).attr("stroke-width", "3").node.id = supermanPatternArray[0];
+            }
+        }
+
+        function move3(nowdx, nowdy, nowx, nowy, e) {
+            var patternArray = this.data('svgpath').split(" ");
+
+            var offset = $(this.paper.canvas).parent().offset(),
+                px = nowx - offset.left,
+                py = nowy - offset.top;
+
+            this.attr({ cx: px, cy: py });
+
+            $("#" + patternArray[0]).remove();
+            this.paper.path("M " + $("#" + patternArray[1]).attr("cx") + " " + $("#" + patternArray[1]).attr("cy") + " \ R " + $("#" + patternArray[2]).attr("cx") + " " + $("#" + patternArray[2]).attr("cy") + " \ " + $("#" + patternArray[3]).attr("cx") + " " + $("#" + patternArray[3]).attr("cy")).attr("stroke", patternArray[4]).attr("stroke-width", "3").node.id = patternArray[0];
+
+            // Superman management
+            if (this.data('superman') != undefined) {
+                var supermanPatternArray = this.paper.getById(this.data('superman')).data('svgpath').split(" ");
+                var count = supermanPatternArray.length;
+                var pathString = "";
+                for (var i = 2; i < count - 1; i++) {
+                    if (i < count - 2) {
+                        pathString = pathString + $("#" + supermanPatternArray[i]).attr("cx") + " " + $("#" + supermanPatternArray[i]).attr("cy") + " \ ";
+                    }
+                    else if (i == count - 2) {
+                        pathString = pathString + $("#" + supermanPatternArray[i]).attr("cx") + " " + $("#" + supermanPatternArray[i]).attr("cy");
+                    }
+                }
+                this.paper.getById(this.data('superman')).attr("cx", this.attr("cx"));
+                this.paper.getById(this.data('superman')).attr("cy", this.attr("cy"));
+                $("#" + supermanPatternArray[0]).remove();
+                this.paper.path("M " + $("#" + supermanPatternArray[1]).attr("cx") + " " + $("#" + supermanPatternArray[1]).attr("cy") + " \ R " + pathString).attr("stroke", supermanPatternArray[count - 1]).attr("stroke-width", "3").node.id = supermanPatternArray[0];
+            }
+            if (this.data('superman2') != undefined) {
+                var supermanPatternArray = this.paper.getById(this.data('superman2')).data('svgpath').split(" ");
+                var count = supermanPatternArray.length;
+                var pathString = "";
+                for (var i = 2; i < count - 1; i++) {
+                    if (i < count - 2) {
+                        pathString = pathString + $("#" + supermanPatternArray[i]).attr("cx") + " " + $("#" + supermanPatternArray[i]).attr("cy") + " \ ";
+                    }
+                    else if (i == count - 2) {
+                        pathString = pathString + $("#" + supermanPatternArray[i]).attr("cx") + " " + $("#" + supermanPatternArray[i]).attr("cy");
+                    }
+                }
+                this.paper.getById(this.data('superman2')).attr("cx", this.attr("cx"));
+                this.paper.getById(this.data('superman2')).attr("cy", this.attr("cy"));
+                $("#" + supermanPatternArray[0]).remove();
+                this.paper.path("M " + $("#" + supermanPatternArray[1]).attr("cx") + " " + $("#" + supermanPatternArray[1]).attr("cy") + " \ R " + pathString).attr("stroke", supermanPatternArray[count - 1]).attr("stroke-width", "3").node.id = supermanPatternArray[0];
+            }
+            if (this.data('lastpath') != undefined) {
+                var supermanPatternArray = this.data('lastpath').split(" ");
+                $("#" + supermanPatternArray[0]).remove();
+                this.paper.path("M" + $("#" + supermanPatternArray[1]).attr("cx") + "," + $("#" + supermanPatternArray[1]).attr("cy") + "L" + $("#" + supermanPatternArray[2]).attr("cx") + "," + $("#" + supermanPatternArray[2]).attr("cy")).attr("stroke", supermanPatternArray[3]).attr("stroke-width", "3").node.id = supermanPatternArray[0];
+            }
+        }
+        
+        $("#generate_button").click(function ()
+        {
+            if (toutesphotosload)
+            {
+                clearInterval(intervalFront);
+                clearInterval(intervalSide);
+
+                $("#generation_3D_canvas").css("background-image", "none");
+                $("#generation_3D_canvas").prepend('<img id="loadingleft" src="../Images/loader.gif" />');
+                $("#infos_2").prepend('<img id="loadingright" src="../Images/loader.gif" />');
+
+                var topload = $("#generation_3D_canvas").width() / 2 - $("#loadingleft").width() / 2;
+                $("#loadingleft").css("position", "relative");
+                $("#loadingright").css("position", "relative");
+                $("#loadingleft").css("top", topload + "px");
+                $("#loadingright").css("top", topload + "px");
+
+                setTimeout(function () {
+
+                    $("#loadingleft").remove();
+                    $("#loadingright").remove();
+
+                    // Taille entre 1m et 2m30
+                    if ($("#height_human").val() >= 100 && $("#height_human").val() <= 230) {
+                        nbConversions = 0;
+                        GenerateDataCoordinates();
+                        console.log(nbConversions);
+
+                        $.ajax({
+                            type: "POST",
+                            url: "/Home/Calculate",
+                            data: JSON.stringify(myJsonData),
+                            contentType: "application/json",
+                            datatype: "json",
+                            success: function (data) {
+                                if (data == "Error") {
+                                    alert("The generation failed due to a too much big error. Try again by correctly moving the points on the pictures.")
+                                }
+                                else {
+                                    var myfinaljson = $.parseJSON(data);
+                                    displayResults(myfinaljson); // Generation masses
+                                    generate3DMesh(); // Generation 3D
+                                }
+                            },
+                            error: function () {
+                                alert("Sorry ! An error encountered during the generation, try again.")
+                            }
+                        });
+                    }
+                    else {
+                        alert("Your height should be between 1m and 2m30. Retry.");
+                    }
+                }, 5000);
+            }
+            else
+            {
+                alert("Please upload your front and side photos before body generation.");
+            }
+        });
+
+        function CleanResults()
+        {
+            $("#titleresult").text("");
+
+            $("#headresult").text("");
+            $("#neckresult").text("");
+            $("#thoraxresult").text("");
+            $("#abdoresult").text("");
+            $("#fesseresult").text("");
+            $("#cuissegaucheresult").text("");
+            $("#cuissedroiteresult").text("");
+            $("#jambegaucheresult").text("");
+            $("#jambedroiteresult").text("");
+            $("#chevillegaucheresult").text("");
+            $("#chevilledroiteresult").text("");
+            $("#piedgaucheresult").text("");
+            $("#pieddroiteresult").text("");
+
+            $("#brasgaucheresult").text("");
+            $("#brasdroiteresult").text("");
+            $("#avantsbrasgaucheresult").text("");
+            $("#avantbrasdroiteresult").text("");
+            $("#maingaucheresult").text("");
+            $("#maindroiteresult").text("");
+
+            $("#comparison").text("");
+            $("#totalmassresult").text("");
+        }
+
+        function displayResults(json)
+        {
+            CleanResults();
+
+            $("#titleresult").html("<span class='titleresultgeneration'>Generation Results</span>");
+
+            $("#headresult").html("Head : <span class='highlightresult'>" + json.Head.Mass + " kgs</span>");// with mass center " + json.Head.MassCenter);
+            $("#neckresult").html("Neck : <span class='highlightresult'>" + json.Neck.Mass + " kgs</span>");// with mass center " + json.Neck.MassCenter);
+            $("#thoraxresult").html("Thorax : <span class='highlightresult'>" + json.Thorax.Mass + " kgs</span>");// with mass center " + json.Thorax.MassCenter);
+            $("#abdoresult").html("Abdomen : <span class='highlightresult'>" + json.Abdomen.Mass + " kgs</span>");// with mass center " + json.Abdomen.MassCenter);
+            $("#fesseresult").html("Bottom : <span class='highlightresult'>" + json.Bottom.Mass + " kgs</span>");// with mass center " + json.Bottom.MassCenter);
+
+            $("#cuissegaucheresult").html("Left Thigh : <span class='highlightresult'>" + json.ThighLeft.Mass + " kgs</span>");// with mass center " + json.ThighLeft.MassCenter);
+            $("#cuissedroiteresult").html("Right Thigh : <span class='highlightresult'>" + json.ThighRight.Mass + " kgs</span>");// with mass center " + json.ThighRight.MassCenter);
+            $("#jambegaucheresult").html("Left Leg : <span class='highlightresult'>" + json.LegLeft.Mass + " kgs</span>");// with mass center " + json.LegLeft.MassCenter);
+            $("#jambedroiteresult").html("Right Leg : <span class='highlightresult'>" + json.LegRight.Mass + " kgs</span>");// with mass center " + json.LegRight.MassCenter);
+            $("#chevillegaucheresult").html("Left Ankle : <span class='highlightresult'>" + json.AnkleLeft.Mass + " kgs</span>");// with mass center " + json.AnkleLeft.MassCenter);
+            $("#chevilledroiteresult").html("Right Ankle : <span class='highlightresult'>" + json.AnkleRight.Mass + " kgs</span>");// with mass center " + json.AnkleRight.MassCenter);
+            $("#piedgaucheresult").html("Left Foot : <span class='highlightresult'>" + json.FootLeft.Mass + " kgs</span>");// with mass center " + json.FootLeft.MassCenter);
+            $("#pieddroiteresult").html("Right Foot : <span class='highlightresult'>" + json.FootRight.Mass + " kgs</span>");// with mass center " + json.FootRight.MassCenter);
+
+            $("#brasgaucheresult").html("Left Upperarm : <span class='highlightresult'>" + json.ArmLeft.Mass + " kgs</span>");// with mass center " + json.ArmLeft.MassCenter);
+            $("#brasdroiteresult").html("Right Upperarm : <span class='highlightresult'>" + json.ArmRight.Mass + " kgs</span>");// with mass center " + json.ArmRight.MassCenter);
+            $("#avantsbrasgaucheresult").html("Left Forearm : <span class='highlightresult'>" + json.ForeArmLeft.Mass + " kgs</span>");// with mass center " + json.ForeArmLeft.MassCenter);
+            $("#avantbrasdroiteresult").html("Right Forearm : <span class='highlightresult'>" + json.ForeArmRight.Mass + " kgs</span>");// with mass center " + json.ForeArmRight.MassCenter);
+            $("#maingaucheresult").html("Left Hand : <span class='highlightresult'>" + json.HandLeft.Mass + " kgs</span>");// with mass center " + json.HandLeft.MassCenter);
+            $("#maindroiteresult").html("Right Hand : <span class='highlightresult'>" + json.HandRight.Mass + " kgs</span>");// with mass center " + json.HandRight.MassCenter);
+
+            // Comparaison
+            var error;
+            if ($("#weight_human").val() != null && $("#weight_human").val() != "")
+            {
+                error = parseFloat(json.TotalMass) - $("#weight_human").val();
+                error = error / $("#weight_human").val() * 100;
+                error = Math.round(error).toFixed(2);
+                $("#comparison").html("Only <span class='titleresultgeneration'>" + error + "%</span> of error during the generation !<br/><span class='highlightresult'>Congratulations !</span>");
+            }
+            $("#totalmassresult").html("Total Generated Mass : <span class='highlightresult'>" + json.TotalMass + " kgs</span>");
+
+            $('.highlightresult').addGlow({
+                radius: 40,
+                textColor: '#008000',
+                haloColor: '#008000',
+                duration: 400
+            });
+
+            $('.titleresultgeneration').addGlow({
+                radius: 40,
+                textColor: '#008000',
+                haloColor: '#008000',
+                duration: 400
+            });
+        }
+
+        function pixelToRealLeft(pixel)
+        {
+            var pixelFloat = parseFloat(pixel.attr("cx"));
+            var result = Math.round(pixelFloat) * $("#height_human").val() / pixelHeight;
+            nbConversions = nbConversions + 1;
+            return result;
+        }
+
+        function pixelToRealTop(pixel)
+        {
+            var pixelFloat = parseFloat(pixel.attr("cy"));
+            var result = Math.round(pixelFloat) * $("#height_human").val() / pixelHeight;
+            nbConversions = nbConversions + 1;
+            return result;
+        }
+
+        function GenerateDataCoordinates()
+        {
+            var pict1 = $("#photo_zone_1").css("background-image").split('/');
+            var pict2 = $("#photo_zone_2").css("background-image").split('/');
+
+            var weight = null;
+            if ($("#weight_human").val() != null && $("#weight_human").val() != "") {
+                weight = $("#weight_human").val();
+            }
+
+            myJsonData =
+                {
+                    Height: "175",
+                    Weight: weight,
+                    Picture_1: pict1[pict1.length - 1].substr(0, pict1[pict1.length - 1].length - 2),
+                    PictureWidth_1: null,
+                    PictureHeight_1: $("#photo_zone_1").css("background-size").substr(5, $("#photo_zone_1").css("background-size").length - 7),
+                    PictureLeft_1: $("#photo_zone_1").css("background-position-x").substr(0, $("#photo_zone_1").css("background-position-x").length - 2),
+                    PictureTop_1: $("#photo_zone_1").css("background-position-y").substr(0, $("#photo_zone_1").css("background-position-y").length - 2),
+                    Picture_2: pict2[pict2.length - 1].substr(0, pict2[pict2.length - 1].length - 2),
+                    PictureWidth_2: null,
+                    PictureHeight_2: $("#photo_zone_2").css("background-size").substr(5, $("#photo_zone_2").css("background-size").length - 7),
+                    PictureLeft_2: $("#photo_zone_2").css("background-position-x").substr(0, $("#photo_zone_2").css("background-position-x").length - 2),
+                    PictureTop_2: $("#photo_zone_2").css("background-position-y").substr(0, $("#photo_zone_2").css("background-position-y").length - 2),
+                    Abdomen: {
+                        U1: Math.abs(pixelToRealLeft($("#abdo_u1_2")) - pixelToRealLeft($("#abdo_u1_1"))),
+                        U2: Math.abs(pixelToRealLeft($("#abdo_u2_2")) - pixelToRealLeft($("#abdo_u2_1"))),
+                        U3: Math.abs(pixelToRealLeft($("#abdo_u3_2")) - pixelToRealLeft($("#abdo_u3_1"))),
+                        V1: Math.abs(pixelToRealLeft($("#abdo_v1_2")) - pixelToRealLeft($("#abdo_v1_1"))),
+                        V2: Math.abs(pixelToRealLeft($("#abdo_v2_2")) - pixelToRealLeft($("#abdo_v2_1"))),
+                        V3: Math.abs(pixelToRealLeft($("#abdo_v3_2")) - pixelToRealLeft($("#abdo_v3_1"))),
+                        Z1: 0,
+                        Z2: (Math.abs(pixelToRealTop($("#abdo_u3_1")) - pixelToRealTop($("#abdo_u1_1")))) / 2,
+                        Z3: (Math.abs(pixelToRealTop($("#abdo_u3_1")) - pixelToRealTop($("#abdo_u1_1")))),
+                    },
+                    Thorax: {
+                        U1: Math.abs(pixelToRealLeft($("#thorax_u1_2")) - pixelToRealLeft($("#thorax_u1_1"))),
+                        U2: Math.abs(pixelToRealLeft($("#thorax_u2_2")) - pixelToRealLeft($("#thorax_u2_1"))),
+                        U3: Math.abs(pixelToRealLeft($("#thorax_u3_2")) - pixelToRealLeft($("#thorax_u3_1"))),
+                        V1: Math.abs(pixelToRealLeft($("#thorax_v1_2")) - pixelToRealLeft($("#thorax_v1_1"))),
+                        V2: Math.abs(pixelToRealLeft($("#thorax_v2_2")) - pixelToRealLeft($("#thorax_v2_1"))),
+                        V3: Math.abs(pixelToRealLeft($("#thorax_v3_2")) - pixelToRealLeft($("#thorax_v3_1"))),
+                        Z1: 0,
+                        Z2: (Math.abs(pixelToRealTop($("#thorax_u3_1")) - pixelToRealTop($("#thorax_u1_1")))) / 2,
+                        Z3: (Math.abs(pixelToRealTop($("#thorax_u3_1")) - pixelToRealTop($("#thorax_u1_1")))),
+                    },
+                    Neck: {
+                        U1: Math.abs(pixelToRealLeft($("#neck_u1_2")) - pixelToRealLeft($("#neck_u1_1"))),
+                        U2: Math.abs(pixelToRealLeft($("#neck_u2_2")) - pixelToRealLeft($("#neck_u2_1"))),
+                        U3: Math.abs(pixelToRealLeft($("#neck_u3_2")) - pixelToRealLeft($("#neck_u3_1"))),
+                        V1: Math.abs(pixelToRealLeft($("#neck_v1_2")) - pixelToRealLeft($("#neck_v1_1"))),
+                        V2: Math.abs(pixelToRealLeft($("#neck_v2_2")) - pixelToRealLeft($("#neck_v2_1"))),
+                        V3: Math.abs(pixelToRealLeft($("#neck_v3_2")) - pixelToRealLeft($("#neck_v3_1"))),
+                        Z1: 0,
+                        Z2: (Math.abs(pixelToRealTop($("#neck_u3_1")) - pixelToRealTop($("#neck_u1_1")))) / 2,
+                        Z3: (Math.abs(pixelToRealTop($("#neck_u3_1")) - pixelToRealTop($("#neck_u1_1")))),
+                    },
+                    Head: {
+                        U1: Math.abs(pixelToRealLeft($("#head_u1_2")) - pixelToRealLeft($("#head_u1_1"))),
+                        U2: Math.abs(pixelToRealLeft($("#head_u2_2")) - pixelToRealLeft($("#head_u2_1"))),
+                        U3: Math.abs(pixelToRealLeft($("#head_u3_2")) - pixelToRealLeft($("#head_u3_1"))),
+                        V1: Math.abs(pixelToRealLeft($("#head_v1_2")) - pixelToRealLeft($("#head_v1_1"))),
+                        V2: Math.abs(pixelToRealLeft($("#head_v2_2")) - pixelToRealLeft($("#head_v2_1"))),
+                        V3: Math.abs(pixelToRealLeft($("#head_v3_2")) - pixelToRealLeft($("#head_v3_1"))),
+                        Z1: 0,
+                        Z2: (Math.abs(pixelToRealTop($("#head_u3_1")) - pixelToRealTop($("#head_u1_1")))) / 2,
+                        Z3: (Math.abs(pixelToRealTop($("#head_u3_1")) - pixelToRealTop($("#head_u1_1")))),
+                    },
+                    Bottom: {
+                        U1: Math.abs(pixelToRealLeft($("#fesse_u1_2")) - pixelToRealLeft($("#fesse_u1_1"))),
+                        U2: Math.abs(pixelToRealLeft($("#fesse_u2_2")) - pixelToRealLeft($("#fesse_u2_1"))),
+                        U3: Math.abs(pixelToRealLeft($("#fesse_u3_2")) - pixelToRealLeft($("#fesse_u3_1"))),
+                        V1: Math.abs(pixelToRealLeft($("#fesse_v1_2")) - pixelToRealLeft($("#fesse_v1_1"))),
+                        V2: Math.abs(pixelToRealLeft($("#fesse_v2_2")) - pixelToRealLeft($("#fesse_v2_1"))),
+                        V3: Math.abs(pixelToRealLeft($("#fesse_v3_2")) - pixelToRealLeft($("#fesse_v3_1"))),
+                        Z1: 0,
+                        Z2: (Math.abs(pixelToRealTop($("#fesse_u3_1")) - pixelToRealTop($("#fesse_u1_1")))) / 2,
+                        Z3: (Math.abs(pixelToRealTop($("#fesse_u3_1")) - pixelToRealTop($("#fesse_u1_1")))),
+                    },
+                    Thigh: {
+                        U1: Math.abs(pixelToRealLeft($("#cuisse1_u1_1")) - pixelToRealLeft($("#cuisse2_u1_1"))),
+                        U2: Math.abs(pixelToRealLeft($("#cuisse1_u2_1")) - pixelToRealLeft($("#cuisse2_u2_1"))),
+                        U3: Math.abs(pixelToRealLeft($("#cuisse1_u3_1")) - pixelToRealLeft($("#cuisse2_u3_1"))),
+                        V1: Math.abs(pixelToRealLeft($("#cuisse_v1_2")) - pixelToRealLeft($("#cuisse_v1_1"))),
+                        V2: Math.abs(pixelToRealLeft($("#cuisse_v2_2")) - pixelToRealLeft($("#cuisse_v2_1"))),
+                        V3: Math.abs(pixelToRealLeft($("#cuisse_v3_2")) - pixelToRealLeft($("#cuisse_v3_1"))),
+                        Z1: 0,
+                        Z2: (Math.abs(pixelToRealTop($("#cuisse1_u3_1")) - pixelToRealTop($("#cuisse1_u1_1")))) / 2,
+                        Z3: (Math.abs(pixelToRealTop($("#cuisse1_u3_1")) - pixelToRealTop($("#cuisse1_u1_1")))),
+                    },
+                    Leg: {
+                        U1: Math.abs(pixelToRealLeft($("#jambe1_u1_1")) - pixelToRealLeft($("#jambe2_u1_1"))),
+                        U2: Math.abs(pixelToRealLeft($("#jambe1_u2_1")) - pixelToRealLeft($("#jambe2_u2_1"))),
+                        U3: Math.abs(pixelToRealLeft($("#jambe1_u3_1")) - pixelToRealLeft($("#jambe2_u3_1"))),
+                        V1: Math.abs(pixelToRealLeft($("#jambe_v1_2")) - pixelToRealLeft($("#jambe_v1_1"))),
+                        V2: Math.abs(pixelToRealLeft($("#jambe_v2_2")) - pixelToRealLeft($("#jambe_v2_1"))),
+                        V3: Math.abs(pixelToRealLeft($("#jambe_v3_2")) - pixelToRealLeft($("#jambe_v3_1"))),
+                        Z1: 0,
+                        Z2: (Math.abs(pixelToRealTop($("#jambe1_u3_1")) - pixelToRealTop($("#jambe1_u1_1")))) / 2,
+                        Z3: (Math.abs(pixelToRealTop($("#jambe1_u3_1")) - pixelToRealTop($("#jambe1_u1_1")))),
+                    },
+                    Foot: {
+                        U1: Math.abs(pixelToRealLeft($("#pied1_u1_1")) - pixelToRealLeft($("#pied2_u1_1"))),
+                        U2: Math.abs(pixelToRealLeft($("#pied1_u2_1")) - pixelToRealLeft($("#pied2_u2_1"))),
+                        U3: Math.abs(pixelToRealLeft($("#pied1_u3_1")) - pixelToRealLeft($("#pied2_u3_1"))),
+                        V1: Math.abs(pixelToRealLeft($("#pied_v1_2")) - pixelToRealLeft($("#pied_v1_1"))),
+                        V2: Math.abs(pixelToRealLeft($("#pied_v2_2")) - pixelToRealLeft($("#pied_v2_1"))),
+                        V3: Math.abs(pixelToRealLeft($("#pied_v3_2")) - pixelToRealLeft($("#pied_v3_1"))),
+                        Z1: 0,
+                        Z2: (Math.abs(pixelToRealTop($("#pied1_u3_1")) - pixelToRealTop($("#pied1_u1_1")))) / 2,
+                        Z3: (Math.abs(pixelToRealTop($("#pied1_u3_1")) - pixelToRealTop($("#pied1_u1_1")))),
+                    },
+                    Hand: {
+                        U1: Math.abs(pixelToRealLeft($("#maingauche_u1_2")) - pixelToRealLeft($("#maingauche_u1_1"))),
+                        U2: Math.abs(pixelToRealLeft($("#maingauche_u2_2")) - pixelToRealLeft($("#maingauche_u2_1"))),
+                        U3: Math.abs(pixelToRealLeft($("#maingauche_u4_2")) - pixelToRealLeft($("#maingauche_u4_1"))),
+                        V1: Math.abs(pixelToRealLeft($("#main_v1_2")) - pixelToRealLeft($("#main_v1_1"))),
+                        V2: Math.abs(pixelToRealLeft($("#main_v2_2")) - pixelToRealLeft($("#main_v2_1"))),
+                        V3: Math.abs(pixelToRealLeft($("#main_v3_2")) - pixelToRealLeft($("#main_v3_1"))),
+                        Z1: 0,
+                        Z2: (Math.abs(pixelToRealTop($("#maingauche_u3_1")) - pixelToRealTop($("#maingauche_u1_1")))) / 2,
+                        Z3: (Math.abs(pixelToRealTop($("#maingauche_u3_1")) - pixelToRealTop($("#maingauche_u1_1")))),
+                    },
+                    ForeArm: {
+                        U1: Math.abs(pixelToRealLeft($("#avantbrasgauche_u1_2")) - pixelToRealLeft($("#avantbrasgauche_u1_1"))),
+                        U2: Math.abs(pixelToRealLeft($("#avantbrasgauche_u2_2")) - pixelToRealLeft($("#avantbrasgauche_u2_1"))),
+                        U3: Math.abs(pixelToRealLeft($("#avantbrasgauche_u3_2")) - pixelToRealLeft($("#avantbrasgauche_u3_1"))),
+                        V1: Math.abs(pixelToRealLeft($("#avantbras_v1_2")) - pixelToRealLeft($("#avantbras_v1_1"))),
+                        V2: Math.abs(pixelToRealLeft($("#avantbras_v2_2")) - pixelToRealLeft($("#avantbras_v2_1"))),
+                        V3: Math.abs(pixelToRealLeft($("#avantbras_v3_2")) - pixelToRealLeft($("#avantbras_v3_1"))),
+                        Z1: 0,
+                        Z2: (Math.abs(pixelToRealTop($("#avantbrasgauche_u3_1")) - pixelToRealTop($("#avantbrasgauche_u1_1")))) / 2,
+                        Z3: (Math.abs(pixelToRealTop($("#avantbrasgauche_u3_1")) - pixelToRealTop($("#avantbrasgauche_u1_1")))),
+                    },
+                    Arm: {
+                        U1: Math.abs(pixelToRealLeft($("#brasgauche_u2_2")) - pixelToRealLeft($("#brasgauche_u2_1"))),
+                        U2: Math.abs(pixelToRealLeft($("#brasgauche_u3_2")) - pixelToRealLeft($("#brasgauche_u3_1"))),
+                        U3: Math.abs(pixelToRealLeft($("#brasgauche_u4_2")) - pixelToRealLeft($("#brasgauche_u4_1"))),
+                        V1: Math.abs(pixelToRealLeft($("#bras_v2_2")) - pixelToRealLeft($("#bras_v2_1"))),
+                        V2: Math.abs(pixelToRealLeft($("#bras_v3_2")) - pixelToRealLeft($("#bras_v3_1"))),
+                        V3: Math.abs(pixelToRealLeft($("#bras_v4_2")) - pixelToRealLeft($("#bras_v4_1"))),
+                        Z1: 0,
+                        Z2: (Math.abs(pixelToRealTop($("#brasgauche_u3_1")) - pixelToRealTop($("#brasgauche_u1_1")))) / 2,
+                        Z3: (Math.abs(pixelToRealTop($("#brasgauche_u3_1")) - pixelToRealTop($("#brasgauche_u1_1")))),
+                    },
+                };
+        }
+
+        function generateUUID() {
+            var d = new Date().getTime();
+            var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                var r = (d + Math.random() * 16) % 16 | 0;
+                d = Math.floor(d / 16);
+                return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+            });
+            return uuid;
+        };
+
+        // Gestion du zoom et du dezoom, des déplacements de photos à gauche et à droite et du drag-drop image
+
+        var limy = 0;
+        var limx = 0;
+        var zooming = false;
+        var dezooming = false;
+        var zoomer;
+        var dezoomer;
+        var leftmove = false;
+        var rightmove = false;
+        var topmove = false;
+        var downmove = false;
+        var leftmover;
+        var rightmover;
+        var topmover;
+        var downmover;
+
+        $("#zoomx_button").mousedown(function () {
+            zooming = true;
+
+            zoomer = setInterval(function () {
+                var size = $("#photo_zone_" + selectedimage).css("background-size").split(" ");
+                var sizey = parseInt(size[1].split("px"));
+                sizey = sizey + 1;
+                var sizeyPhoto = sizey + "px";
+                if (zooming == true) {
+                    $("#photo_zone_" + selectedimage).css("background-size", "auto " + sizeyPhoto);
+                    $("#photo_zone_" + selectedimage).css("background-position-x", "-=0.3%");
+                    $("#photo_zone_" + selectedimage).css("background-position-y", "-=0.3%");
+                }
+                //}
+            }), 50;
+        });
+
+        $("#zoomx_button").mouseup(function () {
+            zooming = false;
+            window.clearInterval(zoomer);
+        });
+
+        $("#dezoomx_button").mousedown(function () {
+            dezooming = true;
+
+            dezoomer = setInterval(function () {
+                var size = $("#photo_zone_" + selectedimage).css("background-size").split(" ");
+                var sizey = parseInt(size[1].split("px"));
+                sizey = sizey - 1;
+                var sizeyPhoto = sizey + "px";
+                if (dezooming == true) {
+                    $("#photo_zone_" + selectedimage).css("background-size", "auto " + sizeyPhoto);
+                    $("#photo_zone_" + selectedimage).css("background-position-x", "+=0.3%");
+                    $("#photo_zone_" + selectedimage).css("background-position-y", "+=0.3%");
+                }
+                //}
+            }), 50;
+        });
+
+        $("#dezoomx_button").mouseup(function () {
+            dezooming = false;
+            window.clearInterval(dezoomer);
+        });
+
+        $("#left_movebutton").mousedown(function () {
+            leftmove = true;
+
+            leftmover = setInterval(function () {
+                //if (limx > -50 && limx < 50)
+                //{
+                if(leftmove == true)
+                {
+                    $("#photo_zone_" + selectedimage).css("background-position-x", "-=2px");
+                    limx = limx - 20;
+                }
+                //}
+            }, 50);
+        });
+
+        $("#left_movebutton").mouseup(function () {
+            leftmove = false;
+            window.clearInterval(leftmover);
+        });
+
+        $("#right_movebutton").mousedown(function () {
+            rightmove = true;
+
+            rightmover = setInterval(function () {
+                //if (limx > -50 && limx < 50) {
+                if (rightmove == true) {
+                    $("#photo_zone_" + selectedimage).css("background-position-x", "+=2px");
+                    limx = limx + 20;
+                }
+                //}
+            }, 50);
+        });
+
+        $("#right_movebutton").mouseup(function () {
+            rightmove = false;
+            window.clearInterval(rightmover);
+        });
+
+        $("#top_movebutton").mousedown(function () {
+            topmove = true;
+
+            topmover = setInterval(function () {
+                //if (limy > -50 && limy < 50) {
+                if (topmove == true) {
+                    $("#photo_zone_" + selectedimage).css("background-position-y", "-=2px");
+                    limy = limy - 20;
+                }
+                //}
+            }, 50);
+        });
+
+        $("#top_movebutton").mouseup(function () {
+            topmove = false;
+            window.clearInterval(topmover);
+        });
+
+        $("#down_movebutton").mousedown(function () {
+            downmove = true;
+
+            downmover = setInterval(function () {
+                //if (limy > -50 && limy < 50) {
+                if (downmove == true) {
+                    $("#photo_zone_" + selectedimage).css("background-position-y", "+=2px");
+                    limy = limy + 20;
+                }
+                //}
+            }, 50);
+        });
+
+        $("#down_movebutton").mouseup(function () {
+            downmove = false;
+            window.clearInterval(downmove);
+        });
+        
+        $("#rotate_button").click(function () {
+            var pict = $("#photo_zone_2").css("background-image").split('/');
+            pict = pict[pict.length - 1].substr(0, pict[pict.length - 1].length - 2);
+            $.ajax({
+                type: "GET",
+                url: "/Home/FlipImage?filename=" + pict,
+                success: function (data) {
+                    if (data == "OK") {
+                        $("#photo_zone_2").fadeOut(500, function () {
+                            $("#photo_zone_2").css("background-image", "none");
+                            $("#photo_zone_2").css("background-image", "url(/Images/pictures_profiles/" + pict);
+                            $("#photo_zone_2").fadeIn(500);  
+                        });
+                    }
+                    else {
+                        alert("Sorry ! An error encountered during the image flip, try again, may be with another image.")
+                    }
+                },
+                error: function () {
+                    alert("Sorry ! An error encountered during the image flip, try again, may be with another image.")
+                }
+            });
+        });
+
+        /*********************************  AFFICHAGE DES RESULTATS   **********************************/
+        /****************************************************************************************/
+
+
+
+        /*********************************   MODELISATION 3D   **********************************/
+        /****************************************************************************************/
+
+        function generate3DMesh()
+        {
+            var canvas = document.getElementById("generation_3D_canvas");
+
+            // Code de génération du modèle 3D
+
+            // Création des objets de la scène
+            var scene = new THREE.Scene();
+            var camera = new THREE.PerspectiveCamera(75, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
+            var renderer = new THREE.WebGLRenderer();
+
+
+            var geometry = new THREE.BoxGeometry(1, 1, 1);
+            // Autre geometry
+            //var geometry = new THREE.Geometry();
+
+            /*geometry.vertices.push(
+                new THREE.Vector3(-10, 10, 0),
+                new THREE.Vector3(-10, -10, 0),
+                new THREE.Vector3(10, -10, 0)
+            );*/
+
+            //geometry.faces.push(new THREE.Face3(0, 1, 2));
+
+            geometry.computeBoundingSphere();
+
+
+            var material = new THREE.MeshBasicMaterial({ color: 0x212696 });
+            var cube = new THREE.Mesh(geometry, material);
+
+            // Propriétés et ajustements
+            renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+            canvas.appendChild(renderer.domElement);
+            scene.add(cube);
+            camera.position.z = 5;
+
+            // Appel de la fonction de rendu
+            var render = function () {
+                requestAnimationFrame(render);
+
+                cube.rotation.x += 0.1;
+                cube.rotation.y += 0.1;
+
+                renderer.render(scene, camera);
+            };
+
+            render();
+        }
+
+            // EN BAS POSSIBLE UNIQUEMENT SI UNE VARIABLE A CREER INDIQUE QUE LA GENERATION DU MODEL 3D A DEJA EU LIEU
+
+        // Sélection du membre pour affichage des caractéristiques de celui-ci
+
+
+        // Animation du modèle (marche lente)
+
+
+        // Autres détails graphiques (couleurs, shaders...)
+
+    });
+
+</script>
+<div id="page_generation">
+    <div id="infos_1">
+        <img id="previous_icon" src="~/Images/previous.png" />
+        <img id="next_icon" src="~/Images/next.png" />
+        <div id="photo_zone_1">
+
+        </div>
+        <div id="photo_zone_2">
+
+        </div>
+        <div id="generate_zone">
+            <div id="generatecontrols">
+                <input id="top_movebutton" class="move_button" type="button" />
+                <br/>
+                <input id="left_movebutton" type="button" />
+                <input id="dezoomx_button" class="zoom_button" type="button" />
+                <input id="rotate_button" class="rotate_button" type="button" />
+                <input id="zoomx_button" class="zoom_button" type="button" />
+                <input id="right_movebutton" type="button" />
+                <br />
+                <input id="down_movebutton" class="move_button" type="button" />
+            </div>
+            <div>
+                <div>
+                    <input id="load_photos_button" class="gobutton" type="button" value="Load picture" />
+                    <input id="generate_button" class="gobutton" type="button" value="Generate" />
+                </div>
+                <br/><br />
+                <div style="color:white;font-weight:bold;font-size : 12px;display:block;margin:auto;text-align:center;">
+                    <span>Height (cm) : <input id="height_human" type="number" name="height_human" width="10" height="20" /></span>
+                    <span>Weight (kg) : <input id="weight_human" type="number" name="weight_human" width="10" height="20" /></span>
+                </div>
+                <input id="file_choose" type="file" name="file_choose" style="display: none;" accept="image/*">
+                </div>
+        </div>
+    </div>
+    <div id="generation_3D_canvas">
+
+    </div>
+    <div id="infos_2">
+        <br />
+        <div class="massresult" id="titleresult"></div>
+        <br/>
+        <div class="massresult" id="headresult"></div>
+        <div class="massresult" id="neckresult"></div>
+        <div class="massresult" id="thoraxresult"></div>
+        <div class="massresult" id="abdoresult"></div>
+        <div class="massresult" id="fesseresult"></div>
+        <div class="massresult" id="cuissegaucheresult"></div>
+        <div class="massresult" id="cuissedroiteresult"></div>
+        <div class="massresult" id="jambegaucheresult"></div>
+        <div class="massresult" id="jambedroiteresult"></div>
+        <div class="massresult" id="chevillegaucheresult"></div>
+        <div class="massresult" id="chevilledroiteresult"></div>
+        <div class="massresult" id="piedgaucheresult"></div>
+        <div class="massresult" id="pieddroiteresult"></div>
+        <div class="massresult" id="brasgaucheresult"></div>
+        <div class="massresult" id="brasdroiteresult"></div>
+        <div class="massresult" id="avantsbrasgaucheresult"></div>
+        <div class="massresult" id="avantbrasdroiteresult"></div>
+        <div class="massresult" id="maingaucheresult"></div>
+        <div class="massresult" id="maindroiteresult"></div>
+        <div class="massresult" id="totalmassresult"></div>
+        <div class="massresult" id="comparison"></div>
+    </div>
+</div>

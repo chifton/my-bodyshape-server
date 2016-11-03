@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{687359AF-65F7-4FC7-AC83-B2F854AD331D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BodyShapeData</RootNamespace>
+    <AssemblyName>BodyShapeData</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net40\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net40\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BodyShapeContext.cs" />
+    <Compile Include="Entities\AnkleMassR.cs" />
+    <Compile Include="Entities\AnkleR.cs" />
+    <Compile Include="Entities\ArmMassR.cs" />
+    <Compile Include="Entities\ArmR.cs" />
+    <Compile Include="Entities\FootMassL.cs" />
+    <Compile Include="Entities\FootR.cs" />
+    <Compile Include="Entities\ForearmL.cs" />
+    <Compile Include="Entities\ForearmMassL.cs" />
+    <Compile Include="Entities\HandMassR.cs" />
+    <Compile Include="Entities\HandR.cs" />
+    <Compile Include="Entities\Laterality.cs" />
+    <Compile Include="Entities\BottomMass.cs" />
+    <Compile Include="Entities\ArmMassL.cs" />
+    <Compile Include="Entities\AnkleMassL.cs" />
+    <Compile Include="Entities\AbdomenMass.cs" />
+    <Compile Include="Entities\Abdomen.cs" />
+    <Compile Include="Entities\AnkleL.cs" />
+    <Compile Include="Entities\ArmL.cs" />
+    <Compile Include="Entities\BodyResult.cs" />
+    <Compile Include="Entities\BodySchema.cs" />
+    <Compile Include="Entities\Bottom.cs" />
+    <Compile Include="Entities\FootMassR.cs" />
+    <Compile Include="Entities\FootL.cs" />
+    <Compile Include="Entities\LegL.cs" />
+    <Compile Include="Entities\LegMassR.cs" />
+    <Compile Include="Entities\ThighMassL.cs" />
+    <Compile Include="Entities\ThighR.cs" />
+    <Compile Include="Entities\Thorax.cs" />
+    <Compile Include="Entities\ThoraxMass.cs" />
+    <Compile Include="Entities\ThighMassR.cs" />
+    <Compile Include="Entities\NeckMass.cs" />
+    <Compile Include="Entities\LegMassL.cs" />
+    <Compile Include="Entities\HeadMass.cs" />
+    <Compile Include="Entities\HandMassL.cs" />
+    <Compile Include="Entities\ForearmMassR.cs" />
+    <Compile Include="Entities\ForearmR.cs" />
+    <Compile Include="Entities\Generation.cs" />
+    <Compile Include="Entities\MemberResult.cs" />
+    <Compile Include="Entities\ThighL.cs" />
+    <Compile Include="Entities\Neck.cs" />
+    <Compile Include="Entities\LegR.cs" />
+    <Compile Include="Entities\HandL.cs" />
+    <Compile Include="Entities\Head.cs" />
+    <Compile Include="Entities\Member.cs" />
+    <Compile Include="Migrations\201610301353502_InitialCreate.cs" />
+    <Compile Include="Migrations\201610301353502_InitialCreate.Designer.cs">
+      <DependentUpon>201610301353502_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201610301353502_InitialCreate.resx">
+      <DependentUpon>201610301353502_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

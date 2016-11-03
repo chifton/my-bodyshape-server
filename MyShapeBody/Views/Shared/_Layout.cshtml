@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyBodyShape - Generate your 3D shape with your pictures</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+    <header>
+        <a href="@Href("~/Home/Index")">
+            <div id="titre_centre"><img src="~/Images/myshapebody.png" /></div>
+        </a>
+        <div class="menu_droit">
+            @Html.Partial("_LoginPartial")
+        </div>
+            <br />
+</header>
+        @RenderBody()
+    <br/><br/><br /><br /><br /><br />
+        <footer style="display:block;">
+            &copy; @DateTime.Now.Year - MyBodyShape 1.0 - Developped by François & Chérif
+            <br/>Soon available on Android and iOS
+        </footer>
+
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

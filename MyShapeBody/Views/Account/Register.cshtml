@@ -1,0 +1,48 @@
+﻿@model MyShapeBody.Models.RegisterViewModel
+@{
+    ViewBag.Title = "Register";
+}
+
+<h2 style="text-align: center; color : white;margin : auto;font-family : 'Buxton Sketch', Verdana; display : block;">@ViewBag.Title</h2>
+
+@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <hr />
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+    <div style="margin:auto; width : 100%;text-align : center; display : block; margin-bottom : 20px;" class="colorrowform form-group" >
+        <div style="margin: auto; width : 50%;">
+            @Html.LabelFor(m => m.Email, new { @class = "colortextform col-md-2 control-label" })
+            <div>
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+            </div>
+        </div>
+        </div>
+    <div style="margin:auto; width : 100%;text-align : center; display : block; margin-bottom : 20px;" class="colorrowform form-group">
+        <div style="margin: auto;width : 50%;">
+            @Html.LabelFor(m => m.Password, new { @class = "colortextform col-md-2 control-label" })
+            <div>
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+    <div style="margin:auto; width : 100%;text-align : center; display : block; margin-bottom : 20px;" class="colorrowform form-group">
+        <div style="margin: auto;width : 50%;">
+            @Html.LabelFor(m => m.ConfirmPassword, new { @class = "colortextform col-md-2 control-label" })
+            <div>
+                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+            </div>
+        </div>
+        </div>
+    <div style="margin:auto; width : 100%;" class="colorrowform form-group">
+        <div style="margin: auto;">
+            <div class="col-md-offset-2" style="margin: auto;text-align:center; display:block;">
+                <input type="submit" class="btn btn-default" value="Inscription" />
+            </div>
+        </div>
+        </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
