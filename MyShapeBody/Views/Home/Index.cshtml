@@ -1000,42 +1000,40 @@
                 $("#loadingleft").css("top", topload + "px");
                 $("#loadingright").css("top", topload + "px");
 
-                setTimeout(function () {
+                // Taille entre 1m et 2m30
+                if ($("#height_human").val() >= 100 && $("#height_human").val() <= 230) {
+                    nbConversions = 0;
+                    GenerateDataCoordinates();
+                    console.log(nbConversions);
 
-                    $("#loadingleft").remove();
-                    $("#loadingright").remove();
-
-                    // Taille entre 1m et 2m30
-                    if ($("#height_human").val() >= 100 && $("#height_human").val() <= 230) {
-                        nbConversions = 0;
-                        GenerateDataCoordinates();
-                        console.log(nbConversions);
-
-                        $.ajax({
-                            type: "POST",
-                            url: "/Home/Calculate",
-                            data: JSON.stringify(myJsonData),
-                            contentType: "application/json",
-                            datatype: "json",
-                            success: function (data) {
-                                if (data == "Error") {
-                                    alert("The generation failed due to a too much big error. Try again by correctly moving the points on the pictures.")
-                                }
-                                else {
-                                    var myfinaljson = $.parseJSON(data);
-                                    displayResults(myfinaljson); // Generation masses
-                                    generate3DMesh(); // Generation 3D
-                                }
-                            },
-                            error: function () {
-                                alert("Sorry ! An error encountered during the generation, try again.")
+                    $.ajax({
+                        type: "POST",
+                        url: "/Home/Calculate",
+                        data: JSON.stringify(myJsonData),
+                        contentType: "application/json",
+                        datatype: "json",
+                        success: function (data) {
+                            $("#loadingleft").remove();
+                            $("#loadingright").remove();
+                            if (data == "Error") {
+                                alert("The generation failed due to a too much big error. Try again by correctly moving the points on the pictures.")
                             }
-                        });
-                    }
-                    else {
-                        alert("Your height should be between 1m and 2m30. Retry.");
-                    }
-                }, 5000);
+                            else {
+                                var myfinaljson = $.parseJSON(data);
+                                displayResults(myfinaljson); // Generation masses
+                                generate3DMesh(); // Generation 3D
+                            }
+                        },
+                        error: function () {
+                            $("#loadingleft").remove();
+                            $("#loadingright").remove();
+                            alert("Sorry ! An error encountered during the generation, try again.")
+                        }
+                    });
+                }
+                else {
+                    alert("Your height should be between 1m and 2m30. Retry.");
+                }
             }
             else
             {
