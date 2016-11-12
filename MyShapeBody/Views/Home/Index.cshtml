@@ -7,6 +7,8 @@
 <script src="~/Scripts/jquery.simulate.js"></script>
 <script src="~/Scripts/raphael.min.js"></script>
 <script src="~/Scripts/jquery-glowing.js"></script>
+<script src="~/Scripts/jquery.browser.js"></script>
+<script src="~/Scripts/jquery.alerts.js"></script>
 <link href="~/Content/jquery-ui.css" rel="stylesheet" />
 <script src="~/Scripts/three.min.js"></script>
 <script type="text/javascript">
@@ -36,7 +38,11 @@
                 }
                 else
                 {
-                    alert("Your photos have already been loaded. Reload the page to retry.")
+                    var response = jConfirm("You have already uploaded your two photos ! Do you want to reload for another shape generation ?", 'Reload !', function (r) {
+                        if (r) {
+                            location.reload();
+                        }
+                    });
                 }
         });
 
@@ -51,8 +57,7 @@
 
         // Gestion du choix de la photo
         $('#file_choose').on('change', function (e) {
-            if(!toutesphotosload)
-            {
+            if (!toutesphotosload) {
                 var files = e.target.files;
                 if (firstPhoto) {
                     // On ne sélectionne qu'un seul fichier à la fois
@@ -72,11 +77,11 @@
                                     $("#photo_zone_1").css("background-image", "url(/Images/pictures_profiles/" + result);
                                     $("#photo_zone_1").css("background-repeat", "no-repeat");
                                     $("#photo_zone_1").getBgImage(function () {
-                                    // var percent1 = Math.round($(this).width() * 100 / $("#photo_zone_1").width());
-                                    // Affichage de l'image dans la zone Photo
-                                    $("#photo_zone_1").css("background-size", "auto " + $(this).height() + "px");
-                                    $("#photo_zone_1").css("background-position-x", "0px");
-                                    $("#photo_zone_1").css("background-position-y", "0px");
+                                        // var percent1 = Math.round($(this).width() * 100 / $("#photo_zone_1").width());
+                                        // Affichage de l'image dans la zone Photo
+                                        $("#photo_zone_1").css("background-size", "auto " + $(this).height() + "px");
+                                        $("#photo_zone_1").css("background-position-x", "0px");
+                                        $("#photo_zone_1").css("background-position-y", "0px");
                                     });
 
                                     $("#previous_icon").css("display", "none");
@@ -98,12 +103,10 @@
                                         $("#generation_3D_canvas").fadeOut(1000, function () {
                                             $("#generation_3D_canvas").fadeIn(10);
                                             $("#generation_3D_canvas").css("background-image", "url(/Images/examples/" + currentFront);
-                                            if (currentFront == examplefrontfemale)
-                                            {
+                                            if (currentFront == examplefrontfemale) {
                                                 currentFront = examplefrontmale;
                                             }
-                                            else if (currentFront == examplefrontmale)
-                                            {
+                                            else if (currentFront == examplefrontmale) {
                                                 currentFront = examplefrontfemale;
                                             }
                                         });
@@ -182,7 +185,7 @@
                                     $("#generation_3D_canvas").css("background-repeat", "no-repeat");
                                     $("#generation_3D_canvas").css("background-size", "contain");
                                     $("#generation_3D_canvas").css("background-position", "center center");
-                                    
+
                                     clearInterval(intervalFront);
                                     $("#generation_3D_canvas").css("background-image", "url(/Images/examples/" + examplesidemale);
                                     currentSide = examplesidefemale;
@@ -217,9 +220,12 @@
                     }
                 }
             }
-            else
-            {
-                alert("You have already uploaded your two photos !");
+            else {
+                var response = jConfirm("You have already uploaded your two photos ! Do you want to reload for another shape generation ?", 'Reload !', function (r) {
+                    if (r) {
+                        location.reload();
+                    }
+                });
             }
         });
 
@@ -1278,12 +1284,12 @@
                         U1: Math.abs(pixelToRealLeft($("#brasgauche_u2_2")) - pixelToRealLeft($("#brasgauche_u2_1"))),
                         U2: Math.abs(pixelToRealLeft($("#brasgauche_u3_2")) - pixelToRealLeft($("#brasgauche_u3_1"))),
                         U3: Math.abs(pixelToRealLeft($("#brasgauche_u4_2")) - pixelToRealLeft($("#brasgauche_u4_1"))),
-                        V1: Math.abs(pixelToRealLeft($("#bras_v2_2")) - pixelToRealLeft($("#bras_v2_1"))),
-                        V2: Math.abs(pixelToRealLeft($("#bras_v3_2")) - pixelToRealLeft($("#bras_v3_1"))),
-                        V3: Math.abs(pixelToRealLeft($("#bras_v4_2")) - pixelToRealLeft($("#bras_v4_1"))),
+                        V1: Math.abs(pixelToRealLeft($("#bras_v4_2")) - pixelToRealLeft($("#bras_v4_1"))),
+                        V2: Math.abs(pixelToRealLeft($("#bras_v2_2")) - pixelToRealLeft($("#bras_v2_1"))),
+                        V3: Math.abs(pixelToRealLeft($("#bras_v3_2")) - pixelToRealLeft($("#bras_v3_1"))),
                         Z1: 0,
-                        Z2: (Math.abs(pixelToRealTop($("#brasgauche_u3_1")) - pixelToRealTop($("#brasgauche_u1_1")))) / 2,
-                        Z3: (Math.abs(pixelToRealTop($("#brasgauche_u3_1")) - pixelToRealTop($("#brasgauche_u1_1")))),
+                        Z2: (Math.abs(pixelToRealTop($("#brasgauche_u2_2")) - pixelToRealTop($("#brasgauche_u4_2")))) / 2,
+                        Z3: (Math.abs(pixelToRealTop($("#brasgauche_u2_2")) - pixelToRealTop($("#brasgauche_u4_2")))),
                     },
                 };
         }
@@ -1468,6 +1474,9 @@
         function generate3DMesh()
         {
             var canvas = document.getElementById("generation_3D_canvas");
+            while (canvas.hasChildNodes()) {
+                canvas.removeChild(canvas.lastChild);
+            }
 
             // Code de génération du modèle 3D
 

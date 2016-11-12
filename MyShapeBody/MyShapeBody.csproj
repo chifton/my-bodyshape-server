@@ -208,6 +208,8 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Configuration\IBodyShapeConfiguration.cs" />
+    <Compile Include="Configuration\Impl\BodyShapeConfigurationSection.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -252,6 +254,9 @@
     <Content Include="Images\previous.png" />
     <Content Include="Images\white_point.png" />
     <Content Include="Scripts\jquery-glowing.js" />
+    <Content Include="Scripts\jquery-migrate-3.0.0.js" />
+    <Content Include="Scripts\jquery.alerts.js" />
+    <Content Include="Scripts\jquery.browser.js" />
     <Content Include="Scripts\jquery.html-svg-connect.js" />
     <Content Include="Scripts\bezier-spline.js" />
     <Content Include="Scripts\bootstrap.js" />

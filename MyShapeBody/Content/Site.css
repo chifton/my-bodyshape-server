@@ -467,3 +467,89 @@ a ::after
     border : 3px solid white;
     height : 850px;
 }
+
+#popup_container {
+    font-family: 'MV Boli', Mistral, Helvetica, Sans-Serif;
+	font-size: 25px;
+	min-width: 400px;
+	max-width: 600px;
+	border: solid 5px #00008b;
+	color: white;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 20px;
+    position : relative;
+    display : block;
+    text-align: center;
+    background-color : white;
+    cursor: pointer, default;
+}
+
+#popup_title {
+    font-family: 'MV Boli', Mistral, Helvetica, Sans-Serif;
+	font-size: 30px;
+	font-weight: bold;
+	text-align: center;
+	line-height: 1.75em;
+    border-radius: 20px;
+	color: green;
+	border: solid 1px #00008b;
+	border-bottom: solid 1px white;
+	cursor: default;
+	padding: 0em;
+    padding-top : 20px;
+	margin: 0em;
+}
+
+#popup_content {
+    border-radius: 20px;
+    font-family: 'MV Boli', Mistral, Helvetica, Sans-Serif;
+	padding: 1em 1.75em;
+	margin: 0em;
+}
+
+#popup_content.alert {
+    font-family: 'MV Boli', Mistral, Helvetica, Sans-Serif;
+    text-align : center;
+    color : black;
+}
+
+#popup_content.confirm {
+    font-family: 'MV Boli', Mistral, Helvetica, Sans-Serif;
+    text-align : center;
+    color : black;
+}
+
+#popup_content.prompt {
+    font-family: 'MV Boli', Mistral, Helvetica, Sans-Serif;
+    text-align : center;
+    color : black;
+}
+
+#popup_message {
+    font-family: 'MV Boli', Mistral, Helvetica, Sans-Serif;
+	margin : auto;
+}
+
+#popup_panel {
+    font-family: 'MV Boli', Mistral, Helvetica, Sans-Serif;
+	text-align: center;
+	margin : auto;
+}
+
+#popup_prompt {
+    font-family: 'MV Boli', Mistral, Helvetica, Sans-Serif;
+	margin : auto;
+    color : black;
+    text-align : center;
+}
+
+#popup_ok {
+    margin-top : 20px;
+    color : green;
+}
+
+#popup_cancel{
+    margin-top : 20px;
+    color : red;
+}

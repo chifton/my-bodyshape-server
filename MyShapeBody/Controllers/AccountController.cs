@@ -169,7 +169,7 @@ namespace MyShapeBody.Controllers
                     var html = @"<html>
                                     <body style='font-weight:bold;color:black;'>
                                      <h2>Dear " + model.Email.Split('@')[0] + @",</h2>
-                                     <p>Welcome on My BodyShape !</p>
+                                     <p>Welcome to My BodyShape !</p>
                                      <p>Now you are a bodyshaper ! You can generate your model by just uploading 2 pictures (front and side) and know your members' weights !</p>
                                      <p>Thank you for accepting our test campain.</p>
                                      <p>We will be very pleased to receive your comments and suggestions : just click on 'Suggestions' menu and enjoy !</p>

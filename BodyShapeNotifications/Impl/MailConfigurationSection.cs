@@ -17,114 +17,154 @@ namespace BodyShapeNotifications.Impl
         /// <summary>
         /// The SMTP server url.
         /// </summary>
-        [ConfigurationProperty("smtpserverurl", IsRequired = true)]
+        [ConfigurationProperty(PropertyNames.SmtpServerUrl, IsRequired = true)]
         public string SmtpServerUrl
         {
             get
             {
-                return this["smtpserverurl"].ToString();
+                return this[PropertyNames.SmtpServerUrl].ToString();
             }
             set
             {
-                this["smtpserverurl"] = value;
+                this[PropertyNames.SmtpServerUrl] = value;
             }
         }
 
         /// <summary>
         /// The SMTP server port.
         /// </summary>
-        [ConfigurationProperty("smtpserverport", IsRequired = true)]
+        [ConfigurationProperty(PropertyNames.SmtpServerPort, IsRequired = true)]
         public int SmtpServerPort
         {
             get
             {
-                return Convert.ToInt32(this["smtpserverport"]);
+                return Convert.ToInt32(this[PropertyNames.SmtpServerPort]);
             }
             set
             {
-                this["smtpserverport"] = value;
+                this[PropertyNames.SmtpServerPort] = value;
             }
         }
 
         /// <summary>
         /// Th SMTP username.
         /// </summary>
-        [ConfigurationProperty("smtpserverusername", IsRequired = true)]
+        [ConfigurationProperty(PropertyNames.SmtpServerUsername, IsRequired = true)]
         public string SmtpServerUsername
         {
             get
             {
-                return this["smtpserverusername"].ToString();
+                return this[PropertyNames.SmtpServerUsername].ToString();
             }
             set
             {
-                this["smtpserverusername"] = value;
+                this[PropertyNames.SmtpServerUsername] = value;
             }
         }
 
         /// <summary>
         /// Th SMTP password.
         /// </summary>
-        [ConfigurationProperty("smtpserverpassword", IsRequired = true)]
+        [ConfigurationProperty(PropertyNames.SmtpServerpassword, IsRequired = true)]
         public string SmtpServerPassword
         {
             get
             {
-                return this["smtpserverpassword"].ToString();
+                return this[PropertyNames.SmtpServerpassword].ToString();
             }
             set
             {
-                this["smtpserverpassword"] = value;
+                this[PropertyNames.SmtpServerpassword] = value;
             }
         }
 
         /// <summary>
         /// The sender email.
         /// </summary>
-        [ConfigurationProperty("senderemail", IsRequired = true)]
+        [ConfigurationProperty(PropertyNames.SenderEmail, IsRequired = true)]
         public string SenderEmail
         {
             get
             {
-                return this["senderemail"].ToString();
+                return this[PropertyNames.SenderEmail].ToString();
             }
             set
             {
-                this["senderemail"] = value;
+                this[PropertyNames.SenderEmail] = value;
             }
         }
 
         /// <summary>
         /// The sender name.
         /// </summary>
-        [ConfigurationProperty("sendername", IsRequired = true)]
+        [ConfigurationProperty(PropertyNames.SenderName, IsRequired = true)]
         public string SenderName
         {
             get
             {
-                return this["sendername"].ToString();
+                return this[PropertyNames.SenderName].ToString();
             }
             set
             {
-                this["sendername"] = value;
+                this[PropertyNames.SenderName] = value;
             }
         }
 
         /// <summary>
         /// The website url.
         /// </summary>
-        [ConfigurationProperty("websiteurl", IsRequired = true)]
+        [ConfigurationProperty(PropertyNames.WebsiteUrl, IsRequired = true)]
         public string WebSiteUrl
         {
             get
             {
-                return this["websiteurl"].ToString();
+                return this[PropertyNames.WebsiteUrl].ToString();
             }
             set
             {
-                this["websiteurl"] = value;
+                this[PropertyNames.WebsiteUrl] = value;
             }
+        }
+
+        /// <summary>
+        /// The property names.
+        /// </summary>
+        public static class PropertyNames
+        {
+            /// <summary>
+            /// The smtp server url.
+            /// </summary>
+            public const string SmtpServerUrl = "smtpserverurl";
+
+            /// <summary>
+            /// The smtp server port.
+            /// </summary>
+            public const string SmtpServerPort = "smtpserverport";
+
+            /// <summary>
+            /// The smtp username.
+            /// </summary>
+            public const string SmtpServerUsername = "smtpserverusername";
+
+            /// <summary>
+            /// The smtp password.
+            /// </summary>
+            public const string SmtpServerpassword = "smtpserverpassword";
+
+            /// <summary>
+            /// The sender email.
+            /// </summary>
+            public const string SenderEmail = "senderemail";
+
+            /// <summary>
+            /// The sender name.
+            /// </summary>
+            public const string SenderName = "sendername";
+
+            /// <summary>
+            /// The website url.
+            /// </summary>
+            public const string WebsiteUrl = "websiteurl";    
         }
     }
 }
-

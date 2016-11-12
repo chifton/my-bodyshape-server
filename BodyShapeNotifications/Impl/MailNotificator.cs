@@ -95,7 +95,7 @@ namespace BodyShapeNotifications.Impl
             }
             catch (Exception ex)
             {
-                throw new InvalidOperationException("An error occured during mail getting configuration.\t\n" + ex);
+                throw new InvalidOperationException("An error occured during getting mail configuration.\t\n" + ex);
             }
         }
     }

@@ -41,28 +41,28 @@ namespace MyShapeBody.Engine
         /// <summary>
         /// Calcul des masses des membres de tout le corps humain
         /// </summary>
-        public BodyTicket GenerateBodyMasses()
+        public BodyTicket GenerateBodyMasses(decimal density)
         {
             // Masses generation
-            bodyOutput.Abdomen = new AbdomenMass(GenerateShapeMass(bodyInput.Abdomen));
-            bodyOutput.AnkleLeft = new AnkleMass(GenerateShapeMass(bodyInput.AnkleLeft));
-            bodyOutput.AnkleRight = new AnkleMass(GenerateShapeMass(bodyInput.AnkleRight));
-            bodyOutput.ArmLeft = new ArmMass(GenerateShapeMass(bodyInput.ArmLeft));
-            bodyOutput.ArmRight = new ArmMass(GenerateShapeMass(bodyInput.ArmRight));
-            bodyOutput.Bottom = new BottomMass(GenerateShapeMass(bodyInput.Bottom));
-            bodyOutput.FootLeft = new FootMass(GenerateShapeMass(bodyInput.FootLeft));
-            bodyOutput.FootRight = new FootMass(GenerateShapeMass(bodyInput.FootRight));
-            bodyOutput.ForeArmLeft = new ForearmMass(GenerateShapeMass(bodyInput.ForeArmLeft));
-            bodyOutput.ForeArmRight = new ForearmMass(GenerateShapeMass(bodyInput.ForeArmRight));
-            bodyOutput.HandLeft = new HandMass(GenerateShapeMass(bodyInput.HandLeft));
-            bodyOutput.HandRight = new HandMass(GenerateShapeMass(bodyInput.HandRight));
-            bodyOutput.Head = new HeadMass(GenerateShapeMass(bodyInput.Head));
-            bodyOutput.LegLeft = new LegMass(GenerateShapeMass(bodyInput.LegLeft));
-            bodyOutput.LegRight = new LegMass(GenerateShapeMass(bodyInput.LegRight));
-            bodyOutput.Neck = new NeckMass(GenerateShapeMass(bodyInput.Neck));
-            bodyOutput.ThighLeft = new ThighMass(GenerateShapeMass(bodyInput.ThighLeft));
-            bodyOutput.ThighRight = new ThighMass(GenerateShapeMass(bodyInput.ThighRight));
-            bodyOutput.Thorax = new ThoraxMass(GenerateShapeMass(bodyInput.Thorax));
+            bodyOutput.Abdomen = new AbdomenMass(GenerateShapeMass(bodyInput.Abdomen, density));
+            bodyOutput.AnkleLeft = new AnkleMass(GenerateShapeMass(bodyInput.AnkleLeft, density));
+            bodyOutput.AnkleRight = new AnkleMass(GenerateShapeMass(bodyInput.AnkleRight, density));
+            bodyOutput.ArmLeft = new ArmMass(GenerateShapeMass(bodyInput.ArmLeft, density));
+            bodyOutput.ArmRight = new ArmMass(GenerateShapeMass(bodyInput.ArmRight, density));
+            bodyOutput.Bottom = new BottomMass(GenerateShapeMass(bodyInput.Bottom, density));
+            bodyOutput.FootLeft = new FootMass(GenerateShapeMass(bodyInput.FootLeft, density));
+            bodyOutput.FootRight = new FootMass(GenerateShapeMass(bodyInput.FootRight, density));
+            bodyOutput.ForeArmLeft = new ForearmMass(GenerateShapeMass(bodyInput.ForeArmLeft, density));
+            bodyOutput.ForeArmRight = new ForearmMass(GenerateShapeMass(bodyInput.ForeArmRight, density));
+            bodyOutput.HandLeft = new HandMass(GenerateShapeMass(bodyInput.HandLeft, density));
+            bodyOutput.HandRight = new HandMass(GenerateShapeMass(bodyInput.HandRight, density));
+            bodyOutput.Head = new HeadMass(GenerateShapeMass(bodyInput.Head, density));
+            bodyOutput.LegLeft = new LegMass(GenerateShapeMass(bodyInput.LegLeft, density));
+            bodyOutput.LegRight = new LegMass(GenerateShapeMass(bodyInput.LegRight, density));
+            bodyOutput.Neck = new NeckMass(GenerateShapeMass(bodyInput.Neck, density));
+            bodyOutput.ThighLeft = new ThighMass(GenerateShapeMass(bodyInput.ThighLeft, density));
+            bodyOutput.ThighRight = new ThighMass(GenerateShapeMass(bodyInput.ThighRight, density));
+            bodyOutput.Thorax = new ThoraxMass(GenerateShapeMass(bodyInput.Thorax, density));
 
             return new BodyTicket(bodyOutput, ticket);
         }
@@ -70,11 +70,11 @@ namespace MyShapeBody.Engine
         /// <summary>
         /// Calcul de la masse et du centre de masse d'un membre de corps humain
         /// </summary>
-        private ShapeResult GenerateShapeMass(IShapeBase member)
+        private ShapeResult GenerateShapeMass(IShapeBase member, decimal configDensity)
         {
             // Determinants
 
-            var density = 0.000001;
+            var density = Convert.ToDouble(configDensity);
 
             var actual = member;
 

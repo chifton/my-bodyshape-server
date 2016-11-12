@@ -17,7 +17,7 @@ namespace MyShapeBody.Controllers
     using System.Web;
     using System.Web.Mvc;
     using System.Runtime.Caching;
-    using System.IO;
+    using System.Configuration;
 
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.Owin;
@@ -25,13 +25,21 @@ namespace MyShapeBody.Controllers
     using Newtonsoft.Json;
 
     using ImageProcessor;
+    using ImageProcessor.Imaging;
 
     using MyShapeBody.Engine;
     using MyShapeBody.AppModels;
     using MyShapeBody.Services;
+    using MyShapeBody.Configuration;
+    using MyShapeBody.Configuration.Impl;
 
     public class HomeController : Controller
     {
+        /// <summary>
+        /// The bodyshape configuration
+        /// </summary>
+        private IBodyShapeConfiguration configuration;
+
         /// <summary>
         /// The body recorder
         /// </summary>
@@ -42,7 +50,8 @@ namespace MyShapeBody.Controllers
         /// </summary>
         public HomeController()
         {
-            bodyRecorder = new BodyRecorder();
+            this.bodyRecorder = new BodyRecorder();
+            this.configuration = this.GetBodyShapeConfiguration();
         }
 
         /// <summary>
@@ -95,10 +104,10 @@ namespace MyShapeBody.Controllers
                     if (fileContent != null && fileContent.ContentLength > 0)
                     {
                         var fileName = string.Empty;
-                        
-                        var stream = fileContent.InputStream;                        
 
-                        if(order == "1")
+                        var stream = fileContent.InputStream;
+
+                        if (order == "1")
                         {
                             var customDate = DateTime.Now.Year + "-" + DateTime.Now.Month + "-" + DateTime.Now.Day;
                             var root = Guid.NewGuid().ToString() + "-" + customDate;
@@ -114,14 +123,26 @@ namespace MyShapeBody.Controllers
                         fileNameJson = fileName;
 
                         var path = Path.Combine(Server.MapPath("~/Images/pictures_profiles"), fileName);
-                        using (var fileStream = System.IO.File.Create(path))
+
+                        using (MemoryStream outStream = new MemoryStream())
                         {
-                            stream.CopyTo(fileStream);
+                            using (ImageFactory imageFactory = new ImageFactory(preserveExifData: true))
+                            {
+                                imageFactory.Load(stream)
+                                            .Resize(new ResizeLayer(new Size(0, 600), ResizeMode.Pad))
+                                            .Quality(100)
+                                            .Save(outStream);
+                            }
+
+                            using (var fileOutStream = System.IO.File.Create(path))
+                            {
+                                    outStream.CopyTo(fileOutStream);
+                            }
                         }
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return Json("Upload failed");
@@ -185,7 +206,7 @@ namespace MyShapeBody.Controllers
             var body = bodyGenerator.GenerateBody(jsonObject);
             var id = Guid.NewGuid();
             var calculator = new BodyCalculator(id, body);
-            var result = calculator.GenerateBodyMasses();
+            var result = calculator.GenerateBodyMasses(this.configuration.Density);
 
             // Error calculation
             double? error = null;
@@ -204,7 +225,7 @@ namespace MyShapeBody.Controllers
 
             // Send to clients
             var jsonResult = string.Empty;
-            if ((toCompare && decError <= 5) || !toCompare)
+            if ((toCompare && Math.Abs(decError) <= this.configuration.MaxError) || !toCompare)
             {
                 // Serializing
                 jsonResult = JsonConvert.SerializeObject(result.BodyMass);
@@ -217,6 +238,24 @@ namespace MyShapeBody.Controllers
             
             // Returning to client
             return Json(jsonResult, JsonRequestBehavior.AllowGet);
+        }
+
+
+        /// <summary>
+        /// The get bodyshape configuration method.
+        /// </summary>
+        /// <returns></returns>
+        private BodyShapeConfigurationSection GetBodyShapeConfiguration()
+        {
+            try
+            {
+                var config = ConfigurationManager.GetSection("bodyshape") as BodyShapeConfigurationSection;
+                return config;
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("An error occured during getting bodyshape configuration.\t\n" + ex);
+            }
         }
     }
 }
