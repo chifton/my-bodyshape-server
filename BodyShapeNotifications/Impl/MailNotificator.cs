@@ -15,6 +15,8 @@ namespace BodyShapeNotifications.Impl
     using System.Text;
     using System.Web;
 
+    using Serilog;
+
     /// <summary>
     /// The mail notificator class. 
     /// </summary>
@@ -31,12 +33,20 @@ namespace BodyShapeNotifications.Impl
         public string LogoPath { get; set; }
 
         /// <summary>
+        /// The logger
+        /// </summary>
+        private ILogger logger;
+
+        /// <summary>
         /// The mail notificator constructor.
         /// </summary>
         public MailNotificator()
         {
             this.MailConfiguration = this.GetMailConfiguration();
             this.LogoPath = string.Empty;
+            this.logger = new LoggerConfiguration()
+                .WriteTo.RollingFile("log-{Date}.txt", fileSizeLimitBytes: 100000000, retainedFileCountLimit: 100)
+                .CreateLogger();
         }
 
         /// <summary>
@@ -74,10 +84,12 @@ namespace BodyShapeNotifications.Impl
                     smtpClient.Send(message);
                 }
 
+                this.logger.Information("Successfully sent email to username");
                 return true;
             }
             catch(Exception ex)
             {
+                logger.Error("An error occured during mail sending.\t\n" + ex);
                 throw new InvalidOperationException("An error occured during mail sending.\t\n" + ex);
             }
         }

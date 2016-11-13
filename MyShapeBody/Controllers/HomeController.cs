@@ -27,6 +27,8 @@ namespace MyShapeBody.Controllers
     using ImageProcessor;
     using ImageProcessor.Imaging;
 
+    using Serilog;
+
     using MyShapeBody.Engine;
     using MyShapeBody.AppModels;
     using MyShapeBody.Services;
@@ -46,12 +48,20 @@ namespace MyShapeBody.Controllers
         private BodyRecorder bodyRecorder;
 
         /// <summary>
+        /// The logger
+        /// </summary>
+        private ILogger logger;
+
+        /// <summary>
         /// The constructor
         /// </summary>
         public HomeController()
         {
             this.bodyRecorder = new BodyRecorder();
             this.configuration = this.GetBodyShapeConfiguration();
+            this.logger = new LoggerConfiguration()
+                .WriteTo.RollingFile("log-{Date}.txt", fileSizeLimitBytes: 100000000, retainedFileCountLimit: 100)
+                .CreateLogger();
         }
 
         /// <summary>
@@ -113,11 +123,15 @@ namespace MyShapeBody.Controllers
                             var root = Guid.NewGuid().ToString() + "-" + customDate;
                             fileName = root + "Picture_1.png";
                             MemoryCache.Default[id] = root;
+
+                            logger.Information("Registering photo N°1 with id " + id);
                         }
                         else if(order == "2")
                         {
                             fileName = MemoryCache.Default[id].ToString() + "Picture_2.png";
                             MemoryCache.Default.Remove(id);
+
+                            logger.Information("Registering photo N°2 with id " + id);
                         }
 
                         fileNameJson = fileName;
@@ -145,6 +159,7 @@ namespace MyShapeBody.Controllers
             catch (Exception ex)
             {
                 Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                logger.Error($"An error occured during pictures upload\t\n{ ex }");
                 return Json("Upload failed");
             }
 
@@ -178,10 +193,12 @@ namespace MyShapeBody.Controllers
                     }
                 }
 
+                logger.Information($"Successfully flipped picture " + filename);
                 return "OK";
             }
             catch(Exception ex)
             {
+                logger.Error($"An error occured during pictures flip\t\n{ ex }");
                 return "KO";
             }
         }
@@ -193,51 +210,62 @@ namespace MyShapeBody.Controllers
         [HttpPost]
         public JsonResult Calculate()
         {
-            // Deserializing
-            string json;
-            using (var reader = new StreamReader(Request.InputStream))
+            try
             {
-                json = reader.ReadToEnd();
+                // Deserializing
+                string json;
+                using (var reader = new StreamReader(Request.InputStream))
+                {
+                    json = reader.ReadToEnd();
+                }
+                var jsonObject = JsonConvert.DeserializeObject(json);
+
+                // Generating
+                var bodyGenerator = new BodyGenerator();
+                var body = bodyGenerator.GenerateBody(jsonObject);
+                var id = Guid.NewGuid();
+                var calculator = new BodyCalculator(id, body);
+                var result = calculator.GenerateBodyMasses(this.configuration.Density);
+                logger.Information($"Successfully generated body masses for id " + id);
+
+                // Error calculation
+                double? error = null;
+                decimal decError = 0;
+                bool toCompare = false;
+                if (body.Weight.HasValue)
+                {
+                    error = result.BodyMass.TotalMass - body.Weight;
+                    decError = Math.Round(decimal.Divide((decimal)error, (decimal)body.Weight) * 100, 2);
+                    toCompare = true;
+                }
+
+                // Recording
+                var user = User.Identity.IsAuthenticated ? User.Identity : null;
+                this.bodyRecorder.RecordBody(body, result, decError, toCompare, user, User.Identity.IsAuthenticated);
+                logger.Information($"Successfully registered body masses for id " + id);
+
+                // Send to clients
+                var jsonResult = string.Empty;
+                if ((toCompare && Math.Abs(decError) <= this.configuration.MaxError) || !toCompare)
+                {
+                    // Serializing
+                    jsonResult = JsonConvert.SerializeObject(result.BodyMass);
+                }
+                else
+                {
+                    // Error message
+                    jsonResult = "Error";
+                }
+
+                // Returning to client
+                logger.Information("Successfully returned body masses to client");
+                return Json(jsonResult, JsonRequestBehavior.AllowGet);
             }
-            var jsonObject = JsonConvert.DeserializeObject(json);
-
-            // Generating
-            var bodyGenerator = new BodyGenerator();
-            var body = bodyGenerator.GenerateBody(jsonObject);
-            var id = Guid.NewGuid();
-            var calculator = new BodyCalculator(id, body);
-            var result = calculator.GenerateBodyMasses(this.configuration.Density);
-
-            // Error calculation
-            double? error = null;
-            decimal decError = 0;
-            bool toCompare = false;
-            if (body.Weight.HasValue)
+            catch(Exception ex)
             {
-                error = result.BodyMass.TotalMass - body.Weight;
-                decError = Math.Round(decimal.Divide((decimal) error, (decimal) body.Weight) * 100, 2);
-                toCompare = true;
+                logger.Error($"An error occured during masses generation\t\n{ ex }");
+                throw new InvalidOperationException($"An error occured during masses generation\t\n{ ex }");
             }
-
-            // Recording
-            var user = User.Identity.IsAuthenticated ? User.Identity.GetUserName() : string.Empty;
-            this.bodyRecorder.RecordBody(body, result, decError, toCompare, user, User.Identity.IsAuthenticated);
-
-            // Send to clients
-            var jsonResult = string.Empty;
-            if ((toCompare && Math.Abs(decError) <= this.configuration.MaxError) || !toCompare)
-            {
-                // Serializing
-                jsonResult = JsonConvert.SerializeObject(result.BodyMass);
-            }
-            else
-            {
-                // Error message
-                jsonResult = "Error";
-            }
-            
-            // Returning to client
-            return Json(jsonResult, JsonRequestBehavior.AllowGet);
         }
 
 

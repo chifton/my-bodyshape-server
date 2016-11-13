@@ -10,6 +10,9 @@ namespace MyShapeBody.Services
     using System.Collections.Generic;
     using System.Linq;
     using System.Web;
+    using System.Security.Principal;
+
+    using Microsoft.AspNet.Identity;
 
     using AutoMapper;
 
@@ -17,7 +20,6 @@ namespace MyShapeBody.Services
     using BodyShapeData;
     using Entities = BodyShapeData.Entities;
     using Models = MyShapeBody.AppModels;
-
 
     /// <summary>
     /// The recorder class
@@ -61,7 +63,7 @@ namespace MyShapeBody.Services
         /// <param name="bodyTicket">The body ticket.</param>
         /// <param name="decError">The error.</param>
         /// <param name="toCompare">The compare to boolean.</param>
-        public void RecordBody(Models.Body body, Models.BodyTicket bodyTicket, decimal decError, bool toCompare, string user, bool hasAccountNow)
+        public void RecordBody(Models.Body body, Models.BodyTicket bodyTicket, decimal decError, bool toCompare, IIdentity user, bool hasAccountNow)
         {
             var schema = this.mapper.Map<Entities.BodySchema>(body);
             var result = this.mapper.Map<Entities.BodyResult>(bodyTicket.BodyMass);
@@ -73,7 +75,7 @@ namespace MyShapeBody.Services
             var generation = new Entities.Generation
             {
                 Id = id,
-                UserId = user == string.Empty ? null : user,
+                UserId = user == null ? null : user.GetUserId(),
                 HasAccount = hasAccountNow,
                 AnonymousId = Guid.NewGuid(),
                 GenerationDate = DateTime.Now,
