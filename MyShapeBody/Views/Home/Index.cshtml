@@ -857,12 +857,23 @@
 
         function start(x, y, e)
         {
+            var offset = $(this.paper.canvas).parent().offset(),
+                px = x - offset.left,
+                py = y - offset.top;
 
+            // James Bond eye
+            var horizontalLine = this.paper.path("M0," + py + " L1000," + py).attr("stroke", "white").attr("stroke-width", "1").attr("stroke-dasharray", "10, 5");
+            horizontalLine.node.id = "tiger";
+            horizontalLine.id = "tiger";
+            var verticalLine = this.paper.path("M" + px + ",0 L" + px + ",1000").attr("stroke", "white").attr("stroke-width", "1").attr("stroke-dasharray", "10, 5");
+            verticalLine.node.id = "lion";
+            verticalLine.id = "lion";
         }
 
         function end(e)
         {
-
+            $("#tiger").remove();
+            $("#lion").remove();
         }
 
         function move5(nowdx, nowdy, nowx, nowy, e)
@@ -874,6 +885,16 @@
                 py = nowy - offset.top;
 
             this.attr({ cx: px, cy: py });
+
+            $("#tiger").remove();
+            $("#lion").remove();
+            // James Bond eye
+            var horizontalLine = this.paper.path("M0," + py + " L1000," + py).attr("stroke", "white").attr("stroke-width", "1").attr("stroke-dasharray", "10, 5");
+            horizontalLine.node.id = "tiger";
+            horizontalLine.id = "tiger";
+            var verticalLine = this.paper.path("M" + px + ",0 L" + px + ",1000").attr("stroke", "white").attr("stroke-width", "1").attr("stroke-dasharray", "10, 5");
+            verticalLine.node.id = "lion";
+            verticalLine.id = "lion";
 
             $("#" + patternArray[0]).remove();
             var current = this.paper.path("M " + $("#" + patternArray[1]).attr("cx") + " " + $("#" + patternArray[1]).attr("cy") + " \ R " + $("#" + patternArray[2]).attr("cx") + " " + $("#" + patternArray[2]).attr("cy") + " \ " + $("#" + patternArray[3]).attr("cx") + " " + $("#" + patternArray[3]).attr("cy") + " \ " + $("#" + patternArray[4]).attr("cx") + " " + $("#" + patternArray[4]).attr("cy") + " \ " + $("#" + patternArray[5]).attr("cx") + " " + $("#" + patternArray[5]).attr("cy")).attr("stroke", patternArray[6]).attr("stroke-width", "3").attr("z-index", "-1");
@@ -937,6 +958,16 @@
 
             this.attr({ cx: px, cy: py });
 
+            $("#tiger").remove();
+            $("#lion").remove();
+            // James Bond eye
+            var horizontalLine = this.paper.path("M0," + py + " L1000," + py).attr("stroke", "white").attr("stroke-width", "1").attr("stroke-dasharray", "10, 5");
+            horizontalLine.node.id = "tiger";
+            horizontalLine.id = "tiger";
+            var verticalLine = this.paper.path("M" + px + ",0 L" + px + ",1000").attr("stroke", "white").attr("stroke-width", "1").attr("stroke-dasharray", "10, 5");
+            verticalLine.node.id = "lion";
+            verticalLine.id = "lion";
+
             $("#" + patternArray[0]).remove();
             var current = this.paper.path("M " + $("#" + patternArray[1]).attr("cx") + " " + $("#" + patternArray[1]).attr("cy") + " \ R " + $("#" + patternArray[2]).attr("cx") + " " + $("#" + patternArray[2]).attr("cy") + " \ " + $("#" + patternArray[3]).attr("cx") + " " + $("#" + patternArray[3]).attr("cy") + " \ " + $("#" + patternArray[4]).attr("cx") + " " + $("#" + patternArray[4]).attr("cy")).attr("stroke", patternArray[5]).attr("stroke-width", "3").attr("z-index", "-1");
             current.node.id = patternArray[0];
@@ -998,6 +1029,16 @@
                 py = nowy - offset.top;
 
             this.attr({ cx: px, cy: py });
+
+            $("#tiger").remove();
+            $("#lion").remove();
+            // James Bond eye
+            var horizontalLine = this.paper.path("M0," + py + " L1000," + py).attr("stroke", "white").attr("stroke-width", "1").attr("stroke-dasharray", "10, 5");
+            horizontalLine.node.id = "tiger";
+            horizontalLine.id = "tiger";
+            var verticalLine = this.paper.path("M" + px + ",0 L" + px + ",1000").attr("stroke", "white").attr("stroke-width", "1").attr("stroke-dasharray", "10, 5");
+            verticalLine.node.id = "lion";
+            verticalLine.id = "lion";
 
             $("#" + patternArray[0]).remove();
             var current = this.paper.path("M " + $("#" + patternArray[1]).attr("cx") + " " + $("#" + patternArray[1]).attr("cy") + " \ R " + $("#" + patternArray[2]).attr("cx") + " " + $("#" + patternArray[2]).attr("cy") + " \ " + $("#" + patternArray[3]).attr("cx") + " " + $("#" + patternArray[3]).attr("cy")).attr("stroke", patternArray[4]).attr("stroke-width", "3").attr("z-index", "-1");
