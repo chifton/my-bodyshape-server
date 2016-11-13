@@ -15,3 +15,7 @@
 2016-11-13 18:07:01.739 +01:00 [Information] Successfully registered body masses for id 2c0174d5-3155-4c8d-a54b-aa1358b3b424
 2016-11-13 18:07:01.739 +01:00 [Information] Successfully returned body masses to client
 2016-11-13 18:07:36.033 +01:00 [Information] Registering photo N°1 with id 2a943f23-08ed-496b-976e-f3902162ce87
+2016-11-13 21:26:57.470 +01:00 [Information] Registering photo N°1 with id d3f71377-9c8e-4046-80fc-b087eafd3aa0
+2016-11-13 21:28:23.017 +01:00 [Information] Registering photo N°1 with id a356e9fb-38ab-4791-9f6b-fc143bb70e88
+2016-11-13 21:31:30.419 +01:00 [Information] Registering photo N°1 with id 375963b7-72b7-4324-8c2b-d091c7619a17
+2016-11-13 21:32:09.933 +01:00 [Information] Registering photo N°2 with id 375963b7-72b7-4324-8c2b-d091c7619a17

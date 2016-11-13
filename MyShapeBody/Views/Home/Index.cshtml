@@ -884,68 +884,71 @@
                 px = nowx - offset.left,
                 py = nowy - offset.top;
 
-            this.attr({ cx: px, cy: py });
+            if (px >= 0 && px <= $(this.paper.canvas).width() && py >= 0 && py <= $(this.paper.canvas).height())
+            {
+                this.attr({ cx: px, cy: py });
 
-            $("#tiger").remove();
-            $("#lion").remove();
-            // James Bond eye
-            var horizontalLine = this.paper.path("M0," + py + " L1000," + py).attr("stroke", "white").attr("stroke-width", "1").attr("stroke-dasharray", "10, 5");
-            horizontalLine.node.id = "tiger";
-            horizontalLine.id = "tiger";
-            var verticalLine = this.paper.path("M" + px + ",0 L" + px + ",1000").attr("stroke", "white").attr("stroke-width", "1").attr("stroke-dasharray", "10, 5");
-            verticalLine.node.id = "lion";
-            verticalLine.id = "lion";
+                $("#tiger").remove();
+                $("#lion").remove();
+                // James Bond eye
+                var horizontalLine = this.paper.path("M0," + py + " L1000," + py).attr("stroke", "white").attr("stroke-width", "1").attr("stroke-dasharray", "10, 5");
+                horizontalLine.node.id = "tiger";
+                horizontalLine.id = "tiger";
+                var verticalLine = this.paper.path("M" + px + ",0 L" + px + ",1000").attr("stroke", "white").attr("stroke-width", "1").attr("stroke-dasharray", "10, 5");
+                verticalLine.node.id = "lion";
+                verticalLine.id = "lion";
 
-            $("#" + patternArray[0]).remove();
-            var current = this.paper.path("M " + $("#" + patternArray[1]).attr("cx") + " " + $("#" + patternArray[1]).attr("cy") + " \ R " + $("#" + patternArray[2]).attr("cx") + " " + $("#" + patternArray[2]).attr("cy") + " \ " + $("#" + patternArray[3]).attr("cx") + " " + $("#" + patternArray[3]).attr("cy") + " \ " + $("#" + patternArray[4]).attr("cx") + " " + $("#" + patternArray[4]).attr("cy") + " \ " + $("#" + patternArray[5]).attr("cx") + " " + $("#" + patternArray[5]).attr("cy")).attr("stroke", patternArray[6]).attr("stroke-width", "3").attr("z-index", "-1");
-            current.node.id = patternArray[0];
-            current.toBack();
+                $("#" + patternArray[0]).remove();
+                var current = this.paper.path("M " + $("#" + patternArray[1]).attr("cx") + " " + $("#" + patternArray[1]).attr("cy") + " \ R " + $("#" + patternArray[2]).attr("cx") + " " + $("#" + patternArray[2]).attr("cy") + " \ " + $("#" + patternArray[3]).attr("cx") + " " + $("#" + patternArray[3]).attr("cy") + " \ " + $("#" + patternArray[4]).attr("cx") + " " + $("#" + patternArray[4]).attr("cy") + " \ " + $("#" + patternArray[5]).attr("cx") + " " + $("#" + patternArray[5]).attr("cy")).attr("stroke", patternArray[6]).attr("stroke-width", "3").attr("z-index", "-1");
+                current.node.id = patternArray[0];
+                current.toBack();
 
-            // Superman management
-            if (this.data('superman') != undefined) {
-                var supermanPatternArray = this.paper.getById(this.data('superman')).data('svgpath').split(" ");
-                var count = supermanPatternArray.length;
-                var pathString = "";
-                for (var i = 2; i < count - 1; i++) {
-                    if (i < count - 2) {
-                        pathString = pathString + $("#" + supermanPatternArray[i]).attr("cx") + " " + $("#" + supermanPatternArray[i]).attr("cy") + " \ ";
+                // Superman management
+                if (this.data('superman') != undefined) {
+                    var supermanPatternArray = this.paper.getById(this.data('superman')).data('svgpath').split(" ");
+                    var count = supermanPatternArray.length;
+                    var pathString = "";
+                    for (var i = 2; i < count - 1; i++) {
+                        if (i < count - 2) {
+                            pathString = pathString + $("#" + supermanPatternArray[i]).attr("cx") + " " + $("#" + supermanPatternArray[i]).attr("cy") + " \ ";
+                        }
+                        else if (i == count - 2) {
+                            pathString = pathString + $("#" + supermanPatternArray[i]).attr("cx") + " " + $("#" + supermanPatternArray[i]).attr("cy");
+                        }
                     }
-                    else if (i == count - 2) {
-                        pathString = pathString + $("#" + supermanPatternArray[i]).attr("cx") + " " + $("#" + supermanPatternArray[i]).attr("cy");
-                    }
+                    this.paper.getById(this.data('superman')).attr("cx", this.attr("cx"));
+                    this.paper.getById(this.data('superman')).attr("cy", this.attr("cy"));
+                    $("#" + supermanPatternArray[0]).remove();
+                    var current = this.paper.path("M " + $("#" + supermanPatternArray[1]).attr("cx") + " " + $("#" + supermanPatternArray[1]).attr("cy") + " \ R " + pathString).attr("stroke", supermanPatternArray[count - 1]).attr("stroke-width", "3").attr("z-index", "-1");
+                    current.node.id = supermanPatternArray[0];
+                    current.toBack();
                 }
-                this.paper.getById(this.data('superman')).attr("cx", this.attr("cx"));
-                this.paper.getById(this.data('superman')).attr("cy", this.attr("cy"));
-                $("#" + supermanPatternArray[0]).remove();
-                var current = this.paper.path("M " + $("#" + supermanPatternArray[1]).attr("cx") + " " + $("#" + supermanPatternArray[1]).attr("cy") + " \ R " + pathString).attr("stroke", supermanPatternArray[count - 1]).attr("stroke-width", "3").attr("z-index", "-1");
-                current.node.id = supermanPatternArray[0];
-                current.toBack();
-            }
-            if (this.data('superman2') != undefined) {
-                var supermanPatternArray = this.paper.getById(this.data('superman2')).data('svgpath').split(" ");
-                var count = supermanPatternArray.length;
-                var pathString = "";
-                for (var i = 2; i < count - 1; i++) {
-                    if (i < count - 2) {
-                        pathString = pathString + $("#" + supermanPatternArray[i]).attr("cx") + " " + $("#" + supermanPatternArray[i]).attr("cy") + " \ ";
+                if (this.data('superman2') != undefined) {
+                    var supermanPatternArray = this.paper.getById(this.data('superman2')).data('svgpath').split(" ");
+                    var count = supermanPatternArray.length;
+                    var pathString = "";
+                    for (var i = 2; i < count - 1; i++) {
+                        if (i < count - 2) {
+                            pathString = pathString + $("#" + supermanPatternArray[i]).attr("cx") + " " + $("#" + supermanPatternArray[i]).attr("cy") + " \ ";
+                        }
+                        else if (i == count - 2) {
+                            pathString = pathString + $("#" + supermanPatternArray[i]).attr("cx") + " " + $("#" + supermanPatternArray[i]).attr("cy");
+                        }
                     }
-                    else if (i == count - 2) {
-                        pathString = pathString + $("#" + supermanPatternArray[i]).attr("cx") + " " + $("#" + supermanPatternArray[i]).attr("cy");
-                    }
+                    this.paper.getById(this.data('superman2')).attr("cx", this.attr("cx"));
+                    this.paper.getById(this.data('superman2')).attr("cy", this.attr("cy"));
+                    $("#" + supermanPatternArray[0]).remove();
+                    var current = this.paper.path("M " + $("#" + supermanPatternArray[1]).attr("cx") + " " + $("#" + supermanPatternArray[1]).attr("cy") + " \ R " + pathString).attr("stroke", supermanPatternArray[count - 1]).attr("stroke-width", "3").attr("z-index", "-1");
+                    current.node.id = supermanPatternArray[0];
+                    current.toBack();
                 }
-                this.paper.getById(this.data('superman2')).attr("cx", this.attr("cx"));
-                this.paper.getById(this.data('superman2')).attr("cy", this.attr("cy"));
-                $("#" + supermanPatternArray[0]).remove();
-                var current = this.paper.path("M " + $("#" + supermanPatternArray[1]).attr("cx") + " " + $("#" + supermanPatternArray[1]).attr("cy") + " \ R " + pathString).attr("stroke", supermanPatternArray[count - 1]).attr("stroke-width", "3").attr("z-index", "-1");
-                current.node.id = supermanPatternArray[0];
-                current.toBack();
-            }
-            if (this.data('lastpath') != undefined) {
-                var supermanPatternArray = this.data('lastpath').split(" ");
-                $("#" + supermanPatternArray[0]).remove();
-                var current = this.paper.path("M" + $("#" + supermanPatternArray[1]).attr("cx") + "," + $("#" + supermanPatternArray[1]).attr("cy") + "L" + $("#" + supermanPatternArray[2]).attr("cx") + "," + $("#" + supermanPatternArray[2]).attr("cy")).attr("stroke", supermanPatternArray[3]).attr("stroke-width", "3").attr("z-index", "-1");
-                current.node.id = supermanPatternArray[0];
-                current.toBack();
+                if (this.data('lastpath') != undefined) {
+                    var supermanPatternArray = this.data('lastpath').split(" ");
+                    $("#" + supermanPatternArray[0]).remove();
+                    var current = this.paper.path("M" + $("#" + supermanPatternArray[1]).attr("cx") + "," + $("#" + supermanPatternArray[1]).attr("cy") + "L" + $("#" + supermanPatternArray[2]).attr("cx") + "," + $("#" + supermanPatternArray[2]).attr("cy")).attr("stroke", supermanPatternArray[3]).attr("stroke-width", "3").attr("z-index", "-1");
+                    current.node.id = supermanPatternArray[0];
+                    current.toBack();
+                }
             }
         }
 
@@ -956,68 +959,71 @@
                 px = nowx - offset.left,
                 py = nowy - offset.top;
 
-            this.attr({ cx: px, cy: py });
+            if (px >= 0 && px <= $(this.paper.canvas).width() && py >= 0 && py <= $(this.paper.canvas).height())
+            {
+                this.attr({ cx: px, cy: py });
 
-            $("#tiger").remove();
-            $("#lion").remove();
-            // James Bond eye
-            var horizontalLine = this.paper.path("M0," + py + " L1000," + py).attr("stroke", "white").attr("stroke-width", "1").attr("stroke-dasharray", "10, 5");
-            horizontalLine.node.id = "tiger";
-            horizontalLine.id = "tiger";
-            var verticalLine = this.paper.path("M" + px + ",0 L" + px + ",1000").attr("stroke", "white").attr("stroke-width", "1").attr("stroke-dasharray", "10, 5");
-            verticalLine.node.id = "lion";
-            verticalLine.id = "lion";
+                $("#tiger").remove();
+                $("#lion").remove();
+                // James Bond eye
+                var horizontalLine = this.paper.path("M0," + py + " L1000," + py).attr("stroke", "white").attr("stroke-width", "1").attr("stroke-dasharray", "10, 5");
+                horizontalLine.node.id = "tiger";
+                horizontalLine.id = "tiger";
+                var verticalLine = this.paper.path("M" + px + ",0 L" + px + ",1000").attr("stroke", "white").attr("stroke-width", "1").attr("stroke-dasharray", "10, 5");
+                verticalLine.node.id = "lion";
+                verticalLine.id = "lion";
 
-            $("#" + patternArray[0]).remove();
-            var current = this.paper.path("M " + $("#" + patternArray[1]).attr("cx") + " " + $("#" + patternArray[1]).attr("cy") + " \ R " + $("#" + patternArray[2]).attr("cx") + " " + $("#" + patternArray[2]).attr("cy") + " \ " + $("#" + patternArray[3]).attr("cx") + " " + $("#" + patternArray[3]).attr("cy") + " \ " + $("#" + patternArray[4]).attr("cx") + " " + $("#" + patternArray[4]).attr("cy")).attr("stroke", patternArray[5]).attr("stroke-width", "3").attr("z-index", "-1");
-            current.node.id = patternArray[0];
-            current.toBack();
+                $("#" + patternArray[0]).remove();
+                var current = this.paper.path("M " + $("#" + patternArray[1]).attr("cx") + " " + $("#" + patternArray[1]).attr("cy") + " \ R " + $("#" + patternArray[2]).attr("cx") + " " + $("#" + patternArray[2]).attr("cy") + " \ " + $("#" + patternArray[3]).attr("cx") + " " + $("#" + patternArray[3]).attr("cy") + " \ " + $("#" + patternArray[4]).attr("cx") + " " + $("#" + patternArray[4]).attr("cy")).attr("stroke", patternArray[5]).attr("stroke-width", "3").attr("z-index", "-1");
+                current.node.id = patternArray[0];
+                current.toBack();
 
-            // Superman management
-            if (this.data('superman') != undefined) {
-                var supermanPatternArray = this.paper.getById(this.data('superman')).data('svgpath').split(" ");
-                var count = supermanPatternArray.length;
-                var pathString = "";
-                for (var i = 2; i < count - 1; i++) {
-                    if (i < count - 2) {
-                        pathString = pathString + $("#" + supermanPatternArray[i]).attr("cx") + " " + $("#" + supermanPatternArray[i]).attr("cy") + " \ ";
+                // Superman management
+                if (this.data('superman') != undefined) {
+                    var supermanPatternArray = this.paper.getById(this.data('superman')).data('svgpath').split(" ");
+                    var count = supermanPatternArray.length;
+                    var pathString = "";
+                    for (var i = 2; i < count - 1; i++) {
+                        if (i < count - 2) {
+                            pathString = pathString + $("#" + supermanPatternArray[i]).attr("cx") + " " + $("#" + supermanPatternArray[i]).attr("cy") + " \ ";
+                        }
+                        else if (i == count - 2) {
+                            pathString = pathString + $("#" + supermanPatternArray[i]).attr("cx") + " " + $("#" + supermanPatternArray[i]).attr("cy");
+                        }
                     }
-                    else if (i == count - 2) {
-                        pathString = pathString + $("#" + supermanPatternArray[i]).attr("cx") + " " + $("#" + supermanPatternArray[i]).attr("cy");
-                    }
+                    this.paper.getById(this.data('superman')).attr("cx", this.attr("cx"));
+                    this.paper.getById(this.data('superman')).attr("cy", this.attr("cy"));
+                    $("#" + supermanPatternArray[0]).remove();
+                    var current = this.paper.path("M " + $("#" + supermanPatternArray[1]).attr("cx") + " " + $("#" + supermanPatternArray[1]).attr("cy") + " \ R " + pathString).attr("stroke", supermanPatternArray[count - 1]).attr("stroke-width", "3").attr("z-index", "-1");
+                    current.node.id = supermanPatternArray[0];
+                    current.toBack();
                 }
-                this.paper.getById(this.data('superman')).attr("cx", this.attr("cx"));
-                this.paper.getById(this.data('superman')).attr("cy", this.attr("cy"));
-                $("#" + supermanPatternArray[0]).remove();
-                var current = this.paper.path("M " + $("#" + supermanPatternArray[1]).attr("cx") + " " + $("#" + supermanPatternArray[1]).attr("cy") + " \ R " + pathString).attr("stroke", supermanPatternArray[count - 1]).attr("stroke-width", "3").attr("z-index", "-1");
-                current.node.id = supermanPatternArray[0];
-                current.toBack();
-            }
-            if (this.data('superman2') != undefined) {
-                var supermanPatternArray = this.paper.getById(this.data('superman2')).data('svgpath').split(" ");
-                var count = supermanPatternArray.length;
-                var pathString = "";
-                for (var i = 2; i < count - 1; i++) {
-                    if (i < count - 2) {
-                        pathString = pathString + $("#" + supermanPatternArray[i]).attr("cx") + " " + $("#" + supermanPatternArray[i]).attr("cy") + " \ ";
+                if (this.data('superman2') != undefined) {
+                    var supermanPatternArray = this.paper.getById(this.data('superman2')).data('svgpath').split(" ");
+                    var count = supermanPatternArray.length;
+                    var pathString = "";
+                    for (var i = 2; i < count - 1; i++) {
+                        if (i < count - 2) {
+                            pathString = pathString + $("#" + supermanPatternArray[i]).attr("cx") + " " + $("#" + supermanPatternArray[i]).attr("cy") + " \ ";
+                        }
+                        else if (i == count - 2) {
+                            pathString = pathString + $("#" + supermanPatternArray[i]).attr("cx") + " " + $("#" + supermanPatternArray[i]).attr("cy");
+                        }
                     }
-                    else if (i == count - 2) {
-                        pathString = pathString + $("#" + supermanPatternArray[i]).attr("cx") + " " + $("#" + supermanPatternArray[i]).attr("cy");
-                    }
+                    this.paper.getById(this.data('superman2')).attr("cx", this.attr("cx"));
+                    this.paper.getById(this.data('superman2')).attr("cy", this.attr("cy"));
+                    $("#" + supermanPatternArray[0]).remove();
+                    var current = this.paper.path("M " + $("#" + supermanPatternArray[1]).attr("cx") + " " + $("#" + supermanPatternArray[1]).attr("cy") + " \ R " + pathString).attr("stroke", supermanPatternArray[count - 1]).attr("stroke-width", "3").attr("z-index", "-1");
+                    current.node.id = supermanPatternArray[0];
+                    current.toBack();
                 }
-                this.paper.getById(this.data('superman2')).attr("cx", this.attr("cx"));
-                this.paper.getById(this.data('superman2')).attr("cy", this.attr("cy"));
-                $("#" + supermanPatternArray[0]).remove();
-                var current = this.paper.path("M " + $("#" + supermanPatternArray[1]).attr("cx") + " " + $("#" + supermanPatternArray[1]).attr("cy") + " \ R " + pathString).attr("stroke", supermanPatternArray[count - 1]).attr("stroke-width", "3").attr("z-index", "-1");
-                current.node.id = supermanPatternArray[0];
-                current.toBack();
-            }
-            if (this.data('lastpath') != undefined) {
-                var supermanPatternArray = this.data('lastpath').split(" ");
-                $("#" + supermanPatternArray[0]).remove();
-                var current = this.paper.path("M" + $("#" + supermanPatternArray[1]).attr("cx") + "," + $("#" + supermanPatternArray[1]).attr("cy") + "L" + $("#" + supermanPatternArray[2]).attr("cx") + "," + $("#" + supermanPatternArray[2]).attr("cy")).attr("stroke", supermanPatternArray[3]).attr("stroke-width", "3").attr("z-index", "-1");
-                current.node.id = supermanPatternArray[0];
-                current.toBack();
+                if (this.data('lastpath') != undefined) {
+                    var supermanPatternArray = this.data('lastpath').split(" ");
+                    $("#" + supermanPatternArray[0]).remove();
+                    var current = this.paper.path("M" + $("#" + supermanPatternArray[1]).attr("cx") + "," + $("#" + supermanPatternArray[1]).attr("cy") + "L" + $("#" + supermanPatternArray[2]).attr("cx") + "," + $("#" + supermanPatternArray[2]).attr("cy")).attr("stroke", supermanPatternArray[3]).attr("stroke-width", "3").attr("z-index", "-1");
+                    current.node.id = supermanPatternArray[0];
+                    current.toBack();
+                }
             }
         }
 
@@ -1028,68 +1034,71 @@
                 px = nowx - offset.left,
                 py = nowy - offset.top;
 
-            this.attr({ cx: px, cy: py });
+            if (px >= 0 && px <= $(this.paper.canvas).width() && py >= 0 && py <= $(this.paper.canvas).height())
+            {
+                this.attr({ cx: px, cy: py });
 
-            $("#tiger").remove();
-            $("#lion").remove();
-            // James Bond eye
-            var horizontalLine = this.paper.path("M0," + py + " L1000," + py).attr("stroke", "white").attr("stroke-width", "1").attr("stroke-dasharray", "10, 5");
-            horizontalLine.node.id = "tiger";
-            horizontalLine.id = "tiger";
-            var verticalLine = this.paper.path("M" + px + ",0 L" + px + ",1000").attr("stroke", "white").attr("stroke-width", "1").attr("stroke-dasharray", "10, 5");
-            verticalLine.node.id = "lion";
-            verticalLine.id = "lion";
+                $("#tiger").remove();
+                $("#lion").remove();
+                // James Bond eye
+                var horizontalLine = this.paper.path("M0," + py + " L1000," + py).attr("stroke", "white").attr("stroke-width", "1").attr("stroke-dasharray", "10, 5");
+                horizontalLine.node.id = "tiger";
+                horizontalLine.id = "tiger";
+                var verticalLine = this.paper.path("M" + px + ",0 L" + px + ",1000").attr("stroke", "white").attr("stroke-width", "1").attr("stroke-dasharray", "10, 5");
+                verticalLine.node.id = "lion";
+                verticalLine.id = "lion";
 
-            $("#" + patternArray[0]).remove();
-            var current = this.paper.path("M " + $("#" + patternArray[1]).attr("cx") + " " + $("#" + patternArray[1]).attr("cy") + " \ R " + $("#" + patternArray[2]).attr("cx") + " " + $("#" + patternArray[2]).attr("cy") + " \ " + $("#" + patternArray[3]).attr("cx") + " " + $("#" + patternArray[3]).attr("cy")).attr("stroke", patternArray[4]).attr("stroke-width", "3").attr("z-index", "-1");
-            current.node.id = patternArray[0];
-            current.toBack();
+                $("#" + patternArray[0]).remove();
+                var current = this.paper.path("M " + $("#" + patternArray[1]).attr("cx") + " " + $("#" + patternArray[1]).attr("cy") + " \ R " + $("#" + patternArray[2]).attr("cx") + " " + $("#" + patternArray[2]).attr("cy") + " \ " + $("#" + patternArray[3]).attr("cx") + " " + $("#" + patternArray[3]).attr("cy")).attr("stroke", patternArray[4]).attr("stroke-width", "3").attr("z-index", "-1");
+                current.node.id = patternArray[0];
+                current.toBack();
 
-            // Superman management
-            if (this.data('superman') != undefined) {
-                var supermanPatternArray = this.paper.getById(this.data('superman')).data('svgpath').split(" ");
-                var count = supermanPatternArray.length;
-                var pathString = "";
-                for (var i = 2; i < count - 1; i++) {
-                    if (i < count - 2) {
-                        pathString = pathString + $("#" + supermanPatternArray[i]).attr("cx") + " " + $("#" + supermanPatternArray[i]).attr("cy") + " \ ";
+                // Superman management
+                if (this.data('superman') != undefined) {
+                    var supermanPatternArray = this.paper.getById(this.data('superman')).data('svgpath').split(" ");
+                    var count = supermanPatternArray.length;
+                    var pathString = "";
+                    for (var i = 2; i < count - 1; i++) {
+                        if (i < count - 2) {
+                            pathString = pathString + $("#" + supermanPatternArray[i]).attr("cx") + " " + $("#" + supermanPatternArray[i]).attr("cy") + " \ ";
+                        }
+                        else if (i == count - 2) {
+                            pathString = pathString + $("#" + supermanPatternArray[i]).attr("cx") + " " + $("#" + supermanPatternArray[i]).attr("cy");
+                        }
                     }
-                    else if (i == count - 2) {
-                        pathString = pathString + $("#" + supermanPatternArray[i]).attr("cx") + " " + $("#" + supermanPatternArray[i]).attr("cy");
-                    }
+                    this.paper.getById(this.data('superman')).attr("cx", this.attr("cx"));
+                    this.paper.getById(this.data('superman')).attr("cy", this.attr("cy"));
+                    $("#" + supermanPatternArray[0]).remove();
+                    var current = this.paper.path("M " + $("#" + supermanPatternArray[1]).attr("cx") + " " + $("#" + supermanPatternArray[1]).attr("cy") + " \ R " + pathString).attr("stroke", supermanPatternArray[count - 1]).attr("stroke-width", "3").attr("z-index", "-1");
+                    current.node.id = supermanPatternArray[0];
+                    current.toBack();
                 }
-                this.paper.getById(this.data('superman')).attr("cx", this.attr("cx"));
-                this.paper.getById(this.data('superman')).attr("cy", this.attr("cy"));
-                $("#" + supermanPatternArray[0]).remove();
-                var current = this.paper.path("M " + $("#" + supermanPatternArray[1]).attr("cx") + " " + $("#" + supermanPatternArray[1]).attr("cy") + " \ R " + pathString).attr("stroke", supermanPatternArray[count - 1]).attr("stroke-width", "3").attr("z-index", "-1");
-                current.node.id = supermanPatternArray[0];
-                current.toBack();
-            }
-            if (this.data('superman2') != undefined) {
-                var supermanPatternArray = this.paper.getById(this.data('superman2')).data('svgpath').split(" ");
-                var count = supermanPatternArray.length;
-                var pathString = "";
-                for (var i = 2; i < count - 1; i++) {
-                    if (i < count - 2) {
-                        pathString = pathString + $("#" + supermanPatternArray[i]).attr("cx") + " " + $("#" + supermanPatternArray[i]).attr("cy") + " \ ";
+                if (this.data('superman2') != undefined) {
+                    var supermanPatternArray = this.paper.getById(this.data('superman2')).data('svgpath').split(" ");
+                    var count = supermanPatternArray.length;
+                    var pathString = "";
+                    for (var i = 2; i < count - 1; i++) {
+                        if (i < count - 2) {
+                            pathString = pathString + $("#" + supermanPatternArray[i]).attr("cx") + " " + $("#" + supermanPatternArray[i]).attr("cy") + " \ ";
+                        }
+                        else if (i == count - 2) {
+                            pathString = pathString + $("#" + supermanPatternArray[i]).attr("cx") + " " + $("#" + supermanPatternArray[i]).attr("cy");
+                        }
                     }
-                    else if (i == count - 2) {
-                        pathString = pathString + $("#" + supermanPatternArray[i]).attr("cx") + " " + $("#" + supermanPatternArray[i]).attr("cy");
-                    }
+                    this.paper.getById(this.data('superman2')).attr("cx", this.attr("cx"));
+                    this.paper.getById(this.data('superman2')).attr("cy", this.attr("cy"));
+                    $("#" + supermanPatternArray[0]).remove();
+                    var current = this.paper.path("M " + $("#" + supermanPatternArray[1]).attr("cx") + " " + $("#" + supermanPatternArray[1]).attr("cy") + " \ R " + pathString).attr("stroke", supermanPatternArray[count - 1]).attr("stroke-width", "3").attr("z-index", "-1");
+                    current.node.id = supermanPatternArray[0];
+                    current.toBack();
                 }
-                this.paper.getById(this.data('superman2')).attr("cx", this.attr("cx"));
-                this.paper.getById(this.data('superman2')).attr("cy", this.attr("cy"));
-                $("#" + supermanPatternArray[0]).remove();
-                var current = this.paper.path("M " + $("#" + supermanPatternArray[1]).attr("cx") + " " + $("#" + supermanPatternArray[1]).attr("cy") + " \ R " + pathString).attr("stroke", supermanPatternArray[count - 1]).attr("stroke-width", "3").attr("z-index", "-1");
-                current.node.id = supermanPatternArray[0];
-                current.toBack();
-            }
-            if (this.data('lastpath') != undefined) {
-                var supermanPatternArray = this.data('lastpath').split(" ");
-                $("#" + supermanPatternArray[0]).remove();
-                var current = this.paper.path("M" + $("#" + supermanPatternArray[1]).attr("cx") + "," + $("#" + supermanPatternArray[1]).attr("cy") + "L" + $("#" + supermanPatternArray[2]).attr("cx") + "," + $("#" + supermanPatternArray[2]).attr("cy")).attr("stroke", supermanPatternArray[3]).attr("stroke-width", "3").attr("z-index", "-1");
-                current.node.id = supermanPatternArray[0];
-                current.toBack();
+                if (this.data('lastpath') != undefined) {
+                    var supermanPatternArray = this.data('lastpath').split(" ");
+                    $("#" + supermanPatternArray[0]).remove();
+                    var current = this.paper.path("M" + $("#" + supermanPatternArray[1]).attr("cx") + "," + $("#" + supermanPatternArray[1]).attr("cy") + "L" + $("#" + supermanPatternArray[2]).attr("cx") + "," + $("#" + supermanPatternArray[2]).attr("cy")).attr("stroke", supermanPatternArray[3]).attr("stroke-width", "3").attr("z-index", "-1");
+                    current.node.id = supermanPatternArray[0];
+                    current.toBack();
+                }
             }
         }
         
