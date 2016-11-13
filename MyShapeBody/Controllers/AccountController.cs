@@ -11,6 +11,9 @@ using Microsoft.Owin.Security;
 using MyShapeBody.Models;
 using BodyShapeNotifications;
 using BodyShapeNotifications.Impl;
+using MyShapeBody.Configuration;
+using MyShapeBody.Configuration.Impl;
+using System.Configuration;
 
 namespace MyShapeBody.Controllers
 {
@@ -22,12 +25,25 @@ namespace MyShapeBody.Controllers
         /// </summary>
         private INotificator mailNotificator;
 
+        /// <summary>
+        /// The sign in manager.
+        /// </summary>
         private ApplicationSignInManager _signInManager;
+
+        /// <summary>
+        /// The user manager.
+        /// </summary>
         private ApplicationUserManager _userManager;
+
+        /// <summary>
+        /// The bodyshape configuration
+        /// </summary>
+        private IBodyShapeConfiguration configuration;
 
         public AccountController()
         {
-            mailNotificator = new MailNotificator();
+            this.configuration = this.GetBodyShapeConfiguration();
+            mailNotificator = new MailNotificator(this.configuration.FolderLog);
         }
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
@@ -438,6 +454,23 @@ namespace MyShapeBody.Controllers
             }
 
             base.Dispose(disposing);
+        }
+
+        /// <summary>
+        /// The get bodyshape configuration method.
+        /// </summary>
+        /// <returns></returns>
+        private BodyShapeConfigurationSection GetBodyShapeConfiguration()
+        {
+            try
+            {
+                var config = ConfigurationManager.GetSection("bodyshape") as BodyShapeConfigurationSection;
+                return config;
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("An error occured during getting bodyshape configuration.\t\n" + ex);
+            }
         }
 
         #region Applications auxiliaires

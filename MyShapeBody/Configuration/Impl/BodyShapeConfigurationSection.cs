@@ -47,6 +47,22 @@ namespace MyShapeBody.Configuration.Impl
         }
 
         /// <summary>
+        /// The maximum error percentage.
+        /// </summary>
+        [ConfigurationProperty(PropertyNames.FolderLog, IsRequired = true)]
+        public string FolderLog
+        {
+            get
+            {
+                return this[PropertyNames.FolderLog].ToString();
+            }
+            set
+            {
+                this[PropertyNames.FolderLog] = value;
+            }
+        }
+
+        /// <summary>
         /// The property names.
         /// </summary>
         public static class PropertyNames
@@ -60,6 +76,11 @@ namespace MyShapeBody.Configuration.Impl
             /// The maximum error percentage.
             /// </summary>
             public const string MaxError = "maxerror";
+
+            /// <summary>
+            /// The folder log.
+            /// </summary>
+            public const string FolderLog = "folderlog";
         }
     }
 }

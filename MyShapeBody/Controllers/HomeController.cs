@@ -59,16 +59,27 @@ namespace MyShapeBody.Controllers
         {
             this.bodyRecorder = new BodyRecorder();
             this.configuration = this.GetBodyShapeConfiguration();
-            this.logger = new LoggerConfiguration()
-                .WriteTo.RollingFile("log-{Date}.txt", fileSizeLimitBytes: 100000000, retainedFileCountLimit: 100)
-                .CreateLogger();
         }
 
         /// <summary>
-        /// Page d'accueil
+        /// The initialize method.
         /// </summary>
-        /// <returns></returns>
-        public ActionResult Index()
+        /// <param name="requestContext"></param>
+        protected override void Initialize(System.Web.Routing.RequestContext requestContext)
+        {
+            base.Initialize(requestContext);
+
+            var path = Path.Combine(Server.MapPath("~/" + this.configuration.FolderLog + ""), "bodyshape-{Date}.txt");
+            this.logger = new LoggerConfiguration()
+                .WriteTo.RollingFile(path, shared: true)
+                .CreateLogger();
+        }
+
+    /// <summary>
+    /// Page d'accueil
+    /// </summary>
+    /// <returns></returns>
+    public ActionResult Index()
         {
             return View();
         }

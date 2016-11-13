@@ -20,5 +20,10 @@ namespace MyShapeBody.Configuration
         /// The maximum error percentage.
         /// </summary>
         int MaxError { get; set; }
+
+        /// <summary>
+        /// The folder log.
+        /// </summary>
+        string FolderLog { get; set; }
     }
 }

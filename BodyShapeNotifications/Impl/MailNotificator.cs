@@ -40,12 +40,13 @@ namespace BodyShapeNotifications.Impl
         /// <summary>
         /// The mail notificator constructor.
         /// </summary>
-        public MailNotificator()
+        public MailNotificator(string logFolder)
         {
+            var path = Path.Combine(HttpContext.Current.Server.MapPath("~/" + logFolder + ""), "bodyshape-{Date}.txt");
             this.MailConfiguration = this.GetMailConfiguration();
             this.LogoPath = string.Empty;
             this.logger = new LoggerConfiguration()
-                .WriteTo.RollingFile("log-{Date}.txt", fileSizeLimitBytes: 100000000, retainedFileCountLimit: 100)
+                .WriteTo.RollingFile(path, shared: true)
                 .CreateLogger();
         }
 
