@@ -58,6 +58,17 @@
         // Gestion du choix de la photo
         $('#file_choose').on('change', function (e) {
             if (!toutesphotosload) {
+
+                $("#generation_3D_canvas").css("background-image", "none");
+                $("#generation_3D_canvas").prepend('<img id="loadingleft" src="../Images/loader.gif" />');
+                $("#infos_2").prepend('<img id="loadingright" src="../Images/loader.gif" />');
+
+                var topload = $("#generation_3D_canvas").width() / 2 - $("#loadingleft").width() / 2;
+                $("#loadingleft").css("position", "relative");
+                $("#loadingright").css("position", "relative");
+                $("#loadingleft").css("top", topload + "px");
+                $("#loadingright").css("top", topload + "px");
+
                 var files = e.target.files;
                 if (firstPhoto) {
                     // On ne sélectionne qu'un seul fichier à la fois
@@ -74,6 +85,9 @@
                                 processData: false,
                                 data: data,
                                 success: function (result) {
+                                    $("#loadingleft").remove();
+                                    $("#loadingright").remove();
+
                                     $("#photo_zone_1").css("background-image", "url(/Images/pictures_profiles/" + result);
                                     $("#photo_zone_1").css("background-repeat", "no-repeat");
                                     $("#photo_zone_1").getBgImage(function () {
@@ -145,6 +159,9 @@
                                 processData: false,
                                 data: data,
                                 success: function (result) {
+                                    $("#loadingleft").remove();
+                                    $("#loadingright").remove();
+
                                     // Affichage de l'image dans la zone Photo
                                     $("#photo_zone_2").css("background-image", "url(/Images/pictures_profiles/" + result);
                                     $("#photo_zone_2").css("background-repeat", "no-repeat");
@@ -365,14 +382,28 @@
 
             var id1 = mymember + "_" + mypart + "_1";
             var id2 = mymember + "_" + mypart + "_2";
-            var circleCool1 = paper.circle(realcoordinate1X, realcoordinateY, rayon).drag(funcmove, start, end).attr("cursor", "pointer").attr("fill", color).attr("-webkit-tap-highlight-color", color).attr("stroke", color);
-            var circleCool2 = paper.circle(realcoordinate2X, realcoordinateY, rayon).drag(funcmove, start, end).attr("cursor", "pointer").attr("fill", color).attr("-webkit-tap-highlight-color", color).attr("stroke", color);
+            var circleCool1 = paper.circle(realcoordinate1X, realcoordinateY, rayon).drag(funcmove, start, end).attr("cursor", "pointer").attr("pointer-events", "all").attr("z-index", "1").attr("fill", color).attr("-webkit-tap-highlight-color", color).attr("stroke", color);
+            var circleCool2 = paper.circle(realcoordinate2X, realcoordinateY, rayon).drag(funcmove, start, end).attr("cursor", "pointer").attr("pointer-events", "all").attr("z-index", "1").attr("fill", color).attr("-webkit-tap-highlight-color", color).attr("stroke", color);
             circleCool1.id = id1;
             circleCool1.node.id = id1;
             circleCool1.data('svgpath', chaine1 + ' ' + color);
             circleCool2.id = id2;
             circleCool2.node.id = id2;
             circleCool2.data('svgpath', chaine2 + ' ' + color);
+
+            // Cursor
+            circleCool1.mouseover(function (e) {
+                this[0].style.cursor = "pointer";
+            });
+            circleCool1.mouseout(function (e) {
+                this[0].style.cursor = "";
+            });
+            circleCool2.mouseover(function (e) {
+                this[0].style.cursor = "pointer";
+            });
+            circleCool2.mouseout(function (e) {
+                this[0].style.cursor = "";
+            });
         }
 
         function Superman(paper, div1, div2)
@@ -407,20 +438,28 @@
             if (c2.data('lastpath') == undefined) {
                 c2.data('lastpath', path + " " + div1.attr("id") + " " + div2.attr("id") + " " + colorpath + " " + rayonpath);
             }
-            paper.path("M" + div1.attr("cx") + "," + div1.attr("cy") + "L" + div2.attr("cx") + "," + div2.attr("cy")).attr("stroke", colorpath).attr("stroke-width", 3).node.id = path;
+            var current = paper.path("M" + div1.attr("cx") + "," + div1.attr("cy") + "L" + div2.attr("cx") + "," + div2.attr("cy")).attr("stroke", colorpath).attr("stroke-width", 3).attr("z-index","-1");
+            current.node.id = path;
+            current.toBack();
         }
 
         function drawCatmullRom5(paper, path, div1, div2, div3, div4, div5, colorpath, rayonpath)
         {
-            paper.path("M " + div1.attr("cx") + " " + div1.attr("cy") + " \ R " + div2.attr("cx") + " " + div2.attr("cy") + " \ " + div3.attr("cx") + " " + div3.attr("cy") + " \ " + div4.attr("cx") + " " + div4.attr("cy") + " \ " + div5.attr("cx") + " " + div5.attr("cy")).attr("stroke", colorpath).attr("stroke-width", 3).node.id = path;
+            var current = paper.path("M " + div1.attr("cx") + " " + div1.attr("cy") + " \ R " + div2.attr("cx") + " " + div2.attr("cy") + " \ " + div3.attr("cx") + " " + div3.attr("cy") + " \ " + div4.attr("cx") + " " + div4.attr("cy") + " \ " + div5.attr("cx") + " " + div5.attr("cy")).attr("stroke", colorpath).attr("stroke-width", 3).attr("z-index", "-1");
+            current.node.id = path;
+            current.toBack();
         }
 
         function drawCatmullRom4(paper, path, div1, div2, div3, div4, colorpath, rayonpath) {
-            paper.path("M " + div1.attr("cx") + " " + div1.attr("cy") + " \ R " + div2.attr("cx") + " " + div2.attr("cy") + " \ " + div3.attr("cx") + " " + div3.attr("cy") + " \ " + div4.attr("cx") + " " + div4.attr("cy")).attr("stroke", colorpath).attr("stroke-width", 3).node.id = path;
+            var current = paper.path("M " + div1.attr("cx") + " " + div1.attr("cy") + " \ R " + div2.attr("cx") + " " + div2.attr("cy") + " \ " + div3.attr("cx") + " " + div3.attr("cy") + " \ " + div4.attr("cx") + " " + div4.attr("cy")).attr("stroke", colorpath).attr("stroke-width", 3).attr("z-index", "-1");
+            current.node.id = path;
+            current.toBack();
         }
 
         function drawCatmullRom3(paper, path, div1, div2, div3, colorpath, rayonpath) {
-            paper.path("M " + div1.attr("cx") + " " + div1.attr("cy") + " \ R " + div2.attr("cx") + " " + div2.attr("cy") + " \ " + div3.attr("cx") + " " + div3.attr("cy")).attr("stroke", colorpath).attr("stroke-width", 3).node.id = path;
+            var current = paper.path("M " + div1.attr("cx") + " " + div1.attr("cy") + " \ R " + div2.attr("cx") + " " + div2.attr("cy") + " \ " + div3.attr("cx") + " " + div3.attr("cy")).attr("stroke", colorpath).attr("stroke-width", 3).attr("z-index", "-1");
+            current.node.id = path;
+            current.toBack();
         }
 
         function generateFrontBones(divPhoto)
@@ -837,7 +876,9 @@
             this.attr({ cx: px, cy: py });
 
             $("#" + patternArray[0]).remove();
-            this.paper.path("M " + $("#" + patternArray[1]).attr("cx") + " " + $("#" + patternArray[1]).attr("cy") + " \ R " + $("#" + patternArray[2]).attr("cx") + " " + $("#" + patternArray[2]).attr("cy") + " \ " + $("#" + patternArray[3]).attr("cx") + " " + $("#" + patternArray[3]).attr("cy") + " \ " + $("#" + patternArray[4]).attr("cx") + " " + $("#" + patternArray[4]).attr("cy") + " \ " + $("#" + patternArray[5]).attr("cx") + " " + $("#" + patternArray[5]).attr("cy")).attr("stroke", patternArray[6]).attr("stroke-width", "3").node.id = patternArray[0];
+            var current = this.paper.path("M " + $("#" + patternArray[1]).attr("cx") + " " + $("#" + patternArray[1]).attr("cy") + " \ R " + $("#" + patternArray[2]).attr("cx") + " " + $("#" + patternArray[2]).attr("cy") + " \ " + $("#" + patternArray[3]).attr("cx") + " " + $("#" + patternArray[3]).attr("cy") + " \ " + $("#" + patternArray[4]).attr("cx") + " " + $("#" + patternArray[4]).attr("cy") + " \ " + $("#" + patternArray[5]).attr("cx") + " " + $("#" + patternArray[5]).attr("cy")).attr("stroke", patternArray[6]).attr("stroke-width", "3").attr("z-index", "-1");
+            current.node.id = patternArray[0];
+            current.toBack();
 
             // Superman management
             if (this.data('superman') != undefined) {
@@ -855,7 +896,9 @@
                 this.paper.getById(this.data('superman')).attr("cx", this.attr("cx"));
                 this.paper.getById(this.data('superman')).attr("cy", this.attr("cy"));
                 $("#" + supermanPatternArray[0]).remove();
-                this.paper.path("M " + $("#" + supermanPatternArray[1]).attr("cx") + " " + $("#" + supermanPatternArray[1]).attr("cy") + " \ R " + pathString).attr("stroke", supermanPatternArray[count - 1]).attr("stroke-width", "3").node.id = supermanPatternArray[0];
+                var current = this.paper.path("M " + $("#" + supermanPatternArray[1]).attr("cx") + " " + $("#" + supermanPatternArray[1]).attr("cy") + " \ R " + pathString).attr("stroke", supermanPatternArray[count - 1]).attr("stroke-width", "3").attr("z-index", "-1");
+                current.node.id = supermanPatternArray[0];
+                current.toBack();
             }
             if (this.data('superman2') != undefined) {
                 var supermanPatternArray = this.paper.getById(this.data('superman2')).data('svgpath').split(" ");
@@ -872,12 +915,16 @@
                 this.paper.getById(this.data('superman2')).attr("cx", this.attr("cx"));
                 this.paper.getById(this.data('superman2')).attr("cy", this.attr("cy"));
                 $("#" + supermanPatternArray[0]).remove();
-                this.paper.path("M " + $("#" + supermanPatternArray[1]).attr("cx") + " " + $("#" + supermanPatternArray[1]).attr("cy") + " \ R " + pathString).attr("stroke", supermanPatternArray[count - 1]).attr("stroke-width", "3").node.id = supermanPatternArray[0];
+                var current = this.paper.path("M " + $("#" + supermanPatternArray[1]).attr("cx") + " " + $("#" + supermanPatternArray[1]).attr("cy") + " \ R " + pathString).attr("stroke", supermanPatternArray[count - 1]).attr("stroke-width", "3").attr("z-index", "-1");
+                current.node.id = supermanPatternArray[0];
+                current.toBack();
             }
             if (this.data('lastpath') != undefined) {
                 var supermanPatternArray = this.data('lastpath').split(" ");
                 $("#" + supermanPatternArray[0]).remove();
-                this.paper.path("M" + $("#" + supermanPatternArray[1]).attr("cx") + "," + $("#" + supermanPatternArray[1]).attr("cy") + "L" + $("#" + supermanPatternArray[2]).attr("cx") + "," + $("#" + supermanPatternArray[2]).attr("cy")).attr("stroke", supermanPatternArray[3]).attr("stroke-width", "3").node.id = supermanPatternArray[0];
+                var current = this.paper.path("M" + $("#" + supermanPatternArray[1]).attr("cx") + "," + $("#" + supermanPatternArray[1]).attr("cy") + "L" + $("#" + supermanPatternArray[2]).attr("cx") + "," + $("#" + supermanPatternArray[2]).attr("cy")).attr("stroke", supermanPatternArray[3]).attr("stroke-width", "3").attr("z-index", "-1");
+                current.node.id = supermanPatternArray[0];
+                current.toBack();
             }
         }
 
@@ -891,7 +938,9 @@
             this.attr({ cx: px, cy: py });
 
             $("#" + patternArray[0]).remove();
-            this.paper.path("M " + $("#" + patternArray[1]).attr("cx") + " " + $("#" + patternArray[1]).attr("cy") + " \ R " + $("#" + patternArray[2]).attr("cx") + " " + $("#" + patternArray[2]).attr("cy") + " \ " + $("#" + patternArray[3]).attr("cx") + " " + $("#" + patternArray[3]).attr("cy") + " \ " + $("#" + patternArray[4]).attr("cx") + " " + $("#" + patternArray[4]).attr("cy")).attr("stroke", patternArray[5]).attr("stroke-width", "3").node.id = patternArray[0];
+            var current = this.paper.path("M " + $("#" + patternArray[1]).attr("cx") + " " + $("#" + patternArray[1]).attr("cy") + " \ R " + $("#" + patternArray[2]).attr("cx") + " " + $("#" + patternArray[2]).attr("cy") + " \ " + $("#" + patternArray[3]).attr("cx") + " " + $("#" + patternArray[3]).attr("cy") + " \ " + $("#" + patternArray[4]).attr("cx") + " " + $("#" + patternArray[4]).attr("cy")).attr("stroke", patternArray[5]).attr("stroke-width", "3").attr("z-index", "-1");
+            current.node.id = patternArray[0];
+            current.toBack();
 
             // Superman management
             if (this.data('superman') != undefined) {
@@ -909,7 +958,9 @@
                 this.paper.getById(this.data('superman')).attr("cx", this.attr("cx"));
                 this.paper.getById(this.data('superman')).attr("cy", this.attr("cy"));
                 $("#" + supermanPatternArray[0]).remove();
-                this.paper.path("M " + $("#" + supermanPatternArray[1]).attr("cx") + " " + $("#" + supermanPatternArray[1]).attr("cy") + " \ R " + pathString).attr("stroke", supermanPatternArray[count - 1]).attr("stroke-width", "3").node.id = supermanPatternArray[0];
+                var current = this.paper.path("M " + $("#" + supermanPatternArray[1]).attr("cx") + " " + $("#" + supermanPatternArray[1]).attr("cy") + " \ R " + pathString).attr("stroke", supermanPatternArray[count - 1]).attr("stroke-width", "3").attr("z-index", "-1");
+                current.node.id = supermanPatternArray[0];
+                current.toBack();
             }
             if (this.data('superman2') != undefined) {
                 var supermanPatternArray = this.paper.getById(this.data('superman2')).data('svgpath').split(" ");
@@ -926,12 +977,16 @@
                 this.paper.getById(this.data('superman2')).attr("cx", this.attr("cx"));
                 this.paper.getById(this.data('superman2')).attr("cy", this.attr("cy"));
                 $("#" + supermanPatternArray[0]).remove();
-                this.paper.path("M " + $("#" + supermanPatternArray[1]).attr("cx") + " " + $("#" + supermanPatternArray[1]).attr("cy") + " \ R " + pathString).attr("stroke", supermanPatternArray[count - 1]).attr("stroke-width", "3").node.id = supermanPatternArray[0];
+                var current = this.paper.path("M " + $("#" + supermanPatternArray[1]).attr("cx") + " " + $("#" + supermanPatternArray[1]).attr("cy") + " \ R " + pathString).attr("stroke", supermanPatternArray[count - 1]).attr("stroke-width", "3").attr("z-index", "-1");
+                current.node.id = supermanPatternArray[0];
+                current.toBack();
             }
             if (this.data('lastpath') != undefined) {
                 var supermanPatternArray = this.data('lastpath').split(" ");
                 $("#" + supermanPatternArray[0]).remove();
-                this.paper.path("M" + $("#" + supermanPatternArray[1]).attr("cx") + "," + $("#" + supermanPatternArray[1]).attr("cy") + "L" + $("#" + supermanPatternArray[2]).attr("cx") + "," + $("#" + supermanPatternArray[2]).attr("cy")).attr("stroke", supermanPatternArray[3]).attr("stroke-width", "3").node.id = supermanPatternArray[0];
+                var current = this.paper.path("M" + $("#" + supermanPatternArray[1]).attr("cx") + "," + $("#" + supermanPatternArray[1]).attr("cy") + "L" + $("#" + supermanPatternArray[2]).attr("cx") + "," + $("#" + supermanPatternArray[2]).attr("cy")).attr("stroke", supermanPatternArray[3]).attr("stroke-width", "3").attr("z-index", "-1");
+                current.node.id = supermanPatternArray[0];
+                current.toBack();
             }
         }
 
@@ -945,7 +1000,9 @@
             this.attr({ cx: px, cy: py });
 
             $("#" + patternArray[0]).remove();
-            this.paper.path("M " + $("#" + patternArray[1]).attr("cx") + " " + $("#" + patternArray[1]).attr("cy") + " \ R " + $("#" + patternArray[2]).attr("cx") + " " + $("#" + patternArray[2]).attr("cy") + " \ " + $("#" + patternArray[3]).attr("cx") + " " + $("#" + patternArray[3]).attr("cy")).attr("stroke", patternArray[4]).attr("stroke-width", "3").node.id = patternArray[0];
+            var current = this.paper.path("M " + $("#" + patternArray[1]).attr("cx") + " " + $("#" + patternArray[1]).attr("cy") + " \ R " + $("#" + patternArray[2]).attr("cx") + " " + $("#" + patternArray[2]).attr("cy") + " \ " + $("#" + patternArray[3]).attr("cx") + " " + $("#" + patternArray[3]).attr("cy")).attr("stroke", patternArray[4]).attr("stroke-width", "3").attr("z-index", "-1");
+            current.node.id = patternArray[0];
+            current.toBack();
 
             // Superman management
             if (this.data('superman') != undefined) {
@@ -963,7 +1020,9 @@
                 this.paper.getById(this.data('superman')).attr("cx", this.attr("cx"));
                 this.paper.getById(this.data('superman')).attr("cy", this.attr("cy"));
                 $("#" + supermanPatternArray[0]).remove();
-                this.paper.path("M " + $("#" + supermanPatternArray[1]).attr("cx") + " " + $("#" + supermanPatternArray[1]).attr("cy") + " \ R " + pathString).attr("stroke", supermanPatternArray[count - 1]).attr("stroke-width", "3").node.id = supermanPatternArray[0];
+                var current = this.paper.path("M " + $("#" + supermanPatternArray[1]).attr("cx") + " " + $("#" + supermanPatternArray[1]).attr("cy") + " \ R " + pathString).attr("stroke", supermanPatternArray[count - 1]).attr("stroke-width", "3").attr("z-index", "-1");
+                current.node.id = supermanPatternArray[0];
+                current.toBack();
             }
             if (this.data('superman2') != undefined) {
                 var supermanPatternArray = this.paper.getById(this.data('superman2')).data('svgpath').split(" ");
@@ -980,12 +1039,16 @@
                 this.paper.getById(this.data('superman2')).attr("cx", this.attr("cx"));
                 this.paper.getById(this.data('superman2')).attr("cy", this.attr("cy"));
                 $("#" + supermanPatternArray[0]).remove();
-                this.paper.path("M " + $("#" + supermanPatternArray[1]).attr("cx") + " " + $("#" + supermanPatternArray[1]).attr("cy") + " \ R " + pathString).attr("stroke", supermanPatternArray[count - 1]).attr("stroke-width", "3").node.id = supermanPatternArray[0];
+                var current = this.paper.path("M " + $("#" + supermanPatternArray[1]).attr("cx") + " " + $("#" + supermanPatternArray[1]).attr("cy") + " \ R " + pathString).attr("stroke", supermanPatternArray[count - 1]).attr("stroke-width", "3").attr("z-index", "-1");
+                current.node.id = supermanPatternArray[0];
+                current.toBack();
             }
             if (this.data('lastpath') != undefined) {
                 var supermanPatternArray = this.data('lastpath').split(" ");
                 $("#" + supermanPatternArray[0]).remove();
-                this.paper.path("M" + $("#" + supermanPatternArray[1]).attr("cx") + "," + $("#" + supermanPatternArray[1]).attr("cy") + "L" + $("#" + supermanPatternArray[2]).attr("cx") + "," + $("#" + supermanPatternArray[2]).attr("cy")).attr("stroke", supermanPatternArray[3]).attr("stroke-width", "3").node.id = supermanPatternArray[0];
+                var current = this.paper.path("M" + $("#" + supermanPatternArray[1]).attr("cx") + "," + $("#" + supermanPatternArray[1]).attr("cy") + "L" + $("#" + supermanPatternArray[2]).attr("cx") + "," + $("#" + supermanPatternArray[2]).attr("cy")).attr("stroke", supermanPatternArray[3]).attr("stroke-width", "3").attr("z-index", "-1");
+                current.node.id = supermanPatternArray[0];
+                current.toBack();
             }
         }
         
@@ -1138,10 +1201,11 @@
             return result;
         }
 
-        function pixelToRealTop(pixel)
+        function pixelToRealTop(pixel, pixel2)
         {
             var pixelFloat = parseFloat(pixel.attr("cy"));
-            var result = Math.round(pixelFloat) * $("#height_human").val() / pixelHeight;
+            var pixelFloat2 = parseFloat(pixel2.attr("cy"));
+            var result = (Math.round(pixelFloat) + Math.round(pixelFloat2)) * $("#height_human").val() / pixelHeight / 2;
             nbConversions = nbConversions + 1;
             return result;
         }
@@ -1178,8 +1242,8 @@
                         V2: Math.abs(pixelToRealLeft($("#abdo_v2_2")) - pixelToRealLeft($("#abdo_v2_1"))),
                         V3: Math.abs(pixelToRealLeft($("#abdo_v3_2")) - pixelToRealLeft($("#abdo_v3_1"))),
                         Z1: 0,
-                        Z2: (Math.abs(pixelToRealTop($("#abdo_u3_1")) - pixelToRealTop($("#abdo_u1_1")))) / 2,
-                        Z3: (Math.abs(pixelToRealTop($("#abdo_u3_1")) - pixelToRealTop($("#abdo_u1_1")))),
+                        Z2: (Math.abs(pixelToRealTop($("#abdo_u3_1"), $("#abdo_u3_2")) - pixelToRealTop($("#abdo_u1_1"), $("#abdo_u1_2")))) / 2,
+                        Z3: (Math.abs(pixelToRealTop($("#abdo_u3_1"), $("#abdo_u3_2")) - pixelToRealTop($("#abdo_u1_1"), $("#abdo_u1_2")))),
                     },
                     Thorax: {
                         U1: Math.abs(pixelToRealLeft($("#thorax_u1_2")) - pixelToRealLeft($("#thorax_u1_1"))),
@@ -1189,8 +1253,8 @@
                         V2: Math.abs(pixelToRealLeft($("#thorax_v2_2")) - pixelToRealLeft($("#thorax_v2_1"))),
                         V3: Math.abs(pixelToRealLeft($("#thorax_v3_2")) - pixelToRealLeft($("#thorax_v3_1"))),
                         Z1: 0,
-                        Z2: (Math.abs(pixelToRealTop($("#thorax_u3_1")) - pixelToRealTop($("#thorax_u1_1")))) / 2,
-                        Z3: (Math.abs(pixelToRealTop($("#thorax_u3_1")) - pixelToRealTop($("#thorax_u1_1")))),
+                        Z2: (Math.abs(pixelToRealTop($("#thorax_u3_1"), $("#thorax_u3_2")) - pixelToRealTop($("#thorax_u1_1"), $("#thorax_u1_2")))) / 2,
+                        Z3: (Math.abs(pixelToRealTop($("#thorax_u3_1"), $("#thorax_u3_2")) - pixelToRealTop($("#thorax_u1_1"), $("#thorax_u1_2")))),
                     },
                     Neck: {
                         U1: Math.abs(pixelToRealLeft($("#neck_u1_2")) - pixelToRealLeft($("#neck_u1_1"))),
@@ -1200,8 +1264,8 @@
                         V2: Math.abs(pixelToRealLeft($("#neck_v2_2")) - pixelToRealLeft($("#neck_v2_1"))),
                         V3: Math.abs(pixelToRealLeft($("#neck_v3_2")) - pixelToRealLeft($("#neck_v3_1"))),
                         Z1: 0,
-                        Z2: (Math.abs(pixelToRealTop($("#neck_u3_1")) - pixelToRealTop($("#neck_u1_1")))) / 2,
-                        Z3: (Math.abs(pixelToRealTop($("#neck_u3_1")) - pixelToRealTop($("#neck_u1_1")))),
+                        Z2: (Math.abs(pixelToRealTop($("#neck_u3_1"), $("#neck_u3_2")) - pixelToRealTop($("#neck_u1_1"), $("#neck_u1_2")))) / 2,
+                        Z3: (Math.abs(pixelToRealTop($("#neck_u3_1"), $("#neck_u3_2")) - pixelToRealTop($("#neck_u1_1"), $("#neck_u1_2")))),
                     },
                     Head: {
                         U1: Math.abs(pixelToRealLeft($("#head_u1_2")) - pixelToRealLeft($("#head_u1_1"))),
@@ -1211,8 +1275,8 @@
                         V2: Math.abs(pixelToRealLeft($("#head_v2_2")) - pixelToRealLeft($("#head_v2_1"))),
                         V3: Math.abs(pixelToRealLeft($("#head_v3_2")) - pixelToRealLeft($("#head_v3_1"))),
                         Z1: 0,
-                        Z2: (Math.abs(pixelToRealTop($("#head_u3_1")) - pixelToRealTop($("#head_u1_1")))) / 2,
-                        Z3: (Math.abs(pixelToRealTop($("#head_u3_1")) - pixelToRealTop($("#head_u1_1")))),
+                        Z2: (Math.abs(pixelToRealTop($("#head_u3_1"), $("#head_u3_2")) - pixelToRealTop($("#head_u1_1"), $("#head_u1_2")))) / 2,
+                        Z3: (Math.abs(pixelToRealTop($("#head_u3_1"), $("#head_u3_2")) - pixelToRealTop($("#head_u1_1"), $("#head_u1_2")))),
                     },
                     Bottom: {
                         U1: Math.abs(pixelToRealLeft($("#fesse_u1_2")) - pixelToRealLeft($("#fesse_u1_1"))),
@@ -1222,8 +1286,8 @@
                         V2: Math.abs(pixelToRealLeft($("#fesse_v2_2")) - pixelToRealLeft($("#fesse_v2_1"))),
                         V3: Math.abs(pixelToRealLeft($("#fesse_v3_2")) - pixelToRealLeft($("#fesse_v3_1"))),
                         Z1: 0,
-                        Z2: (Math.abs(pixelToRealTop($("#fesse_u3_1")) - pixelToRealTop($("#fesse_u1_1")))) / 2,
-                        Z3: (Math.abs(pixelToRealTop($("#fesse_u3_1")) - pixelToRealTop($("#fesse_u1_1")))),
+                        Z2: (Math.abs(pixelToRealTop($("#fesse_u3_1"), $("#fesse_u3_2")) - pixelToRealTop($("#fesse_u1_1"), $("#fesse_u1_2")))) / 2,
+                        Z3: (Math.abs(pixelToRealTop($("#fesse_u3_1"), $("#fesse_u3_2")) - pixelToRealTop($("#fesse_u1_1"), $("#fesse_u1_2")))),
                     },
                     Thigh: {
                         U1: Math.abs(pixelToRealLeft($("#cuisse1_u1_1")) - pixelToRealLeft($("#cuisse2_u1_1"))),
@@ -1233,8 +1297,8 @@
                         V2: Math.abs(pixelToRealLeft($("#cuisse_v2_2")) - pixelToRealLeft($("#cuisse_v2_1"))),
                         V3: Math.abs(pixelToRealLeft($("#cuisse_v3_2")) - pixelToRealLeft($("#cuisse_v3_1"))),
                         Z1: 0,
-                        Z2: (Math.abs(pixelToRealTop($("#cuisse1_u3_1")) - pixelToRealTop($("#cuisse1_u1_1")))) / 2,
-                        Z3: (Math.abs(pixelToRealTop($("#cuisse1_u3_1")) - pixelToRealTop($("#cuisse1_u1_1")))),
+                        Z2: (Math.abs(pixelToRealTop($("#cuisse1_u3_1"), $("#cuisse2_u3_1")) - pixelToRealTop($("#cuisse1_u1_1"), $("#cuisse2_u1_1")))) / 2,
+                        Z3: (Math.abs(pixelToRealTop($("#cuisse1_u3_1"), $("#cuisse2_u3_1")) - pixelToRealTop($("#cuisse1_u1_1"), $("#cuisse2_u1_1")))),
                     },
                     Leg: {
                         U1: Math.abs(pixelToRealLeft($("#jambe1_u1_1")) - pixelToRealLeft($("#jambe2_u1_1"))),
@@ -1244,8 +1308,8 @@
                         V2: Math.abs(pixelToRealLeft($("#jambe_v2_2")) - pixelToRealLeft($("#jambe_v2_1"))),
                         V3: Math.abs(pixelToRealLeft($("#jambe_v3_2")) - pixelToRealLeft($("#jambe_v3_1"))),
                         Z1: 0,
-                        Z2: (Math.abs(pixelToRealTop($("#jambe1_u3_1")) - pixelToRealTop($("#jambe1_u1_1")))) / 2,
-                        Z3: (Math.abs(pixelToRealTop($("#jambe1_u3_1")) - pixelToRealTop($("#jambe1_u1_1")))),
+                        Z2: (Math.abs(pixelToRealTop($("#jambe1_u3_1"), $("#jambe2_u3_1")) - pixelToRealTop($("#jambe1_u1_1"), $("#jambe2_u1_1")))) / 2,
+                        Z3: (Math.abs(pixelToRealTop($("#jambe1_u3_1"), $("#jambe2_u3_1")) - pixelToRealTop($("#jambe1_u1_1"), $("#jambe2_u1_1")))),
                     },
                     Foot: {
                         U1: Math.abs(pixelToRealLeft($("#pied1_u1_1")) - pixelToRealLeft($("#pied2_u1_1"))),
@@ -1255,8 +1319,8 @@
                         V2: Math.abs(pixelToRealLeft($("#pied_v2_2")) - pixelToRealLeft($("#pied_v2_1"))),
                         V3: Math.abs(pixelToRealLeft($("#pied_v3_2")) - pixelToRealLeft($("#pied_v3_1"))),
                         Z1: 0,
-                        Z2: (Math.abs(pixelToRealTop($("#pied1_u3_1")) - pixelToRealTop($("#pied1_u1_1")))) / 2,
-                        Z3: (Math.abs(pixelToRealTop($("#pied1_u3_1")) - pixelToRealTop($("#pied1_u1_1")))),
+                        Z2: (Math.abs(pixelToRealTop($("#pied1_u3_1"), $("#pied2_u3_1")) - pixelToRealTop($("#pied1_u1_1"), $("#pied2_u1_1")))) / 2,
+                        Z3: (Math.abs(pixelToRealTop($("#pied1_u3_1"), $("#pied2_u3_1")) - pixelToRealTop($("#pied1_u1_1"), $("#pied2_u1_1")))),
                     },
                     Hand: {
                         U1: Math.abs(pixelToRealLeft($("#maingauche_u1_2")) - pixelToRealLeft($("#maingauche_u1_1"))),
@@ -1266,8 +1330,8 @@
                         V2: Math.abs(pixelToRealLeft($("#main_v2_2")) - pixelToRealLeft($("#main_v2_1"))),
                         V3: Math.abs(pixelToRealLeft($("#main_v3_2")) - pixelToRealLeft($("#main_v3_1"))),
                         Z1: 0,
-                        Z2: (Math.abs(pixelToRealTop($("#maingauche_u3_1")) - pixelToRealTop($("#maingauche_u1_1")))) / 2,
-                        Z3: (Math.abs(pixelToRealTop($("#maingauche_u3_1")) - pixelToRealTop($("#maingauche_u1_1")))),
+                        Z2: (Math.abs(pixelToRealTop($("#maingauche_u3_1"), $("#maingauche_u3_2")) - pixelToRealTop($("#maingauche_u1_1"), $("#maingauche_u1_2")))) / 2,
+                        Z3: (Math.abs(pixelToRealTop($("#maingauche_u3_1"), $("#maingauche_u3_2")) - pixelToRealTop($("#maingauche_u1_1"), $("#maingauche_u1_2")))),
                     },
                     ForeArm: {
                         U1: Math.abs(pixelToRealLeft($("#avantbrasgauche_u1_2")) - pixelToRealLeft($("#avantbrasgauche_u1_1"))),
@@ -1277,8 +1341,8 @@
                         V2: Math.abs(pixelToRealLeft($("#avantbras_v2_2")) - pixelToRealLeft($("#avantbras_v2_1"))),
                         V3: Math.abs(pixelToRealLeft($("#avantbras_v3_2")) - pixelToRealLeft($("#avantbras_v3_1"))),
                         Z1: 0,
-                        Z2: (Math.abs(pixelToRealTop($("#avantbrasgauche_u3_1")) - pixelToRealTop($("#avantbrasgauche_u1_1")))) / 2,
-                        Z3: (Math.abs(pixelToRealTop($("#avantbrasgauche_u3_1")) - pixelToRealTop($("#avantbrasgauche_u1_1")))),
+                        Z2: (Math.abs(pixelToRealTop($("#avantbrasgauche_u3_1"), $("#avantbrasgauche_u3_2")) - pixelToRealTop($("#avantbrasgauche_u1_1"), $("#avantbrasgauche_u1_2")))) / 2,
+                        Z3: (Math.abs(pixelToRealTop($("#avantbrasgauche_u3_1"), $("#avantbrasgauche_u3_2")) - pixelToRealTop($("#avantbrasgauche_u1_1"), $("#avantbrasgauche_u1_2")))),
                     },
                     Arm: {
                         U1: Math.abs(pixelToRealLeft($("#brasgauche_u2_2")) - pixelToRealLeft($("#brasgauche_u2_1"))),
@@ -1288,8 +1352,8 @@
                         V2: Math.abs(pixelToRealLeft($("#bras_v2_2")) - pixelToRealLeft($("#bras_v2_1"))),
                         V3: Math.abs(pixelToRealLeft($("#bras_v3_2")) - pixelToRealLeft($("#bras_v3_1"))),
                         Z1: 0,
-                        Z2: (Math.abs(pixelToRealTop($("#brasgauche_u2_2")) - pixelToRealTop($("#brasgauche_u4_2")))) / 2,
-                        Z3: (Math.abs(pixelToRealTop($("#brasgauche_u2_2")) - pixelToRealTop($("#brasgauche_u4_2")))),
+                        Z2: (Math.abs(pixelToRealTop($("#brasgauche_u2_2"), $("#brasgauche_u2_1")) - pixelToRealTop($("#brasgauche_u4_2"), $("#brasgauche_u4_1")))) / 2,
+                        Z3: (Math.abs(pixelToRealTop($("#brasgauche_u2_2"), $("#brasgauche_u2_1")) - pixelToRealTop($("#brasgauche_u4_2"), $("#brasgauche_u4_1")))),
                     },
                 };
         }
