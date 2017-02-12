@@ -26,6 +26,8 @@
             var intervalSide;
             var currentFront;
             var currentSide;
+            var diffFrontCanvasX;
+            var diffSideCanvasX;
             
         /*********************************   CHARGEMENT IMAGES ET PHOTOS   **********************************/
         /****************************************************************************************/
@@ -367,11 +369,45 @@
         var paper1;
         var paper2;
 
-        function GenerateDoublePoints(paper, chaine1, chaine2, funcmove, coordonnee1X, coordonnee1Y, coordonnee2X, coordonnee2Y, mymember, mypart, myWidthScreen, myHeightScreen, divPhotoScreen, ourScaleX, ourScaleY, color)
+        function RetreiveForCorrectPositions(realCoordinate1X, realCoordinate2X, scaleX, realCoordinateY, scaleY, screeWidth, screenHeight) {
+            var var1 = (realCoordinate1X - screeWidth / 2) / scaleX;
+            var var2 = (realCoordinate2X - screeWidth / 2) / scaleX;
+            var var3 = (screenHeight / 2 - (realCoordinateY + 80) / scaleY) * 2 * 30 / screenHeight;
+            var result = [var1, var2, var3];
+
+            return result;
+        }
+        
+        function GenerateDoublePoints(sense, paper, chaine1, chaine2, funcmove, coordonnee1X, coordonnee1Y, coordonnee2X, coordonnee2Y, mymember, mypart, myWidthScreen, myHeightScreen, divPhotoScreen, ourScaleX, ourScaleY, color)
         {
             var rayon = 4;
-            var realcoordinate1X = coordonnee1X * ourScaleX + myWidthScreen / 2;
-            var realcoordinate2X = coordonnee2X * ourScaleX + myWidthScreen / 2;
+            var realcoordinate1X;
+            var realcoordinate2X;
+            
+            if (sense == "front")
+            {
+                if (mymember == "head" && mypart == "u1") {
+                    realcoordinate1X = myWidthScreen / 2;
+                    realcoordinate2X = myWidthScreen / 2;
+                    diffFrontCanvasX = coordonnee1X * ourScaleX - myWidthScreen / 2;
+                }
+                else {
+                    realcoordinate1X = coordonnee1X * ourScaleX - diffFrontCanvasX;
+                    realcoordinate2X = coordonnee2X * ourScaleX - diffFrontCanvasX;
+                }
+            }
+            else if (sense == "side")
+            {
+                if (mymember == "head" && mypart == "v1") {
+                    realcoordinate1X = myWidthScreen / 2;
+                    realcoordinate2X = myWidthScreen / 2;
+                    diffSideCanvasX = coordonnee1X * ourScaleX - myWidthScreen / 2;
+                }
+                else {
+                    realcoordinate1X = coordonnee1X * ourScaleX - diffSideCanvasX;
+                    realcoordinate2X = coordonnee2X * ourScaleX - diffSideCanvasX;
+                }
+            }
             var realcoordinateY = (myHeightScreen / 2 - coordonnee1Y / 30 * myHeightScreen / 2) * ourScaleY - 80;
             //if (selectedimage == 2)
             //{
@@ -479,11 +515,11 @@
             // Head
             chain1 = "path_head_1 head_u1_1 head_u2_1 head_u3_1 head_u4_1 head_u5_1";
             chain2 = "path_head_2 head_u1_2 head_u2_2 head_u3_2 head_u4_2 head_u5_2";
-            GenerateDoublePoints(paper1, chain1, chain2, move5, 0, 25.65, 0, 25.65, "head", "u1", widthTotal, heightTotal, divPhoto, 35, 2.2, 'red');
-            GenerateDoublePoints(paper1, chain1, chain2, move5 , - 0.95, 25, 0.95, 25, "head", "u2", widthTotal, heightTotal, divPhoto, 35, 2.2, 'red');
-            GenerateDoublePoints(paper1, chain1, chain2, move5 , - 1.14181, 23.87, 1.14181, 23.87, "head", "u3", widthTotal, heightTotal, divPhoto, 35, 2.2, 'red');
-            GenerateDoublePoints(paper1, chain1, chain2, move5 , - 0.74, 22.56, 0.74, 22.56, "head", "u4", widthTotal, heightTotal, divPhoto, 35, 2.2, 'red');
-            GenerateDoublePoints(paper1, chain1, chain2, move5, 0, 21.81, 0, 21.81, "head", "u5", widthTotal, heightTotal, divPhoto, 35, 2.2, 'red');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move5, 1.12, 25.65, 1.12, 25.65, "head", "u1", widthTotal, heightTotal, divPhoto, 35, 2.2, 'red');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move5, 0.43, 24.46, 1.80, 24.46, "head", "u2", widthTotal, heightTotal, divPhoto, 35, 2.2, 'red');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move5, 0.66, 23.22, 1.52, 23.22, "head", "u3", widthTotal, heightTotal, divPhoto, 35, 2.2, 'red');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move5, 0.52, 22.49, 1.66, 22.49, "head", "u4", widthTotal, heightTotal, divPhoto, 35, 2.2, 'red');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move5, 1.12, 23, 1.12, 23, "head", "u5", widthTotal, heightTotal, divPhoto, 35, 2.2, 'red');
             drawCatmullRom5(paper1, "path_head_1", $("#head_u1_1"), $("#head_u2_1"), $("#head_u3_1"), $("#head_u4_1"), $("#head_u5_1"), "red", myrayon);
             drawCatmullRom5(paper1, "path_head_2", $("#head_u1_2"), $("#head_u2_2"), $("#head_u3_2"), $("#head_u4_2"), $("#head_u5_2"), "red", myrayon);
 
@@ -494,9 +530,9 @@
             // Neck
             chain1 = "path_neck_1 neck_u1_1 neck_u2_1 neck_u3_1";
             chain2 = "path_neck_2 neck_u1_2 neck_u2_2 neck_u3_2";
-            GenerateDoublePoints(paper1, chain1, chain2, move3, -0.74, 22.56, 0.74, 22.56, "neck", "u1", widthTotal, heightTotal, divPhoto, 35, 2.2, 'red');
-            GenerateDoublePoints(paper1, chain1, chain2, move3, -0.6, 21.81, 0.6, 21.81, "neck", "u2", widthTotal, heightTotal, divPhoto, 35, 2.2, 'red');
-            GenerateDoublePoints(paper1, chain1, chain2, move3, -1.8, 21.06, 1.8, 21.06, "neck", "u3", widthTotal, heightTotal, divPhoto, 30, 2.5, 'red');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move3, 0.52, 22.49, 1.66, 22.49, "neck", "u1", widthTotal, heightTotal, divPhoto, 35, 2.2, 'red');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move3, -0.84, 21.44, 3.12, 21.44, "neck", "u2", widthTotal, heightTotal, divPhoto, 35, 2.2, 'red');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move3, -0.72, 21.58, 3.27, 21.06, "neck", "u3", widthTotal, heightTotal, divPhoto, 30, 2.5, 'red');
             drawCatmullRom3(paper1, "path_neck_1", $("#neck_u1_1"), $("#neck_u2_1"), $("#neck_u3_1"), "red", myrayon);
             drawCatmullRom3(paper1, "path_neck_2", $("#neck_u1_2"), $("#neck_u2_2"), $("#neck_u3_2"), "red", myrayon);
 
@@ -507,9 +543,9 @@
             // Thorax
             chain1 = "path_thorax_1 thorax_u1_1 thorax_u2_1 thorax_u3_1";
             chain2 = "path_thorax_2 thorax_u1_2 thorax_u2_2 thorax_u3_2";
-            GenerateDoublePoints(paper1, chain1, chain2, move3, -1.8, 21.06, 1.8, 21.06, "thorax", "u1", widthTotal, heightTotal, divPhoto, 30, 2.5, 'green');
-            GenerateDoublePoints(paper1, chain1, chain2, move3, -2.6, 19.85, 2.6, 19.85, "thorax", "u2", widthTotal, heightTotal, divPhoto, 20, 2.5, 'green');
-            GenerateDoublePoints(paper1, chain1, chain2, move3, -2.01, 17.13, 2.01, 17.13, "thorax", "u3", widthTotal, heightTotal, divPhoto, 25, 2.5, 'green');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move3, -0.72, 21.58, 3.27, 21.58, "thorax", "u1", widthTotal, heightTotal, divPhoto, 30, 2.5, 'green');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move3, -0.63, 20.81, 4.56, 20.81, "thorax", "u2", widthTotal, heightTotal, divPhoto, 20, 2.5, 'green');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move3, -0.34, 20.01, 3.37, 20.01, "thorax", "u3", widthTotal, heightTotal, divPhoto, 25, 2.5, 'green');
             drawCatmullRom3(paper1, "path_thorax_1", $("#thorax_u1_1"), $("#thorax_u2_1"), $("#thorax_u3_1"), "green", myrayon);
             drawCatmullRom3(paper1, "path_thorax_2", $("#thorax_u1_2"), $("#thorax_u2_2"), $("#thorax_u3_2"), "green", myrayon);
 
@@ -520,9 +556,9 @@
             // Abdos
             chain1 = "path_abdo_1 abdo_u1_1 abdo_u2_1 abdo_u3_1";
             chain2 = "path_abdo_2 abdo_u1_2 abdo_u2_2 abdo_u3_2";
-            GenerateDoublePoints(paper1, chain1, chain2, move3, -2.01, 17.13, 2.01, 17.13, "abdo", "u1", widthTotal, heightTotal, divPhoto, 25, 2.5, 'green');
-            GenerateDoublePoints(paper1, chain1, chain2, move3, -2.18, 15, 2.18, 15, "abdo", "u2", widthTotal, heightTotal, divPhoto, 25, 2.5, 'green');
-            GenerateDoublePoints(paper1, chain1, chain2, move3, -2.33, 14.42, 2.33, 14.42, "abdo", "u3", widthTotal, heightTotal, divPhoto, 25, 2.5, 'green');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move3, -0.34, 20.01, 3.37, 20.01, "abdo", "u1", widthTotal, heightTotal, divPhoto, 25, 2.5, 'green');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move3, -0.30, 18.40, 3.37, 18.40, "abdo", "u2", widthTotal, heightTotal, divPhoto, 25, 2.5, 'green');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move3, -0.78, 16.79, 3.69, 16.79, "abdo", "u3", widthTotal, heightTotal, divPhoto, 25, 2.5, 'green');
             drawCatmullRom3(paper1, "path_abdo_1", $("#abdo_u1_1"), $("#abdo_u2_1"), $("#abdo_u3_1"), "green", myrayon);
             drawCatmullRom3(paper1, "path_abdo_2", $("#abdo_u1_2"), $("#abdo_u2_2"), $("#abdo_u3_2"), "green", myrayon);
 
@@ -533,9 +569,9 @@
             // Fesses
             chain1 = "path_fesse_1 fesse_u1_1 fesse_u2_1 fesse_u3_1";
             chain2 = "path_fesse_2 fesse_u1_2 fesse_u2_2 fesse_u3_2";
-            GenerateDoublePoints(paper1, chain1, chain2, move3, -2.33, 14.42, 2.33, 14.42, "fesse", "u1", widthTotal, heightTotal, divPhoto, 25, 2.5, 'yellow');
-            GenerateDoublePoints(paper1, chain1, chain2, move3, - 2.25, 13.64, 2.25, 13.64, "fesse", "u2", widthTotal, heightTotal, divPhoto, 25, 2.5, 'yellow');
-            GenerateDoublePoints(paper1, chain1, chain2, move3, - 2.33, 12.95, 2.33, 12.95, "fesse", "u3", widthTotal, heightTotal, divPhoto, 25, 2.5, 'yellow');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move3, -0.78, 16.79, 3.69, 16.79, "fesse", "u1", widthTotal, heightTotal, divPhoto, 25, 2.5, 'yellow');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move3, -0.90, 15.62, 3.97, 15.62, "fesse", "u2", widthTotal, heightTotal, divPhoto, 25, 2.5, 'yellow');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move3, -1.14, 14.41, 4.21, 14.41, "fesse", "u3", widthTotal, heightTotal, divPhoto, 25, 2.5, 'yellow');
             drawCatmullRom3(paper1, "path_fesse_1", $("#fesse_u1_1"), $("#fesse_u2_1"), $("#fesse_u3_1"), "yellow", myrayon);
             drawCatmullRom3(paper1, "path_fesse_2", $("#fesse_u1_2"), $("#fesse_u2_2"), $("#fesse_u3_2"), "yellow", myrayon);
 
@@ -546,16 +582,16 @@
             // Cuisses
             chain1 = "path_cuisse1_1 cuisse1_u1_1 cuisse1_u2_1 cuisse1_u3_1";
             chain2 = "path_cuisse1_2 cuisse1_u1_2 cuisse1_u2_2 cuisse1_u3_2";
-            GenerateDoublePoints(paper1, chain1, chain2, move3, -2.33, 12.95, 2.33, 12.95, "cuisse1", "u1", widthTotal, heightTotal, divPhoto, 25, 2.5, 'orange');
-            GenerateDoublePoints(paper1, chain1, chain2, move3, -2.36, 9.6, 2.36, 9.6, "cuisse1", "u2", widthTotal, heightTotal, divPhoto, 25, 2.3, 'orange');
-            GenerateDoublePoints(paper1, chain1, chain2, move3, -1.89, 7.6, 1.89, 7.6, "cuisse1", "u3", widthTotal, heightTotal, divPhoto, 25, 2.3, 'orange');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move3, -1.14, 14.41, 4.21, 14.41, "cuisse1", "u1", widthTotal, heightTotal, divPhoto, 25, 2.5, 'orange');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move3, -1.02, 10.60, 3.86, 10.60, "cuisse1", "u2", widthTotal, heightTotal, divPhoto, 25, 2.3, 'orange');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move3, -1.18, 8.15, 4.02, 8.15, "cuisse1", "u3", widthTotal, heightTotal, divPhoto, 25, 2.3, 'orange');
             drawCatmullRom3(paper1, "path_cuisse1_1", $("#cuisse1_u1_1"), $("#cuisse1_u2_1"), $("#cuisse1_u3_1"), "orange", myrayon);
             drawCatmullRom3(paper1, "path_cuisse1_2", $("#cuisse1_u1_2"), $("#cuisse1_u2_2"), $("#cuisse1_u3_2"), "orange", myrayon);
             chain1 = "path_cuisse2_1 cuisse2_u1_1 cuisse2_u2_1 cuisse2_u3_1";
             chain2 = "path_cuisse2_2 cuisse2_u1_2 cuisse2_u2_2 cuisse2_u3_2";
-            GenerateDoublePoints(paper1, chain1, chain2, move3, 0, 12.95, 0, 12.95, "cuisse2", "u1", widthTotal, heightTotal, divPhoto, 25, 2.5, 'orange');
-            GenerateDoublePoints(paper1, chain1, chain2, move3, -0.19, 9.6, 0.19, 9.6, "cuisse2", "u2", widthTotal, heightTotal, divPhoto, 25, 2.3, 'orange');
-            GenerateDoublePoints(paper1, chain1, chain2, move3, -0.24, 7.6, 0.24, 7.6, "cuisse2", "u3", widthTotal, heightTotal, divPhoto, 25, 2.3, 'orange');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move3, 1.45, 14.41, 1.45, 14.41, "cuisse2", "u1", widthTotal, heightTotal, divPhoto, 25, 2.5, 'orange');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move3, 0.73, 10.60, 2.1, 10.60, "cuisse2", "u2", widthTotal, heightTotal, divPhoto, 25, 2.3, 'orange');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move3, -0.02, 8.15, 2.9, 8.15, "cuisse2", "u3", widthTotal, heightTotal, divPhoto, 25, 2.3, 'orange');
             drawCatmullRom3(paper1, "path_cuisse2_1", $("#cuisse2_u1_1"), $("#cuisse2_u2_1"), $("#cuisse2_u3_1"), "orange", myrayon);
             drawCatmullRom3(paper1, "path_cuisse2_2", $("#cuisse2_u1_2"), $("#cuisse2_u2_2"), $("#cuisse2_u3_2"), "orange", myrayon);
 
@@ -567,16 +603,16 @@
             // Jambes
             chain1 = "path_jambe1_1 jambe1_u1_1 jambe1_u2_1 jambe1_u3_1";
             chain2 = "path_jambe1_2 jambe1_u1_2 jambe1_u2_2 jambe1_u3_2";
-            GenerateDoublePoints(paper1, chain1, chain2, move3, -1.89, 7.6, 1.89, 7.6, "jambe1", "u1", widthTotal, heightTotal, divPhoto, 25, 2.3, 'pink');
-            GenerateDoublePoints(paper1, chain1, chain2, move3, -2.09, 5.64, 2.09, 5.64, "jambe1", "u2", widthTotal, heightTotal, divPhoto, 25, 2.3, 'pink');
-            GenerateDoublePoints(paper1, chain1, chain2, move3, -1.25, 2.38, 1.25, 2.38, "jambe1", "u3", widthTotal, heightTotal, divPhoto, 25, 2.2, 'pink');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move3, -1.18, 8.15, 4.02, 8.15, "jambe1", "u1", widthTotal, heightTotal, divPhoto, 25, 2.3, 'pink');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move3, -1.50, 5.70, 4.38, 5.70, "jambe1", "u2", widthTotal, heightTotal, divPhoto, 25, 2.3, 'pink');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move3, -1.46, 2.08, 4.34, 2.08, "jambe1", "u3", widthTotal, heightTotal, divPhoto, 25, 2.2, 'pink');
             drawCatmullRom3(paper1, "path_jambe1_1", $("#jambe1_u1_1"), $("#jambe1_u2_1"), $("#jambe1_u3_1"), "pink", myrayon);
             drawCatmullRom3(paper1, "path_jambe1_2", $("#jambe1_u1_2"), $("#jambe1_u2_2"), $("#jambe1_u3_2"), "pink", myrayon);
             chain1 = "path_jambe2_1 jambe2_u1_1 jambe2_u2_1 jambe2_u3_1";
             chain2 = "path_jambe2_2 jambe2_u1_2 jambe2_u2_2 jambe2_u3_2";
-            GenerateDoublePoints(paper1, chain1, chain2, move3, -0.24, 7.6, 0.24, 7.6, "jambe2", "u1", widthTotal, heightTotal, divPhoto, 25, 2.3, 'pink');
-            GenerateDoublePoints(paper1, chain1, chain2, move3, -0.24, 5.64, 0.24, 5.64, "jambe2", "u2", widthTotal, heightTotal, divPhoto, 25, 2.3, 'pink');
-            GenerateDoublePoints(paper1, chain1, chain2, move3, -0.46, 2.38, 0.46, 2.38, "jambe2", "u3", widthTotal, heightTotal, divPhoto, 25, 2.2, 'pink');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move3, -0.02, 8.15, 2.9, 8.15, "jambe2", "u1", widthTotal, heightTotal, divPhoto, 25, 2.3, 'pink');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move3, -0.30, 5.70, 3.18, 5.70, "jambe2", "u2", widthTotal, heightTotal, divPhoto, 25, 2.3, 'pink');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move3, -0.70, 2.08, 3.58, 2.08, "jambe2", "u3", widthTotal, heightTotal, divPhoto, 25, 2.2, 'pink');
             drawCatmullRom3(paper1, "path_jambe2_1", $("#jambe2_u1_1"), $("#jambe2_u2_1"), $("#jambe2_u3_1"), "pink", myrayon);
             drawCatmullRom3(paper1, "path_jambe2_2", $("#jambe2_u1_2"), $("#jambe2_u2_2"), $("#jambe2_u3_2"), "pink", myrayon);
 
@@ -589,16 +625,16 @@
             // Pieds
             chain1 = "path_pied1_1 pied1_u1_1 pied1_u2_1 pied1_u3_1";
             chain2 = "path_pied1_2 pied1_u1_2 pied1_u2_2 pied1_u3_2";
-            GenerateDoublePoints(paper1, chain1, chain2, move3, -1.25, 2.38, 1.25, 2.38, "pied1", "u1", widthTotal, heightTotal, divPhoto, 25, 2.2, 'purple');
-            GenerateDoublePoints(paper1, chain1, chain2, move3, -1.25, 1.57, 1.25, 1.57, "pied1", "u2", widthTotal, heightTotal, divPhoto, 25, 2.2, 'purple');
-            GenerateDoublePoints(paper1, chain1, chain2, move3, -2.28, 0.05, 2.28, 0.05, "pied1", "u3", widthTotal, heightTotal, divPhoto, 25, 2.2, 'purple');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move3, -1.46, 2.08, 4.34, 2.08, "pied1", "u1", widthTotal, heightTotal, divPhoto, 25, 2.2, 'purple');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move3, -1.54, 0.85, 4.38, 0.85, "pied1", "u2", widthTotal, heightTotal, divPhoto, 25, 2.2, 'purple');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move3, -1.94, -0.38, 4.82, -0.38, "pied1", "u3", widthTotal, heightTotal, divPhoto, 25, 2.2, 'purple');
             drawCatmullRom3(paper1, "path_pied1_1", $("#pied1_u1_1"), $("#pied1_u2_1"), $("#pied1_u3_1"), "purple", myrayon);
             drawCatmullRom3(paper1, "path_pied1_2", $("#pied1_u1_2"), $("#pied1_u2_2"), $("#pied1_u3_2"), "purple", myrayon);
             chain1 = "path_pied2_1 pied2_u1_1 pied2_u2_1 pied2_u3_1";
             chain2 = "path_pied2_2 pied2_u1_2 pied2_u2_2 pied2_u3_2";
-            GenerateDoublePoints(paper1, chain1, chain2, move3, -0.46, 2.38, 0.46, 2.38, "pied2", "u1", widthTotal, heightTotal, divPhoto, 25, 2.2, 'purple');
-            GenerateDoublePoints(paper1, chain1, chain2, move3, -0.37, 1.57, 0.37, 1.57, "pied2", "u2", widthTotal, heightTotal, divPhoto, 25, 2.2, 'purple');
-            GenerateDoublePoints(paper1, chain1, chain2, move3, -0.51, 0.05, 0.51, 0.05, "pied2", "u3", widthTotal, heightTotal, divPhoto, 25, 2.2, 'purple');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move3, -0.70, 2.08, 3.58, 2.08, "pied2", "u1", widthTotal, heightTotal, divPhoto, 25, 2.2, 'purple');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move3, -0.58, 0.85, 3.46, 0.85, "pied2", "u2", widthTotal, heightTotal, divPhoto, 25, 2.2, 'purple');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move3, -0.38, -0.38, 3.26, -0.38, "pied2", "u3", widthTotal, heightTotal, divPhoto, 25, 2.2, 'purple');
             drawCatmullRom3(paper1, "path_pied2_1", $("#pied2_u1_1"), $("#pied2_u2_1"), $("#pied2_u3_1"), "purple", myrayon);
             drawCatmullRom3(paper1, "path_pied2_2", $("#pied2_u1_2"), $("#pied2_u2_2"), $("#pied2_u3_2"), "purple", myrayon);
             drawSimpleCatmullRom(paper1, "path_rely_rightfoot", $("#pied1_u3_2"), $("#pied2_u3_2"), "purple", myrayon);
@@ -613,38 +649,38 @@
             // Main gauche
             chain1 = "path_maingauche_1 maingauche_u1_1 maingauche_u2_1 maingauche_u3_1 maingauche_u4_1";
             chain2 = "path_maingauche_2 maingauche_u1_2 maingauche_u2_2 maingauche_u3_2 maingauche_u4_2";
-            GenerateDoublePoints(paper1, chain1, chain2, move4, -3.55, 13.58, -4.5, 13.72, "maingauche", "u1", widthTotal, heightTotal, divPhoto, 25, 2.5, 'brown');
-            GenerateDoublePoints(paper1, chain1, chain2, move4, -3.6, 12.54, -4.82, 12.63, "maingauche", "u2", widthTotal, heightTotal, divPhoto, 25, 2.5, 'brown');
-            GenerateDoublePoints(paper1, chain1, chain2, move4, -3.51, 11.37, -5.13, 11.35, "maingauche", "u3", widthTotal, heightTotal, divPhoto, 25, 2.5, 'brown');
-            GenerateDoublePoints(paper1, chain1, chain2, move4, -4.5, 10.87, -4.5, 10.87, "maingauche", "u4", widthTotal, heightTotal, divPhoto, 25, 2.5, 'brown');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move4, -1.86, 16.91, -2.54, 16.91, "maingauche", "u1", widthTotal, heightTotal, divPhoto, 25, 2.5, 'brown');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move4, -2.06, 16.18, -2.54, 16.18, "maingauche", "u2", widthTotal, heightTotal, divPhoto, 25, 2.5, 'brown');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move4, -2.08, 15.50, -2.4, 15.50, "maingauche", "u3", widthTotal, heightTotal, divPhoto, 25, 2.5, 'brown');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move4, -2.14, 15.10, -2.14, 15.10, "maingauche", "u4", widthTotal, heightTotal, divPhoto, 25, 2.5, 'brown');
             drawCatmullRom4(paper1, "path_maingauche_1", $("#maingauche_u1_1"), $("#maingauche_u2_1"), $("#maingauche_u3_1"), $("#maingauche_u4_1"), "brown", myrayon);
             drawCatmullRom4(paper1, "path_maingauche_2", $("#maingauche_u1_2"), $("#maingauche_u2_2"), $("#maingauche_u3_2"), $("#maingauche_u4_2"), "brown", myrayon);
 
             // Main droite
             chain1 = "path_maindroite_1 maindroite_u1_1 maindroite_u2_1 maindroite_u3_1 maindroite_u4_1";
             chain2 = "path_maindroite_2 maindroite_u1_2 maindroite_u2_2 maindroite_u3_2 maindroite_u4_2";
-            GenerateDoublePoints(paper1, chain1, chain2, move4, 3.55, 13.58, 4.5, 13.72, "maindroite", "u1", widthTotal, heightTotal, divPhoto, 25, 2.5, 'brown');
-            GenerateDoublePoints(paper1, chain1, chain2, move4, 3.6, 12.54, 4.82, 12.63, "maindroite", "u2", widthTotal, heightTotal, divPhoto, 25, 2.5, 'brown');
-            GenerateDoublePoints(paper1, chain1, chain2, move4, 3.51, 11.37, 5.13, 11.35, "maindroite", "u3", widthTotal, heightTotal, divPhoto, 25, 2.5, 'brown');
-            GenerateDoublePoints(paper1, chain1, chain2, move4, 4.5, 10.87, 4.5, 10.87, "maindroite", "u4", widthTotal, heightTotal, divPhoto, 25, 2.5, 'brown');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move4, 4.7, 16.91, 5.38, 16.91, "maindroite", "u1", widthTotal, heightTotal, divPhoto, 25, 2.5, 'brown');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move4, 4.9, 16.18, 5.38, 16.18, "maindroite", "u2", widthTotal, heightTotal, divPhoto, 25, 2.5, 'brown');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move4, 4.92, 15.50, 5.25, 15.50, "maindroite", "u3", widthTotal, heightTotal, divPhoto, 25, 2.5, 'brown');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move4, 4.98, 15.10, 4.98, 15.10, "maindroite", "u4", widthTotal, heightTotal, divPhoto, 25, 2.5, 'brown');
             drawCatmullRom4(paper1, "path_maindroite_1", $("#maindroite_u1_1"), $("#maindroite_u2_1"), $("#maindroite_u3_1"), $("#maindroite_u4_1"), "brown", myrayon);
             drawCatmullRom4(paper1, "path_maindroite_2", $("#maindroite_u1_2"), $("#maindroite_u2_2"), $("#maindroite_u3_2"), $("#maindroite_u4_2"), "brown", myrayon);
 
             // Avant bras gauche
             chain1 = "path_avantbrasgauche_1 avantbrasgauche_u1_1 avantbrasgauche_u2_1 avantbrasgauche_u3_1";
             chain2 = "path_avantbrasgauche_2 avantbrasgauche_u1_2 avantbrasgauche_u2_2 avantbrasgauche_u3_2";
-            GenerateDoublePoints(paper1, chain1, chain2, move3, -2.62, 16.98, -3.9, 17.16, "avantbrasgauche", "u1", widthTotal, heightTotal, divPhoto, 25, 2.5, 'blue');
-            GenerateDoublePoints(paper1, chain1, chain2, move3, -2.83, 15.49, -4.28, 15.71, "avantbrasgauche", "u2", widthTotal, heightTotal, divPhoto, 25, 2.5, 'blue');
-            GenerateDoublePoints(paper1, chain1, chain2, move3, -3.55, 13.58, -4.5, 10.87, "avantbrasgauche", "u3", widthTotal, heightTotal, divPhoto, 25, 2.5, 'blue');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move3, -1.14, 19.24, -2.02, 18.84, "avantbrasgauche", "u1", widthTotal, heightTotal, divPhoto, 25, 2.5, 'blue');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move3, -1.46, 17.87, -2.40, 17.87, "avantbrasgauche", "u2", widthTotal, heightTotal, divPhoto, 25, 2.5, 'blue');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move3, -1.86, 16.91, -2.54, 16.91, "avantbrasgauche", "u3", widthTotal, heightTotal, divPhoto, 25, 2.5, 'blue');
             drawCatmullRom3(paper1, "path_avantbrasgauche_1", $("#avantbrasgauche_u1_1"), $("#avantbrasgauche_u2_1"), $("#avantbrasgauche_u3_1"), "blue", myrayon);
             drawCatmullRom3(paper1, "path_avantbrasgauche_2", $("#avantbrasgauche_u1_2"), $("#avantbrasgauche_u2_2"), $("#avantbrasgauche_u3_2"), "blue", myrayon);
 
             // Avant bras droit
             chain1 = "path_avantbrasdroit_1 avantbrasdroit_u1_1 avantbrasdroit_u2_1 avantbrasdroit_u3_1";
             chain2 = "path_avantbrasdroit_2 avantbrasdroit_u1_2 avantbrasdroit_u2_2 avantbrasdroit_u3_2";
-            GenerateDoublePoints(paper1, chain1, chain2, move3, 2.62, 16.98, 3.9, 17.16, "avantbrasdroit", "u1", widthTotal, heightTotal, divPhoto, 25, 2.5, 'blue');
-            GenerateDoublePoints(paper1, chain1, chain2, move3, 2.83, 15.49, 4.28, 15.71, "avantbrasdroit", "u2", widthTotal, heightTotal, divPhoto, 25, 2.5, 'blue');
-            GenerateDoublePoints(paper1, chain1, chain2, move3, 3.55, 13.58, 4.5, 10.87, "avantbrasdroit", "u3", widthTotal, heightTotal, divPhoto, 25, 2.5, 'blue');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move3, 3.98, 19.24, 4.86, 18.84, "avantbrasdroit", "u1", widthTotal, heightTotal, divPhoto, 25, 2.5, 'blue');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move3, 4.2, 17.87, 5.24, 17.87, "avantbrasdroit", "u2", widthTotal, heightTotal, divPhoto, 25, 2.5, 'blue');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move3, 4.7, 16.91, 5.38, 16.91, "avantbrasdroit", "u3", widthTotal, heightTotal, divPhoto, 25, 2.5, 'blue');
             drawCatmullRom3(paper1, "path_avantbrasdroit_1", $("#avantbrasdroit_u1_1"), $("#avantbrasdroit_u2_1"), $("#avantbrasdroit_u3_1"), "blue", myrayon);
             drawCatmullRom3(paper1, "path_avantbrasdroit_2", $("#avantbrasdroit_u1_2"), $("#avantbrasdroit_u2_2"), $("#avantbrasdroit_u3_2"), "blue", myrayon);
 
@@ -659,20 +695,20 @@
             // Bras gauche
             chain1 = "path_brasgauche_1 brasgauche_u1_1 brasgauche_u2_1 brasgauche_u3_1 brasgauche_u4_1";
             chain2 = "path_brasgauche_2 brasgauche_u1_2 brasgauche_u2_2 brasgauche_u3_2 brasgauche_u4_2";
-            GenerateDoublePoints(paper1, chain1, chain2, move4, -0.6, 21.81, -0.6, 21.81, "brasgauche", "u1", widthTotal, heightTotal, divPhoto, 35, 2.2, 'lightblue');
-            GenerateDoublePoints(paper1, chain1, chain2, move4, -1.8, 21.06, -2.55, 19.85, "brasgauche", "u2", widthTotal, heightTotal, divPhoto, 30, 2.5, 'lightblue');
-            GenerateDoublePoints(paper1, chain1, chain2, move4, -2.55, 18.79, -3.55, 18.88, "brasgauche", "u3", widthTotal, heightTotal, divPhoto, 25, 2.5, 'lightblue');
-            GenerateDoublePoints(paper1, chain1, chain2, move4, -2.62, 16.98, -3.9, 17.16, "brasgauche", "u4", widthTotal, heightTotal, divPhoto, 25, 2.5, 'lightblue');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move4, -0.84, 21.44, -0.84, 21.44, "brasgauche", "u1", widthTotal, heightTotal, divPhoto, 35, 2.2, 'lightblue');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move4, -0.72, 21.58, -1.58, 21.82, "brasgauche", "u2", widthTotal, heightTotal, divPhoto, 30, 2.5, 'lightblue');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move4, -0.90, 20.53, -1.98, 20.21, "brasgauche", "u3", widthTotal, heightTotal, divPhoto, 25, 2.5, 'lightblue');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move4, -1.14, 19.24, -2.02, 18.84, "brasgauche", "u4", widthTotal, heightTotal, divPhoto, 25, 2.5, 'lightblue');
             drawCatmullRom4(paper1, "path_brasgauche_1", $("#brasgauche_u1_1"), $("#brasgauche_u2_1"), $("#brasgauche_u3_1"), $("#brasgauche_u4_1"), "lightblue", myrayon);
             drawCatmullRom4(paper1, "path_brasgauche_2", $("#brasgauche_u1_2"), $("#brasgauche_u2_2"), $("#brasgauche_u3_2"), $("#brasgauche_u4_2"), "lightblue", myrayon);
 
             // Bras droit
             chain1 = "path_brasdroit_1 brasdroit_u1_1 brasdroit_u2_1 brasdroit_u3_1 brasdroit_u4_1";
             chain2 = "path_brasdroit_2 brasdroit_u1_2 brasdroit_u2_2 brasdroit_u3_2 brasdroit_u4_2";
-            GenerateDoublePoints(paper1, chain1, chain2, move4, 0.6, 21.81, 0.6, 21.81, "brasdroit", "u1", widthTotal, heightTotal, divPhoto, 35, 2.2, 'lightblue');
-            GenerateDoublePoints(paper1, chain1, chain2, move4, 1.8, 21.06, 2.55, 19.85, "brasdroit", "u2", widthTotal, heightTotal, divPhoto, 30, 2.5, 'lightblue');
-            GenerateDoublePoints(paper1, chain1, chain2, move4, 2.55, 18.79, 3.55, 18.88, "brasdroit", "u3", widthTotal, heightTotal, divPhoto, 25, 2.5, 'lightblue');
-            GenerateDoublePoints(paper1, chain1, chain2, move4, 2.62, 16.98, 3.9, 17.16, "brasdroit", "u4", widthTotal, heightTotal, divPhoto, 25, 2.5, 'lightblue');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move4, 3.12, 21.44, 3.12, 21.44, "brasdroit", "u1", widthTotal, heightTotal, divPhoto, 35, 2.2, 'lightblue');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move4, 3.27, 21.58, 4.13, 21.82, "brasdroit", "u2", widthTotal, heightTotal, divPhoto, 30, 2.5, 'lightblue');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move4, 3.96, 20.53, 5, 20.21, "brasdroit", "u3", widthTotal, heightTotal, divPhoto, 25, 2.5, 'lightblue');
+            GenerateDoublePoints("front", paper1, chain1, chain2, move4, 3.98, 19.24, 4.86, 18.84, "brasdroit", "u4", widthTotal, heightTotal, divPhoto, 25, 2.5, 'lightblue');
             drawCatmullRom4(paper1, "path_brasdroit_1", $("#brasdroit_u1_1"), $("#brasdroit_u2_1"), $("#brasdroit_u3_1"), $("#brasdroit_u4_1"), "lightblue", myrayon);
             drawCatmullRom4(paper1, "path_brasdroit_2", $("#brasdroit_u1_2"), $("#brasdroit_u2_2"), $("#brasdroit_u3_2"), $("#brasdroit_u4_2"), "lightblue", myrayon);
 
@@ -713,24 +749,25 @@
             // Head
             chain1 = "path_headv_1 head_v1_1 head_v2_1 head_v3_1 head_v4_1 head_v5_1";
             chain2 = "path_headv_2 head_v1_2 head_v2_2 head_v3_2 head_v4_2 head_v5_2";
-            GenerateDoublePoints(paper2, chain1, chain2, move5, 0, 25.65, 0, 25.65, "head", "v1", widthTotal, heightTotal, divPhoto, 35, 2.2, 'red');
-            GenerateDoublePoints(paper2, chain1, chain2, move5, -1.06 * side, 25, 1.06 * side, 25, "head", "v2", widthTotal, heightTotal, divPhoto, 35, 2.2, 'red');
-            GenerateDoublePoints(paper2, chain1, chain2, move5, -1.45 * side, 23.87, 1.45 * side, 23.87, "head", "v3", widthTotal, heightTotal, divPhoto, 35, 2.2, 'red');
-            GenerateDoublePoints(paper2, chain1, chain2, move5, -0.82 * side, 22.56, 1.05 * side, 22.56, "head", "v4", widthTotal, heightTotal, divPhoto, 35, 2.2, 'red');
-            GenerateDoublePoints(paper2, chain1, chain2, move5, 0, 21.81, 0, 21.81, "head", "v5", widthTotal, heightTotal, divPhoto, 35, 2.2, 'red');
+            GenerateDoublePoints("side", paper2, chain1, chain2, move5, 0.69, 25.65, 0.69, 25.65, "head", "v1", widthTotal, heightTotal, divPhoto, 35, 2.2, 'red');
+            GenerateDoublePoints("side", paper2, chain1, chain2, move5, -0.04 * side, 24.7, 1.46 * side, 24.7, "head", "v2", widthTotal, heightTotal, divPhoto, 35, 2.2, 'red');
+            GenerateDoublePoints("side", paper2, chain1, chain2, move5, 0.37 * side, 22.49, 1.49 * side, 22.49, "head", "v3", widthTotal, heightTotal, divPhoto, 35, 2.2, 'red');
+            GenerateDoublePoints("side", paper2, chain1, chain2, move5, 0.1 * side, 22.6, 0.78 * side, 22.49, "head", "v4", widthTotal, heightTotal, divPhoto, 35, 2.2, 'red');
+            GenerateDoublePoints("side", paper2, chain1, chain2, move5, 0.37, 22.49, 0.37, 22.49, "head", "v5", widthTotal, heightTotal, divPhoto, 35, 2.2, 'red');
             drawCatmullRom5(paper2, "path_headv_1", $("#head_v1_1"), $("#head_v2_1"), $("#head_v3_1"), $("#head_v4_1"), $("#head_v5_1"), "red", myrayon);
             drawCatmullRom5(paper2, "path_headv_2", $("#head_v1_2"), $("#head_v2_2"), $("#head_v3_2"), $("#head_v4_2"), $("#head_v5_2"), "red", myrayon);
 
             // Double points tête
             Superman(paper2, $("#head_v1_1"), $("#head_v1_2"));
             Superman(paper2, $("#head_v5_1"), $("#head_v5_2"));
+            Superman(paper2, $("#head_v3_1"), $("#head_v5_2"));
 
             // Neck
             chain1 = "path_neckv_1 neck_v1_1 neck_v2_1 neck_v3_1";
             chain2 = "path_neckv_2 neck_v1_2 neck_v2_2 neck_v3_2";
-            GenerateDoublePoints(paper2, chain1, chain2, move3, -0.82 * side, 22.56, 1.05 * side, 22.56, "neck", "v1", widthTotal, heightTotal, divPhoto, 35, 2.2, 'red');
-            GenerateDoublePoints(paper2, chain1, chain2, move3, -0.86 * side, 21.81, 0.67 * side, 21.81, "neck", "v2", widthTotal, heightTotal, divPhoto, 35, 2.2, 'red');
-            GenerateDoublePoints(paper2, chain1, chain2, move3, -1.05 * side, 21.33, 0.60 * side, 21.33, "neck", "v3", widthTotal, heightTotal, divPhoto, 30, 2.4, 'red');
+            GenerateDoublePoints("side", paper2, chain1, chain2, move3, 0.1 * side, 22.6, 0.78 * side, 22.49, "neck", "v1", widthTotal, heightTotal, divPhoto, 35, 2.2, 'red');
+            GenerateDoublePoints("side", paper2, chain1, chain2, move3, -0.30 * side, 21.48, 0.60 * side, 21.48, "neck", "v2", widthTotal, heightTotal, divPhoto, 35, 2.2, 'red');
+            GenerateDoublePoints("side", paper2, chain1, chain2, move3, -0.92 * side, 21.33, 1.07 * side, 21.33, "neck", "v3", widthTotal, heightTotal, divPhoto, 30, 2.4, 'red');
             drawCatmullRom3(paper2, "path_neckv_1", $("#neck_v1_1"), $("#neck_v2_1"), $("#neck_v3_1"), "red", myrayon);
             drawCatmullRom3(paper2, "path_neckv_2", $("#neck_v1_2"), $("#neck_v2_2"), $("#neck_v3_2"), "red", myrayon);
 
@@ -741,9 +778,9 @@
             // Thorax
             chain1 = "path_thoraxv_1 thorax_v1_1 thorax_v2_1 thorax_v3_1";
             chain2 = "path_thoraxv_2 thorax_v1_2 thorax_v2_2 thorax_v3_2";
-            GenerateDoublePoints(paper2, chain1, chain2, move3, -1.05 * side, 21.33, 0.60 * side, 21.33, "thorax", "v1", widthTotal, heightTotal, divPhoto, 30, 2.4, 'green');
-            GenerateDoublePoints(paper2, chain1, chain2, move3, -1.57 * side, 19.85, 1.8 * side, 19.85, "thorax", "v2", widthTotal, heightTotal, divPhoto, 20, 2.4, 'green');
-            GenerateDoublePoints(paper2, chain1, chain2, move3, -0.92 * side, 17.13, 2.16 * side, 17.13, "thorax", "v3", widthTotal, heightTotal, divPhoto, 25, 2.4, 'green');
+            GenerateDoublePoints("side", paper2, chain1, chain2, move3, -0.92 * side, 21.33, 1.07 * side, 21.33, "thorax", "v1", widthTotal, heightTotal, divPhoto, 30, 2.4, 'green');
+            GenerateDoublePoints("side", paper2, chain1, chain2, move3, -1.43 * side, 20.39, 2.41 * side, 20.39, "thorax", "v2", widthTotal, heightTotal, divPhoto, 20, 2.4, 'green');
+            GenerateDoublePoints("side", paper2, chain1, chain2, move3, -0.86 * side, 19.59, 1.85 * side, 19.59, "thorax", "v3", widthTotal, heightTotal, divPhoto, 25, 2.4, 'green');
             drawCatmullRom3(paper2, "path_thoraxv_1", $("#thorax_v1_1"), $("#thorax_v2_1"), $("#thorax_v3_1"), "green", myrayon);
             drawCatmullRom3(paper2, "path_thoraxv_2", $("#thorax_v1_2"), $("#thorax_v2_2"), $("#thorax_v3_2"), "green", myrayon);
 
@@ -754,9 +791,9 @@
             // Abdos
             chain1 = "path_abdov_1 abdo_v1_1 abdo_v2_1 abdo_v3_1";
             chain2 = "path_abdov_2 abdo_v1_2 abdo_v2_2 abdo_v3_2";
-            GenerateDoublePoints(paper2, chain1, chain2, move3, -0.92 * side, 17.13, 2.16 * side, 17.13, "abdo", "v1", widthTotal, heightTotal, divPhoto, 25, 2.4, 'green');
-            GenerateDoublePoints(paper2, chain1, chain2, move3, -0.65 * side, 15, 2.26 * side, 15, "abdo", "v2", widthTotal, heightTotal, divPhoto, 25, 2.4, 'green');
-            GenerateDoublePoints(paper2, chain1, chain2, move3, -1.28 * side, 14.42, 2.18 * side, 14.42, "abdo", "v3", widthTotal, heightTotal, divPhoto, 25, 2.4, 'green');
+            GenerateDoublePoints("side", paper2, chain1, chain2, move3, -0.86 * side, 19.59, 1.85 * side, 19.59, "abdo", "v1", widthTotal, heightTotal, divPhoto, 25, 2.4, 'green');
+            GenerateDoublePoints("side", paper2, chain1, chain2, move3, -0.58 * side, 17.91, 1.77 * side, 17.91, "abdo", "v2", widthTotal, heightTotal, divPhoto, 25, 2.4, 'green');
+            GenerateDoublePoints("side", paper2, chain1, chain2, move3, -0.94 * side, 16.24, 1.61 * side, 16.24, "abdo", "v3", widthTotal, heightTotal, divPhoto, 25, 2.4, 'green');
             drawCatmullRom3(paper2, "path_abdov_1", $("#abdo_v1_1"), $("#abdo_v2_1"), $("#abdo_v3_1"), "green", myrayon);
             drawCatmullRom3(paper2, "path_abdov_2", $("#abdo_v1_2"), $("#abdo_v2_2"), $("#abdo_v3_2"), "green", myrayon);
 
@@ -767,9 +804,9 @@
             // Fesses
             chain1 = "path_fessev_1 fesse_v1_1 fesse_v2_1 fesse_v3_1";
             chain2 = "path_fessev_2 fesse_v1_2 fesse_v2_2 fesse_v3_2";
-            GenerateDoublePoints(paper2, chain1, chain2, move3, -1.28 * side, 14.42, 2.18 * side, 14.42, "fesse", "v1", widthTotal, heightTotal, divPhoto, 25, 2.4, 'yellow');
-            GenerateDoublePoints(paper2, chain1, chain2, move3, -1.28 * side, 13.64, 2.09 * side, 13.64, "fesse", "v2", widthTotal, heightTotal, divPhoto, 25, 2.4, 'yellow');
-            GenerateDoublePoints(paper2, chain1, chain2, move3, -0.68 * side, 12.95, 1.91 * side, 12.95, "fesse", "v3", widthTotal, heightTotal, divPhoto, 25, 2.4, 'yellow');
+            GenerateDoublePoints("side", paper2, chain1, chain2, move3, -0.94 * side, 16.24, 1.61 * side, 16.24, "fesse", "v1", widthTotal, heightTotal, divPhoto, 25, 2.4, 'yellow');
+            GenerateDoublePoints("side", paper2, chain1, chain2, move3, -1.30 * side, 14.98, 1.73 * side, 14.98, "fesse", "v2", widthTotal, heightTotal, divPhoto, 25, 2.4, 'yellow');
+            GenerateDoublePoints("side", paper2, chain1, chain2, move3, -0.82 * side, 13.76, 1.57 * side, 13.76, "fesse", "v3", widthTotal, heightTotal, divPhoto, 25, 2.4, 'yellow');
             drawCatmullRom3(paper2, "path_fessev_1", $("#fesse_v1_1"), $("#fesse_v2_1"), $("#fesse_v3_1"), "yellow", myrayon);
             drawCatmullRom3(paper2, "path_fessev_2", $("#fesse_v1_2"), $("#fesse_v2_2"), $("#fesse_v3_2"), "yellow", myrayon);
 
@@ -780,9 +817,9 @@
             // Cuisses
             chain1 = "path_cuissev_1 cuisse_v1_1 cuisse_v2_1 cuisse_v3_1";
             chain2 = "path_cuissev_2 cuisse_v1_2 cuisse_v2_2 cuisse_v3_2";
-            GenerateDoublePoints(paper2, chain1, chain2, move3, -0.68 * side, 12.95, 1.91 * side, 12.95, "cuisse", "v1", widthTotal, heightTotal, divPhoto, 25, 2.4, 'orange');
-            GenerateDoublePoints(paper2, chain1, chain2, move3, -0.73 * side, 9.6, 1.94 * side, 9.6, "cuisse", "v2", widthTotal, heightTotal, divPhoto, 25, 2.3, 'orange');
-            GenerateDoublePoints(paper2, chain1, chain2, move3, -0.24 * side, 7.6, 1.49 * side, 7.6, "cuisse", "v3", widthTotal, heightTotal, divPhoto, 25, 2.3, 'orange');
+            GenerateDoublePoints("side", paper2, chain1, chain2, move3, -0.82 * side, 13.76, 1.57 * side, 13.76, "cuisse", "v1", widthTotal, heightTotal, divPhoto, 25, 2.4, 'orange');
+            GenerateDoublePoints("side", paper2, chain1, chain2, move3, -0.50 * side, 10.60, 1.61 * side, 10.60, "cuisse", "v2", widthTotal, heightTotal, divPhoto, 25, 2.3, 'orange');
+            GenerateDoublePoints("side", paper2, chain1, chain2, move3, -0.30 * side, 8.15, 1.17 * side, 8.15, "cuisse", "v3", widthTotal, heightTotal, divPhoto, 25, 2.3, 'orange');
             drawCatmullRom3(paper2, "path_cuissev_1", $("#cuisse_v1_1"), $("#cuisse_v2_1"), $("#cuisse_v3_1"), "orange", myrayon);
             drawCatmullRom3(paper2, "path_cuissev_2", $("#cuisse_v1_2"), $("#cuisse_v2_2"), $("#cuisse_v3_2"), "orange", myrayon);
 
@@ -793,9 +830,9 @@
             // Jambes
             chain1 = "path_jambev_1 jambe_v1_1 jambe_v2_1 jambe_v3_1";
             chain2 = "path_jambev_2 jambe_v1_2 jambe_v2_2 jambe_v3_2";
-            GenerateDoublePoints(paper2, chain1, chain2, move3, -0.24 * side, 7.6, 1.49 * side, 7.6, "jambe", "v1", widthTotal, heightTotal, divPhoto, 25, 2.3, 'pink');
-            GenerateDoublePoints(paper2, chain1, chain2, move3, -0.70 * side, 5.64, 1.08 * side, 5.64, "jambe", "v2", widthTotal, heightTotal, divPhoto, 25, 2.3, 'pink');
-            GenerateDoublePoints(paper2, chain1, chain2, move3, -0.74 * side, 2.38, 0.59 * side, 2.38, "jambe", "v3", widthTotal, heightTotal, divPhoto, 28, 2.2, 'pink');
+            GenerateDoublePoints("side", paper2, chain1, chain2, move3, -0.30 * side, 8.15, 1.17 * side, 8.15, "jambe", "v1", widthTotal, heightTotal, divPhoto, 25, 2.3, 'pink');
+            GenerateDoublePoints("side", paper2, chain1, chain2, move3, -0.86 * side, 5.75, 0.73 * side, 5.75, "jambe", "v2", widthTotal, heightTotal, divPhoto, 25, 2.3, 'pink');
+            GenerateDoublePoints("side", paper2, chain1, chain2, move3, -0.55 * side, 2.08, 0.44 * side, 2.08, "jambe", "v3", widthTotal, heightTotal, divPhoto, 28, 2.2, 'pink');
             drawCatmullRom3(paper2, "path_jambev_1", $("#jambe_v1_1"), $("#jambe_v2_1"), $("#jambe_v3_1"), "pink", myrayon);
             drawCatmullRom3(paper2, "path_jambev_2", $("#jambe_v1_2"), $("#jambe_v2_2"), $("#jambe_v3_2"), "pink", myrayon);
 
@@ -806,9 +843,9 @@
             // Pieds
             chain1 = "path_piedv_1 pied_v1_1 pied_v2_1 pied_v3_1";
             chain2 = "path_piedv_2 pied_v1_2 pied_v2_2 pied_v3_2";
-            GenerateDoublePoints(paper2, chain1, chain2, move3, -0.74 * side, 2.38, 0.59 * side, 2.38, "pied", "v1", widthTotal, heightTotal, divPhoto, 28, 2.2, 'purple');
-            GenerateDoublePoints(paper2, chain1, chain2, move3, -0.74 * side, 1.57, 0.85 * side, 1.57, "pied", "v2", widthTotal, heightTotal, divPhoto, 28, 2.2, 'purple');
-            GenerateDoublePoints(paper2, chain1, chain2, move3, -0.85 * side, 0.05, 1.8 * side, 0.05, "pied", "v3", widthTotal, heightTotal, divPhoto, 28, 2.2, 'purple');
+            GenerateDoublePoints("side", paper2, chain1, chain2, move3, -0.55 * side, 2.08, 0.44 * side, 2.08, "pied", "v1", widthTotal, heightTotal, divPhoto, 28, 2.2, 'purple');
+            GenerateDoublePoints("side", paper2, chain1, chain2, move3, -0.55 * side, 0.85, 0.69 * side, 0.85, "pied", "v2", widthTotal, heightTotal, divPhoto, 28, 2.2, 'purple');
+            GenerateDoublePoints("side", paper2, chain1, chain2, move3, -0.70 * side, -0.38, 2.61 * side, -0.38, "pied", "v3", widthTotal, heightTotal, divPhoto, 28, 2.2, 'purple');
             drawCatmullRom3(paper2, "path_piedv_1", $("#pied_v1_1"), $("#pied_v2_1"), $("#pied_v3_1"), "purple", myrayon);
             drawCatmullRom3(paper2, "path_piedv_2", $("#pied_v1_2"), $("#pied_v2_2"), $("#pied_v3_2"), "purple", myrayon);
             drawSimpleCatmullRom(paper2, "path_rely_sidefoot", $("#pied_v3_1"), $("#pied_v3_2"), "purple", myrayon);
@@ -820,18 +857,18 @@
             // Main
             chain1 = "path_mainv_1 main_v1_1 main_v2_1 main_v3_1";
             chain2 = "path_mainv_2 main_v1_2 main_v2_2 main_v3_2";
-            GenerateDoublePoints(paper2, chain1, chain2, move3, 0.5, 13.72, 0.48 * side + 0.5, 13.72, "main", "v1", widthTotal, heightTotal, divPhoto, 25, 2.5, 'brown');
-            GenerateDoublePoints(paper2, chain1, chain2, move3, 0.5, 12.63, 0.3 * side + 0.5, 12.63, "main", "v2", widthTotal, heightTotal, divPhoto, 25, 2.5, 'brown');
-            GenerateDoublePoints(paper2, chain1, chain2, move3, 0.5, 11.37, 0.5, 11.35, "main", "v3", widthTotal, heightTotal, divPhoto, 25, 2.5, 'brown');
+            GenerateDoublePoints("side", paper2, chain1, chain2, move3, 0.13, 16.91, 0.89 * side, 16.91, "main", "v1", widthTotal, heightTotal, divPhoto, 25, 2.5, 'brown');
+            GenerateDoublePoints("side", paper2, chain1, chain2, move3, 0.01, 16.22, 1.09 * side, 16.22, "main", "v2", widthTotal, heightTotal, divPhoto, 25, 2.5, 'brown');
+            GenerateDoublePoints("side", paper2, chain1, chain2, move3, 0.57, 15.50, 0.57, 15.50, "main", "v3", widthTotal, heightTotal, divPhoto, 25, 2.5, 'brown');
             drawCatmullRom3(paper2, "path_mainv_1", $("#main_v1_1"), $("#main_v2_1"), $("#main_v3_1"), "brown", myrayon);
             drawCatmullRom3(paper2, "path_mainv_2", $("#main_v1_2"), $("#main_v2_2"), $("#main_v3_2"), "brown", myrayon);
 
             // Avant bras
             chain1 = "path_avantbrasv_1 avantbras_v1_1 avantbras_v2_1 avantbras_v3_1";
             chain2 = "path_avantbrasv_2 avantbras_v1_2 avantbras_v2_2 avantbras_v3_2";
-            GenerateDoublePoints(paper2, chain1, chain2, move3, -0.92 * side + 1, 17.16, 0.32 * side + 0.5, 17.16, "avantbras", "v1", widthTotal, heightTotal, divPhoto, 25, 2.5, 'blue');
-            GenerateDoublePoints(paper2, chain1, chain2, move3, -0.20 * side + 0.5, 15.71, 0.42 * side + 0.5, 15.71, "avantbras", "v2", widthTotal, heightTotal, divPhoto, 25, 2.5, 'blue');
-            GenerateDoublePoints(paper2, chain1, chain2, move3, 0.5, 13.72, 0.48 * side + 0.5, 13.72, "avantbras", "v3", widthTotal, heightTotal, divPhoto, 25, 2.5, 'blue');
+            GenerateDoublePoints("side", paper2, chain1, chain2, move3, -0.18 * side, 18.84, 0.97 * side, 18.84, "avantbras", "v1", widthTotal, heightTotal, divPhoto, 25, 2.5, 'blue');
+            GenerateDoublePoints("side", paper2, chain1, chain2, move3, -0.02 * side, 17.87, 1.01 * side, 17.87, "avantbras", "v2", widthTotal, heightTotal, divPhoto, 25, 2.5, 'blue');
+            GenerateDoublePoints("side", paper2, chain1, chain2, move3, 0.13, 16.91, 0.89 * side, 16.91, "avantbras", "v3", widthTotal, heightTotal, divPhoto, 25, 2.5, 'blue');
             drawCatmullRom3(paper2, "path_avantbrasv_1", $("#avantbras_v1_1"), $("#avantbras_v2_1"), $("#avantbras_v3_1"), "blue", myrayon);
             drawCatmullRom3(paper2, "path_avantbrasv_2", $("#avantbras_v1_2"), $("#avantbras_v2_2"), $("#avantbras_v3_2"), "blue", myrayon);
 
@@ -843,9 +880,9 @@
             // Bras
             chain1 = "path_brasv_1 bras_v3_1 bras_v2_1 bras_v4_1";
             chain2 = "path_brasv_2 bras_v3_2 bras_v2_2 bras_v4_2";
-            GenerateDoublePoints(paper2, chain1, chain2, move3, -1 * side + 0.5, 21.33, 0.3, 21.33, "bras", "v4", widthTotal, heightTotal, divPhoto, 25, 2.5, 'lightblue');
-            GenerateDoublePoints(paper2, chain1, chain2, move3, -1.34 * side + 1, 18.84, 0.6 * side + 0., 18.84, "bras", "v2", widthTotal, heightTotal, divPhoto, 25, 2.5, 'lightblue');
-            GenerateDoublePoints(paper2, chain1, chain2, move3, -0.92 * side + 1, 17.16, 0.32 * side + 0.5, 17.16, "bras", "v3", widthTotal, heightTotal, divPhoto, 25, 2.5, 'lightblue');
+            GenerateDoublePoints("side", paper2, chain1, chain2, move3, -0.46 * side, 21.82, 0.93 * side, 21.82, "bras", "v4", widthTotal, heightTotal, divPhoto, 25, 2.5, 'lightblue');
+            GenerateDoublePoints("side", paper2, chain1, chain2, move3, -0.36 * side, 20.33, 1.01, 20.33, "bras", "v2", widthTotal, heightTotal, divPhoto, 25, 2.5, 'lightblue');
+            GenerateDoublePoints("side", paper2, chain1, chain2, move3, -0.18 * side, 18.84, 0.97 * side, 18.84, "bras", "v3", widthTotal, heightTotal, divPhoto, 25, 2.5, 'lightblue');
             drawCatmullRom3(paper2, "path_brasv_1", $("#bras_v3_1"), $("#bras_v2_1"), $("#bras_v4_1"), "lightblue", myrayon);
             drawCatmullRom3(paper2, "path_brasv_2", $("#bras_v3_2"), $("#bras_v2_2"), $("#bras_v4_2"), "lightblue", myrayon);
             drawSimpleCatmullRom(paper2, "path_rely_bras", $("#bras_v4_1"), $("#bras_v4_2"), "lightblue", myrayon);
@@ -1246,6 +1283,7 @@
         function pixelToRealLeft(pixel)
         {
             var pixelFloat = parseFloat(pixel.attr("cx"));
+            console.log("LEFT " + pixel.attr('id') + " : " + pixelFloat);
             var result = Math.round(pixelFloat) * $("#height_human").val() / pixelHeight;
             nbConversions = nbConversions + 1;
             return result;
@@ -1255,6 +1293,7 @@
         {
             var pixelFloat = parseFloat(pixel.attr("cy"));
             var pixelFloat2 = parseFloat(pixel2.attr("cy"));
+            console.log("TOP " + pixel.attr('id') + " and " + pixel2.attr('id') + " : " + pixelFloat + " and " + pixelFloat2);
             var result = (Math.round(pixelFloat) + Math.round(pixelFloat2)) * $("#height_human").val() / pixelHeight / 2;
             nbConversions = nbConversions + 1;
             return result;

@@ -1,0 +1,4 @@
+2016-12-27 03:02:52.821 +01:00 [Information] Registering photo N°1 with id 8edfa795-8663-4b5d-ac66-6867d7de1559
+2016-12-27 03:02:55.399 +01:00 [Information] Registering photo N°2 with id 8edfa795-8663-4b5d-ac66-6867d7de1559
+2016-12-27 03:08:58.343 +01:00 [Information] Registering photo N°1 with id a8440c90-37c0-4159-903d-93e75cd3ef79
+2016-12-27 03:09:01.562 +01:00 [Information] Registering photo N°2 with id a8440c90-37c0-4159-903d-93e75cd3ef79
