@@ -80,3 +80,5 @@
 2017-02-12 23:40:42.714 +01:00 [Information] Registering photo N°2 with id 4c832e24-7b66-40ed-bb44-3f34ed3626f8
 2017-02-12 23:43:49.018 +01:00 [Information] Registering photo N°1 with id 7e645c71-6d59-49dc-981d-2459634e8f9e
 2017-02-12 23:43:51.805 +01:00 [Information] Registering photo N°2 with id 7e645c71-6d59-49dc-981d-2459634e8f9e
+2017-02-12 23:46:31.427 +01:00 [Information] Registering photo N°1 with id 3fab2147-ddce-4532-a017-ef1deea87b06
+2017-02-12 23:46:33.047 +01:00 [Information] Registering photo N°2 with id 3fab2147-ddce-4532-a017-ef1deea87b06
