@@ -1,0 +1,5 @@
+2017-02-14 00:20:45.087 +01:00 [Information] Registering photo N°1 with id 91097675-b4c6-4362-8de2-0b4965e63ebd
+2017-02-14 00:20:47.319 +01:00 [Information] Registering photo N°2 with id 91097675-b4c6-4362-8de2-0b4965e63ebd
+2017-02-14 00:20:53.566 +01:00 [Information] Successfully generated body masses for id 8b3cd6eb-4fd8-423d-bf29-7cf79baa72f7
+2017-02-14 00:20:54.092 +01:00 [Information] Successfully registered body masses for id 8b3cd6eb-4fd8-423d-bf29-7cf79baa72f7
+2017-02-14 00:20:54.201 +01:00 [Information] Successfully returned body masses to client
