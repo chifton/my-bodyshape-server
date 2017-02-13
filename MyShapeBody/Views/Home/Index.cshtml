@@ -28,6 +28,7 @@
             var currentSide;
             var diffFrontCanvasX;
             var diffSideCanvasX;
+            var positionsPointsObj = {};
             
         /*********************************   CHARGEMENT IMAGES ET PHOTOS   **********************************/
         /****************************************************************************************/
@@ -409,6 +410,8 @@
                 }
             }
             var realcoordinateY = (myHeightScreen / 2 - coordonnee1Y / 30 * myHeightScreen / 2) * ourScaleY - 80;
+
+            
             //if (selectedimage == 2)
             //{
             //    realcoordinateY += myHeightScreen / 2 - 30;
@@ -426,6 +429,10 @@
             circleCool2.id = id2;
             circleCool2.node.id = id2;
             circleCool2.data('svgpath', chaine2 + ' ' + color);
+
+            // Store positions in big object
+            positionsPointsObj[id1] = realcoordinate1X + ";" + realcoordinateY;
+            positionsPointsObj[id2] = realcoordinate2X + ";" + realcoordinateY;
 
             // Cursor
             circleCool1.mouseover(function (e) {
@@ -740,6 +747,7 @@
 
             var widthTotal = divPhoto.width();
             var heightTotal = divPhoto.height();
+            console.log(widthTotal + " " + heightTotal);
             var moitieWidth = widthTotal / 2;
             var myrayon = 4;
 
@@ -1159,6 +1167,7 @@
                 // Taille entre 1m et 2m30
                 if ($("#height_human").val() >= 100 && $("#height_human").val() <= 230) {
                     nbConversions = 0;
+                    //console.log(JSON.stringify(positionsPointsObj));
                     GenerateDataCoordinates();
                     console.log(nbConversions);
 
@@ -1283,7 +1292,7 @@
         function pixelToRealLeft(pixel)
         {
             var pixelFloat = parseFloat(pixel.attr("cx"));
-            console.log("LEFT " + pixel.attr('id') + " : " + pixelFloat);
+            //console.log("LEFT " + pixel.attr('id') + " : " + pixelFloat);
             var result = Math.round(pixelFloat) * $("#height_human").val() / pixelHeight;
             nbConversions = nbConversions + 1;
             return result;
@@ -1293,7 +1302,7 @@
         {
             var pixelFloat = parseFloat(pixel.attr("cy"));
             var pixelFloat2 = parseFloat(pixel2.attr("cy"));
-            console.log("TOP " + pixel.attr('id') + " and " + pixel2.attr('id') + " : " + pixelFloat + " and " + pixelFloat2);
+            //console.log("TOP " + pixel.attr('id') + " and " + pixel2.attr('id') + " : " + pixelFloat + " and " + pixelFloat2);
             var result = (Math.round(pixelFloat) + Math.round(pixelFloat2)) * $("#height_human").val() / pixelHeight / 2;
             nbConversions = nbConversions + 1;
             return result;
