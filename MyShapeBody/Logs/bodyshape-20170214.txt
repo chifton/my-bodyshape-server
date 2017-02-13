@@ -3,3 +3,8 @@
 2017-02-14 00:20:53.566 +01:00 [Information] Successfully generated body masses for id 8b3cd6eb-4fd8-423d-bf29-7cf79baa72f7
 2017-02-14 00:20:54.092 +01:00 [Information] Successfully registered body masses for id 8b3cd6eb-4fd8-423d-bf29-7cf79baa72f7
 2017-02-14 00:20:54.201 +01:00 [Information] Successfully returned body masses to client
+2017-02-14 00:57:02.021 +01:00 [Information] Registering photo N°1 with id e25eb46c-c0ad-4b2a-be86-0a95b97fb2d2
+2017-02-14 00:57:05.306 +01:00 [Information] Registering photo N°2 with id e25eb46c-c0ad-4b2a-be86-0a95b97fb2d2
+2017-02-14 00:57:08.110 +01:00 [Information] Successfully generated body masses for id c878473f-14ed-474f-ac2a-9784b0758bad
+2017-02-14 00:57:08.796 +01:00 [Information] Successfully registered body masses for id c878473f-14ed-474f-ac2a-9784b0758bad
+2017-02-14 00:57:08.909 +01:00 [Information] Successfully returned body masses to client

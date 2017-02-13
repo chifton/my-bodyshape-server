@@ -431,8 +431,8 @@
             circleCool2.data('svgpath', chaine2 + ' ' + color);
 
             // Store positions in big object
-            positionsPointsObj[id1] = realcoordinate1X + ";" + realcoordinateY + ";" + colourNameToHex(color);
-            positionsPointsObj[id2] = realcoordinate2X + ";" + realcoordinateY + ";" + colourNameToHex(color);
+            positionsPointsObj[id1] = realcoordinate1X + ";" + realcoordinateY + ";" + colourNameToHex(color) + ";" + sense;
+            positionsPointsObj[id2] = realcoordinate2X + ";" + realcoordinateY + ";" + colourNameToHex(color) + ";" + sense;
 
             // Cursor
             circleCool1.mouseover(function (e) {
