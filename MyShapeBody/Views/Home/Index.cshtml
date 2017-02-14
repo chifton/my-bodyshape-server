@@ -29,6 +29,8 @@
             var diffFrontCanvasX;
             var diffSideCanvasX;
             var positionsPointsObj = {};
+            var pathsObj = {};
+            var supermanObj = {};
             
         /*********************************   CHARGEMENT IMAGES ET PHOTOS   **********************************/
         /****************************************************************************************/
@@ -469,6 +471,9 @@
             {
                 c2.data('superman2', div1.attr('id'));
             }
+
+            // Store superman positions in big object
+            supermanObj[div1.attr('id') + "_" + div2.attr('id')] = div1.attr('id') + ";" + div2.attr('id');
         }
 
         function drawSimpleCatmullRom(paper, path, div1, div2, colorpath, rayonpath)
@@ -484,6 +489,9 @@
             var current = paper.path("M" + div1.attr("cx") + "," + div1.attr("cy") + "L" + div2.attr("cx") + "," + div2.attr("cy")).attr("stroke", colorpath).attr("stroke-width", 3).attr("z-index","-1");
             current.node.id = path;
             current.toBack();
+
+            // Store path positions in big object
+            pathsObj[path] = div1.attr('id') + ";" + div2.attr('id');
         }
 
         function drawCatmullRom5(paper, path, div1, div2, div3, div4, div5, colorpath, rayonpath)
@@ -491,18 +499,27 @@
             var current = paper.path("M " + div1.attr("cx") + " " + div1.attr("cy") + " \ R " + div2.attr("cx") + " " + div2.attr("cy") + " \ " + div3.attr("cx") + " " + div3.attr("cy") + " \ " + div4.attr("cx") + " " + div4.attr("cy") + " \ " + div5.attr("cx") + " " + div5.attr("cy")).attr("stroke", colorpath).attr("stroke-width", 3).attr("z-index", "-1");
             current.node.id = path;
             current.toBack();
+
+            // Store path positions in big object
+            pathsObj[path] = div1.attr('id') + ";" + div2.attr('id') + ";" + div3.attr('id') + ";" + div4.attr('id') + ";" + div5.attr('id');
         }
 
         function drawCatmullRom4(paper, path, div1, div2, div3, div4, colorpath, rayonpath) {
             var current = paper.path("M " + div1.attr("cx") + " " + div1.attr("cy") + " \ R " + div2.attr("cx") + " " + div2.attr("cy") + " \ " + div3.attr("cx") + " " + div3.attr("cy") + " \ " + div4.attr("cx") + " " + div4.attr("cy")).attr("stroke", colorpath).attr("stroke-width", 3).attr("z-index", "-1");
             current.node.id = path;
             current.toBack();
+
+            // Store path positions in big object
+            pathsObj[path] = div1.attr('id') + ";" + div2.attr('id') + ";" + div3.attr('id') + ";" + div4.attr('id');
         }
 
         function drawCatmullRom3(paper, path, div1, div2, div3, colorpath, rayonpath) {
             var current = paper.path("M " + div1.attr("cx") + " " + div1.attr("cy") + " \ R " + div2.attr("cx") + " " + div2.attr("cy") + " \ " + div3.attr("cx") + " " + div3.attr("cy")).attr("stroke", colorpath).attr("stroke-width", 3).attr("z-index", "-1");
             current.node.id = path;
             current.toBack();
+
+            // Store path positions in big object
+            pathsObj[path] = div1.attr('id') + ";" + div2.attr('id') + ";" + div3.attr('id');
         }
 
         function colourNameToHex(colour) {
@@ -1202,8 +1219,10 @@
                 if ($("#height_human").val() >= 100 && $("#height_human").val() <= 230) {
                     nbConversions = 0;
                     //console.log(JSON.stringify(positionsPointsObj));
+                    //console.log(JSON.stringify(pathsObj));
+                    //console.log(JSON.stringify(supermanObj));
                     GenerateDataCoordinates();
-                    console.log(nbConversions);
+                    //console.log(nbConversions);
 
                     $.ajax({
                         type: "POST",
