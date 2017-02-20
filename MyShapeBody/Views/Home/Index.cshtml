@@ -1678,6 +1678,54 @@
             });
         });
 
+        $("#pivotright_button").click(function () {
+            var pict = $("#photo_zone_" + selectedimage).css("background-image").split('/');
+            pict = pict[pict.length - 1].substr(0, pict[pict.length - 1].length - 2);
+            $.ajax({
+                type: "GET",
+                url: "/Home/RotateImage?filename=" + pict + "&sense=right",
+                success: function (data) {
+                    if (data == "OK") {
+                        $("#photo_zone_" + selectedimage).fadeOut(500, function () {
+                            $("#photo_zone_" + selectedimage).css("background-image", "none");
+                            $("#photo_zone_" + selectedimage).css("background-image", "url(/Images/pictures_profiles/" + pict);
+                            $("#photo_zone_" + selectedimage).fadeIn(500);
+                        });
+                    }
+                    else {
+                        alert("Sorry ! An error encountered during the image rotation, try again, may be with another image.")
+                    }
+                },
+                error: function () {
+                    alert("Sorry ! An error encountered during the image flip, try again, may be with another image.")
+                }
+            });
+        });
+
+        $("#pivotleft_button").click(function () {
+            var pict = $("#photo_zone_" + selectedimage).css("background-image").split('/');
+            pict = pict[pict.length - 1].substr(0, pict[pict.length - 1].length - 2);
+            $.ajax({
+                type: "GET",
+                url: "/Home/RotateImage?filename=" + pict + "&sense=left",
+                success: function (data) {
+                    if (data == "OK") {
+                        $("#photo_zone_" + selectedimage).fadeOut(500, function () {
+                            $("#photo_zone_" + selectedimage).css("background-image", "none");
+                            $("#photo_zone_" + selectedimage).css("background-image", "url(/Images/pictures_profiles/" + pict);
+                            $("#photo_zone_" + selectedimage).fadeIn(500);
+                        });
+                    }
+                    else {
+                        alert("Sorry ! An error encountered during the image rotation, try again, may be with another image.")
+                    }
+                },
+                error: function () {
+                    alert("Sorry ! An error encountered during the image flip, try again, may be with another image.")
+                }
+            });
+        });
+
         /*********************************  AFFICHAGE DES RESULTATS   **********************************/
         /****************************************************************************************/
 
@@ -1767,8 +1815,10 @@
                 <br/>
                 <input id="left_movebutton" type="button" />
                 <input id="dezoomx_button" class="zoom_button" type="button" />
+                <input id="pivotleft_button" class="pivotleft_button" type="button" />
                 <input id="rotate_button" class="rotate_button" type="button" />
                 <input id="zoomx_button" class="zoom_button" type="button" />
+                <input id="pivotright_button" class="pivotright_button" type="button" />
                 <input id="right_movebutton" type="button" />
                 <br />
                 <input id="down_movebutton" class="move_button" type="button" />

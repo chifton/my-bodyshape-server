@@ -255,6 +255,8 @@
     <Content Include="Images\myshapebodymail.jpg" />
     <Content Include="Images\next_button.png" />
     <Content Include="Images\loader.gif" />
+    <Content Include="Images\pivotleft.png" />
+    <Content Include="Images\pivotright.png" />
     <Content Include="Images\previous_button.png" />
     <Content Include="Images\rotate.png" />
     <Content Include="Images\top_button.png" />

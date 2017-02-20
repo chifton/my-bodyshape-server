@@ -190,6 +190,54 @@ footer{
     opacity : 0.75;
 }
 
+.pivotleft_button
+{
+    margin : auto;
+    text-align : center;
+    display : inline-block;
+    height : 35px;
+    width : 35px;
+    font-size : 10px;
+    font-weight : bold;
+    text-align : center;
+    border-style : none;
+    background : url("../Images/pivotright.png") no-repeat;
+}
+
+.pivotleft_button:hover
+{
+    opacity : 0.75;
+}
+
+.pivotleft_button:active
+{
+    opacity : 0.5;
+}
+
+.pivotright_button
+{
+    margin : auto;
+    text-align : center;
+    display : inline-block;
+    height : 35px;
+    width : 35px;
+    font-size : 10px;
+    font-weight : bold;
+    text-align : center;
+    border-style : none;
+    background : url("../Images/pivotleft.png") no-repeat;
+}
+
+.pivotright_button:hover
+{
+    opacity : 0.75;
+}
+
+.pivotright_button:active
+{
+    opacity : 0.5;
+}
+
 .zoom_button
 {
     margin : auto;

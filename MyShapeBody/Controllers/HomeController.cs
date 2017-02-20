@@ -215,6 +215,43 @@ namespace MyShapeBody.Controllers
         }
 
         /// <summary>
+        /// Image rotation.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="order"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public string RotateImage(string filename, string sense)
+        {
+            try
+            {
+                var path = Path.Combine(Server.MapPath("~/Images/pictures_profiles"), filename);
+                using (MemoryStream outStream = new MemoryStream())
+                {
+                    using (ImageFactory imageFactory = new ImageFactory(preserveExifData: true))
+                    {
+                        imageFactory.Load(path)
+                                    .Rotate(sense == "right" ? 90 : -90)
+                                    .Save(outStream);
+                    }
+
+                    using (var fileOutStream = System.IO.File.Create(path))
+                    {
+                        outStream.CopyTo(fileOutStream);
+                    }
+                }
+
+                logger.Information($"Successfully rotated picture " + filename);
+                return "OK";
+            }
+            catch (Exception ex)
+            {
+                logger.Error($"An error occured during pictures rotation\t\n{ ex }");
+                return "KO";
+            }
+        }
+
+        /// <summary>
         /// Get and make model.
         /// </summary>
         /// <returns></returns>
