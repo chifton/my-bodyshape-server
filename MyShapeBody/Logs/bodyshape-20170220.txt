@@ -1,0 +1,2 @@
+2017-02-20 02:10:53.077 +01:00 [Information] Registering photo N°1 with id 91a87321-e3c0-441f-ab7d-ba2ee698bd79
+2017-02-20 02:10:54.777 +01:00 [Information] Registering photo N°2 with id 91a87321-e3c0-441f-ab7d-ba2ee698bd79
