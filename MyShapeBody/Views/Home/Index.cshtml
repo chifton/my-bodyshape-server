@@ -133,9 +133,6 @@
 
                                     // Affichage des points
                                     generateFrontBones($("#photo_zone_1"));
-
-                                    // Calcul taille pixel
-                                    pixelHeight = parseInt($("#pied1_u3_1").attr("cy")) - parseInt($("#head_u1_1").attr("cy"));
                                 },
                                 error: function (xhr, status, p3, p4) {
                                     var err = "Error " + " " + status + " " + p3 + " " + p4;
@@ -1363,6 +1360,9 @@
 
         function GenerateDataCoordinates()
         {
+            // Calcul taille pixel
+            pixelHeight = parseInt($("#pied1_u3_1").attr("cy")) - parseInt($("#head_u1_1").attr("cy"));
+
             var pict1 = $("#photo_zone_1").css("background-image").split('/');
             var pict2 = $("#photo_zone_2").css("background-image").split('/');
 
