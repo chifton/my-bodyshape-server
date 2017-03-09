@@ -1,0 +1,63 @@
+2017-03-05 14:17:58.106 +01:00 [Information] Successfully generated body masses for id 06383a5b-56c1-43cd-93e6-c768c64de707
+2017-03-05 14:17:59.882 +01:00 [Information] Successfully registered body masses for id 06383a5b-56c1-43cd-93e6-c768c64de707
+2017-03-05 14:18:00.001 +01:00 [Information] Successfully returned body masses to client
+2017-03-05 14:21:55.013 +01:00 [Information] Successfully generated body masses for id 0f5bf1dc-b44a-415a-92b2-75347b511dca
+2017-03-05 14:21:55.325 +01:00 [Information] Successfully registered body masses for id 0f5bf1dc-b44a-415a-92b2-75347b511dca
+2017-03-05 14:21:55.325 +01:00 [Information] Successfully returned body masses to client
+2017-03-05 14:23:09.305 +01:00 [Information] Successfully generated body masses for id d85fba72-ea30-4895-a780-cdea98026c1a
+2017-03-05 14:23:09.621 +01:00 [Information] Successfully registered body masses for id d85fba72-ea30-4895-a780-cdea98026c1a
+2017-03-05 14:23:09.621 +01:00 [Information] Successfully returned body masses to client
+2017-03-05 16:28:07.685 +01:00 [Information] Successfully generated body masses for id 534c4784-f942-4e7f-8bcb-af73142fad1d
+2017-03-05 16:28:12.278 +01:00 [Information] Successfully registered body masses for id 534c4784-f942-4e7f-8bcb-af73142fad1d
+2017-03-05 16:28:12.383 +01:00 [Information] Successfully returned body masses to client
+2017-03-05 16:30:44.800 +01:00 [Information] Successfully generated body masses for id 27135f92-8455-403c-b4e1-d86d8aa8d17f
+2017-03-05 16:30:45.023 +01:00 [Information] Successfully registered body masses for id 27135f92-8455-403c-b4e1-d86d8aa8d17f
+2017-03-05 16:30:45.023 +01:00 [Information] Successfully returned body masses to client
+2017-03-05 16:53:58.578 +01:00 [Information] Successfully generated body masses for id 96cdf8db-f927-498b-b71f-c1f559a652ce
+2017-03-05 16:53:59.724 +01:00 [Information] Successfully registered body masses for id 96cdf8db-f927-498b-b71f-c1f559a652ce
+2017-03-05 16:53:59.883 +01:00 [Information] Successfully returned body masses to client
+2017-03-05 17:09:21.631 +01:00 [Error] An error occured during pictures upload	
+System.Web.HttpException (0x80004005): Longueur maximale de la demande dépassée.
+   à System.Web.HttpRequest.GetEntireRawContent()
+   à System.Web.HttpRequest.get_InputStream()
+   à System.Web.HttpRequestWrapper.get_InputStream()
+   à MyShapeBody.Controllers.HomeController.UploadFromMobile(String rootFileName) dans D:\Projets\Projects\OnProgress\MyShapeBody\MyShapeBody\MyBodyShape\MyShapeBody\Controllers\HomeController.cs:ligne 125
+2017-03-05 17:11:00.561 +01:00 [Error] An error occured during pictures upload	
+System.Web.HttpException (0x80004005): Longueur maximale de la demande dépassée.
+   à System.Web.HttpRequest.GetEntireRawContent()
+   à System.Web.HttpRequest.get_InputStream()
+   à System.Web.HttpRequestWrapper.get_InputStream()
+   à MyShapeBody.Controllers.HomeController.UploadFromMobile(String rootFileName) dans D:\Projets\Projects\OnProgress\MyShapeBody\MyShapeBody\MyBodyShape\MyShapeBody\Controllers\HomeController.cs:ligne 125
+2017-03-05 19:05:53.931 +01:00 [Information] Successfully generated body masses for id cdfa2d0a-1731-4895-a854-5325533007ff
+2017-03-05 19:05:54.918 +01:00 [Information] Successfully registered body masses for id cdfa2d0a-1731-4895-a854-5325533007ff
+2017-03-05 19:05:55.057 +01:00 [Information] Successfully returned body masses to client
+2017-03-05 19:16:25.633 +01:00 [Error] An error occured during pictures upload	
+System.NullReferenceException: La référence d'objet n'est pas définie à une instance d'un objet.
+   à MyShapeBody.Controllers.HomeController.UploadFromMobile(IEnumerable`1 files, String rootFileName) dans D:\Projets\Projects\OnProgress\MyShapeBody\MyShapeBody\MyBodyShape\MyShapeBody\Controllers\HomeController.cs:ligne 120
+2017-03-05 19:16:47.351 +01:00 [Error] An error occured during pictures upload	
+System.NullReferenceException: La référence d'objet n'est pas définie à une instance d'un objet.
+   à MyShapeBody.Controllers.HomeController.UploadFromMobile(IEnumerable`1 files, String rootFileName) dans D:\Projets\Projects\OnProgress\MyShapeBody\MyShapeBody\MyBodyShape\MyShapeBody\Controllers\HomeController.cs:ligne 120
+2017-03-05 19:27:49.046 +01:00 [Error] An error occured during pictures upload	
+System.NullReferenceException: La référence d'objet n'est pas définie à une instance d'un objet.
+   à MyShapeBody.Controllers.HomeController.UploadFromMobile(IEnumerable`1 files, String rootFileName) dans D:\Projets\Projects\OnProgress\MyShapeBody\MyShapeBody\MyBodyShape\MyShapeBody\Controllers\HomeController.cs:ligne 120
+2017-03-05 19:42:39.544 +01:00 [Error] An error occured during pictures upload	
+System.NullReferenceException: La référence d'objet n'est pas définie à une instance d'un objet.
+   à MyShapeBody.Controllers.HomeController.UploadFromMobile(IEnumerable`1 files, String rootFileName) dans D:\Projets\Projects\OnProgress\MyShapeBody\MyShapeBody\MyBodyShape\MyShapeBody\Controllers\HomeController.cs:ligne 120
+2017-03-05 20:04:07.325 +01:00 [Information] Successfully generated body masses for id 45a22786-4d5f-45b9-8903-d829dc0a073a
+2017-03-05 20:04:08.223 +01:00 [Information] Successfully registered body masses for id 45a22786-4d5f-45b9-8903-d829dc0a073a
+2017-03-05 20:04:08.398 +01:00 [Information] Successfully returned body masses to client
+2017-03-05 20:07:20.951 +01:00 [Information] Successfully generated body masses for id c7b430d7-9ca0-4585-847c-caa7027748e2
+2017-03-05 20:07:22.774 +01:00 [Information] Successfully registered body masses for id c7b430d7-9ca0-4585-847c-caa7027748e2
+2017-03-05 20:07:22.881 +01:00 [Information] Successfully returned body masses to client
+2017-03-05 20:55:08.408 +01:00 [Information] Successfully generated body masses for id 35575db5-28cb-403a-a294-bae483e42ca9
+2017-03-05 20:55:08.778 +01:00 [Information] Successfully registered body masses for id 35575db5-28cb-403a-a294-bae483e42ca9
+2017-03-05 20:55:08.779 +01:00 [Information] Successfully returned body masses to client
+2017-03-05 21:40:48.142 +01:00 [Information] Successfully generated body masses for id 60d89fb5-c79a-42a9-932f-19745b11e43d
+2017-03-05 21:40:49.612 +01:00 [Information] Successfully registered body masses for id 60d89fb5-c79a-42a9-932f-19745b11e43d
+2017-03-05 21:40:49.709 +01:00 [Information] Successfully returned body masses to client
+2017-03-05 22:06:12.189 +01:00 [Information] Successfully generated body masses for id 17a19eff-1c96-4f4f-ba7a-7c972345cebb
+2017-03-05 22:06:13.575 +01:00 [Information] Successfully registered body masses for id 17a19eff-1c96-4f4f-ba7a-7c972345cebb
+2017-03-05 22:06:13.664 +01:00 [Information] Successfully returned body masses to client
+2017-03-05 22:09:24.806 +01:00 [Information] Successfully generated body masses for id 1b13796a-ff4a-4218-82ed-18e9d853bdcc
+2017-03-05 22:09:25.130 +01:00 [Information] Successfully registered body masses for id 1b13796a-ff4a-4218-82ed-18e9d853bdcc
+2017-03-05 22:09:25.130 +01:00 [Information] Successfully returned body masses to client

@@ -78,7 +78,7 @@ namespace MyShapeBody.Engine
 
             var actual = member;
 
-            var defaultDistance = 6;
+            var defaultDistance = 0.1;
 
             // Zero test
             if(actual.Front_Down == 0)

@@ -1276,7 +1276,7 @@
 
             $("#brasgaucheresult").text("");
             $("#brasdroiteresult").text("");
-            $("#avantsbrasgaucheresult").text("");
+            $("#avantbrasgaucheresult").text("");
             $("#avantbrasdroiteresult").text("");
             $("#maingaucheresult").text("");
             $("#maindroiteresult").text("");
@@ -1308,7 +1308,7 @@
 
             $("#brasgaucheresult").html("Left Upperarm : <span class='highlightresult'>" + json.ArmLeft.Mass + " kgs</span>");// with mass center " + json.ArmLeft.MassCenter);
             $("#brasdroiteresult").html("Right Upperarm : <span class='highlightresult'>" + json.ArmRight.Mass + " kgs</span>");// with mass center " + json.ArmRight.MassCenter);
-            $("#avantsbrasgaucheresult").html("Left Forearm : <span class='highlightresult'>" + json.ForeArmLeft.Mass + " kgs</span>");// with mass center " + json.ForeArmLeft.MassCenter);
+            $("#avantbrasgaucheresult").html("Left Forearm : <span class='highlightresult'>" + json.ForeArmLeft.Mass + " kgs</span>");// with mass center " + json.ForeArmLeft.MassCenter);
             $("#avantbrasdroiteresult").html("Right Forearm : <span class='highlightresult'>" + json.ForeArmRight.Mass + " kgs</span>");// with mass center " + json.ForeArmRight.MassCenter);
             $("#maingaucheresult").html("Left Hand : <span class='highlightresult'>" + json.HandLeft.Mass + " kgs</span>");// with mass center " + json.HandLeft.MassCenter);
             $("#maindroiteresult").html("Right Hand : <span class='highlightresult'>" + json.HandRight.Mass + " kgs</span>");// with mass center " + json.HandRight.MassCenter);
@@ -1373,7 +1373,7 @@
 
             myJsonData =
                 {
-                    Height: "175",
+                    Height: $("#height_human").val(),
                     Weight: weight,
                     Picture_1: pict1[pict1.length - 1].substr(0, pict1[pict1.length - 1].length - 2),
                     PictureWidth_1: null,
@@ -1397,26 +1397,26 @@
                         Z3: (Math.abs(pixelToRealTop($("#abdo_u3_1"), $("#abdo_u3_2")) - pixelToRealTop($("#abdo_u1_1"), $("#abdo_u1_2")))),
                     },
                     Thorax: {
-                        U1: Math.abs(pixelToRealLeft($("#thorax_u1_2")) - pixelToRealLeft($("#thorax_u1_1"))),
+                        U1: Math.abs(pixelToRealLeft($("#neck_u2_2")) - pixelToRealLeft($("#neck_u2_1"))),
                         U2: Math.abs(pixelToRealLeft($("#thorax_u2_2")) - pixelToRealLeft($("#thorax_u2_1"))),
                         U3: Math.abs(pixelToRealLeft($("#thorax_u3_2")) - pixelToRealLeft($("#thorax_u3_1"))),
                         V1: Math.abs(pixelToRealLeft($("#thorax_v1_2")) - pixelToRealLeft($("#thorax_v1_1"))),
                         V2: Math.abs(pixelToRealLeft($("#thorax_v2_2")) - pixelToRealLeft($("#thorax_v2_1"))),
                         V3: Math.abs(pixelToRealLeft($("#thorax_v3_2")) - pixelToRealLeft($("#thorax_v3_1"))),
                         Z1: 0,
-                        Z2: (Math.abs(pixelToRealTop($("#thorax_u3_1"), $("#thorax_u3_2")) - pixelToRealTop($("#thorax_u1_1"), $("#thorax_u1_2")))) / 2,
-                        Z3: (Math.abs(pixelToRealTop($("#thorax_u3_1"), $("#thorax_u3_2")) - pixelToRealTop($("#thorax_u1_1"), $("#thorax_u1_2")))),
+                        Z2: (Math.abs(pixelToRealTop($("#thorax_u3_1"), $("#thorax_u3_2")) - pixelToRealTop($("#neck_u2_1"), $("#neck_u2_2")))) / 2,
+                        Z3: (Math.abs(pixelToRealTop($("#thorax_u3_1"), $("#thorax_u3_2")) - pixelToRealTop($("#neck_u2_1"), $("#neck_u2_2")))),
                     },
                     Neck: {
-                        U1: Math.abs(pixelToRealLeft($("#neck_u1_2")) - pixelToRealLeft($("#neck_u1_1"))),
-                        U2: Math.abs(pixelToRealLeft($("#neck_u2_2")) - pixelToRealLeft($("#neck_u2_1"))),
-                        U3: Math.abs(pixelToRealLeft($("#neck_u3_2")) - pixelToRealLeft($("#neck_u3_1"))),
+                        U1: Math.abs(pixelToRealLeft($("#head_u3_2")) - pixelToRealLeft($("#head_u3_1"))),
+                        U2: Math.abs(pixelToRealLeft($("#neck_u1_2")) - pixelToRealLeft($("#neck_u1_1"))),
+                        U3: Math.abs(pixelToRealLeft($("#neck_u2_2")) - pixelToRealLeft($("#neck_u2_1"))),
                         V1: Math.abs(pixelToRealLeft($("#neck_v1_2")) - pixelToRealLeft($("#neck_v1_1"))),
                         V2: Math.abs(pixelToRealLeft($("#neck_v2_2")) - pixelToRealLeft($("#neck_v2_1"))),
                         V3: Math.abs(pixelToRealLeft($("#neck_v3_2")) - pixelToRealLeft($("#neck_v3_1"))),
                         Z1: 0,
-                        Z2: (Math.abs(pixelToRealTop($("#neck_u3_1"), $("#neck_u3_2")) - pixelToRealTop($("#neck_u1_1"), $("#neck_u1_2")))) / 2,
-                        Z3: (Math.abs(pixelToRealTop($("#neck_u3_1"), $("#neck_u3_2")) - pixelToRealTop($("#neck_u1_1"), $("#neck_u1_2")))),
+                        Z2: (Math.abs(pixelToRealTop($("#neck_u2_1"), $("#neck_u2_2")) - pixelToRealTop($("#head_u3_1"), $("#head_u3_2")))) / 2,
+                        Z3: (Math.abs(pixelToRealTop($("#neck_u2_1"), $("#neck_u2_2")) - pixelToRealTop($("#head_u3_1"), $("#head_u3_2")))),
                     },
                     Head: {
                         U1: Math.abs(pixelToRealLeft($("#head_u1_2")) - pixelToRealLeft($("#head_u1_1"))),
@@ -1466,12 +1466,12 @@
                         U1: Math.abs(pixelToRealLeft($("#pied1_u1_1")) - pixelToRealLeft($("#pied2_u1_1"))),
                         U2: Math.abs(pixelToRealLeft($("#pied1_u2_1")) - pixelToRealLeft($("#pied2_u2_1"))),
                         U3: Math.abs(pixelToRealLeft($("#pied1_u3_1")) - pixelToRealLeft($("#pied2_u3_1"))),
-                        V1: Math.abs(pixelToRealLeft($("#pied_v1_2")) - pixelToRealLeft($("#pied_v1_1"))),
-                        V2: Math.abs(pixelToRealLeft($("#pied_v2_2")) - pixelToRealLeft($("#pied_v2_1"))),
+                        V1: Math.abs(pixelToRealLeft($("#pied_v2_1")) - pixelToRealLeft($("#pied_v3_1"))),
+                        V2: Math.abs(pixelToRealLeft($("#pied_v2_1")) - pixelToRealLeft($("#pied_v3_1"))) / 2,
                         V3: Math.abs(pixelToRealLeft($("#pied_v3_2")) - pixelToRealLeft($("#pied_v3_1"))),
                         Z1: 0,
-                        Z2: (Math.abs(pixelToRealTop($("#pied1_u3_1"), $("#pied2_u3_1")) - pixelToRealTop($("#pied1_u1_1"), $("#pied2_u1_1")))) / 2,
-                        Z3: (Math.abs(pixelToRealTop($("#pied1_u3_1"), $("#pied2_u3_1")) - pixelToRealTop($("#pied1_u1_1"), $("#pied2_u1_1")))),
+                        Z2: Math.abs(pixelToRealLeft($("#pied_v3_2")) - pixelToRealLeft($("#pied_v3_1"))) / 2,
+                        Z3: Math.abs(pixelToRealLeft($("#pied_v3_2")) - pixelToRealLeft($("#pied_v3_1")))
                     },
                     Hand: {
                         U1: Math.abs(pixelToRealLeft($("#maingauche_u1_2")) - pixelToRealLeft($("#maingauche_u1_1"))),
@@ -1481,8 +1481,8 @@
                         V2: Math.abs(pixelToRealLeft($("#main_v2_2")) - pixelToRealLeft($("#main_v2_1"))),
                         V3: Math.abs(pixelToRealLeft($("#main_v3_2")) - pixelToRealLeft($("#main_v3_1"))),
                         Z1: 0,
-                        Z2: (Math.abs(pixelToRealTop($("#maingauche_u3_1"), $("#maingauche_u3_2")) - pixelToRealTop($("#maingauche_u1_1"), $("#maingauche_u1_2")))) / 2,
-                        Z3: (Math.abs(pixelToRealTop($("#maingauche_u3_1"), $("#maingauche_u3_2")) - pixelToRealTop($("#maingauche_u1_1"), $("#maingauche_u1_2")))),
+                        Z2: (Math.abs(pixelToRealTop($("#maingauche_u4_1"), $("#maingauche_u4_2")) - pixelToRealTop($("#maingauche_u1_1"), $("#maingauche_u1_2")))) / 2,
+                        Z3: (Math.abs(pixelToRealTop($("#maingauche_u4_1"), $("#maingauche_u4_2")) - pixelToRealTop($("#maingauche_u1_1"), $("#maingauche_u1_2")))),
                     },
                     ForeArm: {
                         U1: Math.abs(pixelToRealLeft($("#avantbrasgauche_u1_2")) - pixelToRealLeft($("#avantbrasgauche_u1_1"))),
@@ -1503,8 +1503,8 @@
                         V2: Math.abs(pixelToRealLeft($("#bras_v2_2")) - pixelToRealLeft($("#bras_v2_1"))),
                         V3: Math.abs(pixelToRealLeft($("#bras_v3_2")) - pixelToRealLeft($("#bras_v3_1"))),
                         Z1: 0,
-                        Z2: (Math.abs(pixelToRealTop($("#brasgauche_u2_2"), $("#brasgauche_u2_1")) - pixelToRealTop($("#brasgauche_u4_2"), $("#brasgauche_u4_1")))) / 2,
-                        Z3: (Math.abs(pixelToRealTop($("#brasgauche_u2_2"), $("#brasgauche_u2_1")) - pixelToRealTop($("#brasgauche_u4_2"), $("#brasgauche_u4_1")))),
+                        Z2: (Math.abs(pixelToRealTop($("#brasgauche_u1_2"), $("#brasgauche_u1_1")) - pixelToRealTop($("#brasgauche_u4_2"), $("#brasgauche_u4_1")))) / 2,
+                        Z3: (Math.abs(pixelToRealTop($("#brasgauche_u1_2"), $("#brasgauche_u1_1")) - pixelToRealTop($("#brasgauche_u4_2"), $("#brasgauche_u4_1")))),
                     },
                 };
         }
@@ -1817,8 +1817,8 @@
                 <input id="dezoomx_button" class="zoom_button" type="button" />
                 <input id="pivotleft_button" class="pivotleft_button" type="button" />
                 <input id="rotate_button" class="rotate_button" type="button" />
-                <input id="zoomx_button" class="zoom_button" type="button" />
                 <input id="pivotright_button" class="pivotright_button" type="button" />
+                <input id="zoomx_button" class="zoom_button" type="button" />
                 <input id="right_movebutton" type="button" />
                 <br />
                 <input id="down_movebutton" class="move_button" type="button" />
@@ -1859,7 +1859,7 @@
         <div class="massresult" id="pieddroiteresult"></div>
         <div class="massresult" id="brasgaucheresult"></div>
         <div class="massresult" id="brasdroiteresult"></div>
-        <div class="massresult" id="avantsbrasgaucheresult"></div>
+        <div class="massresult" id="avantbrasgaucheresult"></div>
         <div class="massresult" id="avantbrasdroiteresult"></div>
         <div class="massresult" id="maingaucheresult"></div>
         <div class="massresult" id="maindroiteresult"></div>

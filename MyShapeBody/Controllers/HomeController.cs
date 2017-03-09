@@ -13,6 +13,8 @@ namespace MyShapeBody.Controllers
     using System.IO;
     using System.Linq;
     using System.Net;
+    using System.Net.Http;
+    using System.Net.Http.Formatting;
     using System.Threading.Tasks;
     using System.Web;
     using System.Web.Mvc;
@@ -104,6 +106,53 @@ namespace MyShapeBody.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+
+        /// <summary>
+        /// Images loading from mobiles
+        /// </summary>
+        [HttpPost]
+        public JsonResult UploadFromMobile(string rootFileName)
+        {
+            try
+            {               
+                foreach (string file in Request.Files)
+                {
+                    //var medre = Request.Files;
+                    var fileContent = Request.Files[file];
+                    if (fileContent != null && fileContent.ContentLength > 0)
+                    {
+                        var stream = fileContent.InputStream;
+                        var fileNameJson = rootFileName;
+
+                        var path = Path.Combine(Server.MapPath("~/Images/pictures_profiles"), fileNameJson);
+
+                        using (MemoryStream outStream = new MemoryStream())
+                        {
+                            using (ImageFactory imageFactory = new ImageFactory(preserveExifData: true))
+                            {
+                                imageFactory.Load(stream)
+                                            .Resize(new ResizeLayer(new Size(0, 600), ResizeMode.Pad))
+                                            .Quality(100)
+                                            .Save(outStream);
+                            }
+
+                            using (var fileOutStream = System.IO.File.Create(path))
+                            {
+                                outStream.CopyTo(fileOutStream);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                logger.Error($"An error occured during pictures upload\t\n{ ex }");
+                return Json("Upload failed");
+            }
+
+            return Json(rootFileName, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>
@@ -280,6 +329,13 @@ namespace MyShapeBody.Controllers
                 double? error = null;
                 decimal decError = 0;
                 bool toCompare = false;
+                
+                // For Android ans iOS weight values
+                if(body.Weight == 0)
+                {
+                    body.Weight = null;
+                }
+
                 if (body.Weight.HasValue)
                 {
                     error = result.BodyMass.TotalMass - body.Weight;
