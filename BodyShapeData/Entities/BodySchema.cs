@@ -107,15 +107,15 @@ namespace BodyShapeData.Entities
         /// </summary>
         public virtual ArmR ArmRight { get; set; }
 
-        /// <summary>
-        /// The left ankle
-        /// </summary>
-        public virtual AnkleL AnkleLeft { get; set; }
+        ///// <summary>
+        ///// The left ankle
+        ///// </summary>
+        //public virtual AnkleL AnkleLeft { get; set; }
 
-        /// <summary>
-        /// The right ankle
-        /// </summary>
-        public virtual AnkleR AnkleRight { get; set; }
+        ///// <summary>
+        ///// The right ankle
+        ///// </summary>
+        //public virtual AnkleR AnkleRight { get; set; }
 
         /// <summary>
         /// The neck

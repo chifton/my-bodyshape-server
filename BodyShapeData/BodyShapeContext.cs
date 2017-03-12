@@ -53,12 +53,12 @@ namespace BodyShapeData
             //modelBuilder.Entity<Abdomen>()
             //    .HasRequired(x => x.BodySchema)
             //    .WithRequiredDependent();
-            modelBuilder.Entity<BodySchema>()
-                .HasRequired(x => x.AnkleLeft)     
-                .WithRequiredPrincipal();
-            modelBuilder.Entity<BodySchema>()
-                .HasRequired(x => x.AnkleRight)
-                .WithRequiredPrincipal();
+            //modelBuilder.Entity<BodySchema>()
+            //    .HasRequired(x => x.AnkleLeft)     
+            //    .WithRequiredPrincipal();
+            //modelBuilder.Entity<BodySchema>()
+            //    .HasRequired(x => x.AnkleRight)
+            //    .WithRequiredPrincipal();
             //modelBuilder.Entity<Ankle>()
             //    .HasRequired(x => x.BodySchema)
             //    .WithRequiredDependent();
@@ -147,12 +147,12 @@ namespace BodyShapeData
             //modelBuilder.Entity<AbdomenMass>()
             //    .HasRequired(t => t.BodyResult)
             //    .WithRequiredDependent();
-            modelBuilder.Entity<BodyResult>()
-                .HasRequired(t => t.AnkleLeft)
-                .WithRequiredPrincipal();
-            modelBuilder.Entity<BodyResult>()
-                .HasRequired(t => t.AnkleRight)
-                .WithRequiredPrincipal();
+            //modelBuilder.Entity<BodyResult>()
+            //    .HasRequired(t => t.AnkleLeft)
+            //    .WithRequiredPrincipal();
+            //modelBuilder.Entity<BodyResult>()
+            //    .HasRequired(t => t.AnkleRight)
+            //    .WithRequiredPrincipal();
             //modelBuilder.Entity<AnkleMass>()
             //    .HasRequired(t => t.BodyResult)
             //    .WithRequiredDependent();

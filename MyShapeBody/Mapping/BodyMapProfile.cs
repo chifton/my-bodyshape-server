@@ -25,8 +25,8 @@ namespace MyShapeBody.Mapping
         {
             this.CreateMap<AppModels.Body, Entities.BodySchema>()
             .AfterMap((s, d) => d.Abdomen.Laterality = Entities.Laterality.None)
-            .AfterMap((s, d) => d.AnkleLeft.Laterality = Entities.Laterality.Left)
-            .AfterMap((s, d) => d.AnkleRight.Laterality = Entities.Laterality.Right)
+            //.AfterMap((s, d) => d.AnkleLeft.Laterality = Entities.Laterality.Left)
+            //.AfterMap((s, d) => d.AnkleRight.Laterality = Entities.Laterality.Right)
             .AfterMap((s, d) => d.ArmLeft.Laterality = Entities.Laterality.Left)
             .AfterMap((s, d) => d.ArmRight.Laterality = Entities.Laterality.Right)
             .AfterMap((s, d) => d.Bottom.Laterality = Entities.Laterality.None)
@@ -46,8 +46,8 @@ namespace MyShapeBody.Mapping
 
             this.CreateMap<AppModels.BodyMass, Entities.BodyResult>()
             .AfterMap((s, d) => d.Abdomen.Laterality = Entities.Laterality.None)
-            .AfterMap((s, d) => d.AnkleLeft.Laterality = Entities.Laterality.Left)
-            .AfterMap((s, d) => d.AnkleRight.Laterality = Entities.Laterality.Right)
+            //.AfterMap((s, d) => d.AnkleLeft.Laterality = Entities.Laterality.Left)
+            //.AfterMap((s, d) => d.AnkleRight.Laterality = Entities.Laterality.Right)
             .AfterMap((s, d) => d.ArmLeft.Laterality = Entities.Laterality.Left)
             .AfterMap((s, d) => d.ArmRight.Laterality = Entities.Laterality.Right)
             .AfterMap((s, d) => d.Bottom.Laterality = Entities.Laterality.None)

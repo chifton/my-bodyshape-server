@@ -48,15 +48,15 @@ namespace BodyShapeData.Entities
         /// </summary>
         public virtual ArmMassR ArmRight { get; set; }
 
-        /// <summary>
-        /// The left ankle mass
-        /// </summary>
-        public virtual AnkleMassL AnkleLeft { get; set; }
+        ///// <summary>
+        ///// The left ankle mass
+        ///// </summary>
+        //public virtual AnkleMassL AnkleLeft { get; set; }
 
-        /// <summary>
-        /// The right ankle mass
-        /// </summary>
-        public virtual AnkleMassR AnkleRight { get; set; }
+        ///// <summary>
+        ///// The right ankle mass
+        ///// </summary>
+        //public virtual AnkleMassR AnkleRight { get; set; }
 
         /// <summary>
         /// The neck mass
@@ -125,7 +125,7 @@ namespace BodyShapeData.Entities
         {
             get
             {
-                return this.Abdomen.Mass + this.AnkleLeft.Mass + this.AnkleRight.Mass + this.ArmLeft.Mass + this.ArmRight.Mass
+                return this.Abdomen.Mass + this.ArmLeft.Mass + this.ArmRight.Mass
                     + this.Bottom.Mass + this.FootLeft.Mass + this.FootRight.Mass + this.ForeArmLeft.Mass + this.ForeArmRight.Mass
                     + this.HandLeft.Mass + this.HandRight.Mass + this.Head.Mass + this.LegLeft.Mass + this.LegRight.Mass
                     + this.Neck.Mass + this.ThighLeft.Mass + this.ThighRight.Mass + this.Thorax.Mass;

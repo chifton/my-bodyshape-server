@@ -44,15 +44,15 @@ namespace MyShapeBody.AppModels
         /// </summary>
         public ArmMass ArmRight { get; set; }
 
-        /// <summary>
-        /// The left ankle mass
-        /// </summary>
-        public AnkleMass AnkleLeft { get; set; }
+        ///// <summary>
+        ///// The left ankle mass
+        ///// </summary>
+        //public AnkleMass AnkleLeft { get; set; }
 
-        /// <summary>
-        /// The right ankle mass
-        /// </summary>
-        public AnkleMass AnkleRight { get; set; }
+        ///// <summary>
+        ///// The right ankle mass
+        ///// </summary>
+        //public AnkleMass AnkleRight { get; set; }
 
         /// <summary>
         /// The neck mass
@@ -121,7 +121,7 @@ namespace MyShapeBody.AppModels
         {
             get
             {
-                return Math.Round(this.Abdomen.Mass + this.AnkleLeft.Mass + this.AnkleRight.Mass + this.ArmLeft.Mass + this.ArmRight.Mass
+                return Math.Round(this.Abdomen.Mass + this.ArmLeft.Mass + this.ArmRight.Mass
                     + this.Bottom.Mass + this.FootLeft.Mass + this.FootRight.Mass + this.ForeArmLeft.Mass + this.ForeArmRight.Mass
                     + this.HandLeft.Mass + this.HandRight.Mass + this.Head.Mass + this.LegLeft.Mass + this.LegRight.Mass
                     + this.Neck.Mass + this.ThighLeft.Mass + this.ThighRight.Mass + this.Thorax.Mass, 2);

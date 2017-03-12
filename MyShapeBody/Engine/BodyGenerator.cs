@@ -113,8 +113,8 @@ namespace MyShapeBody.Engine
             // A corriger : pour l'instant, même masse que les mains
             //bodyInput.AnkleLeft = new Ankle(MemberToShapeMeasure(this.GetJsonMember("Ankle")));
             //bodyInput.AnkleRight = new Ankle(MemberToShapeMeasure(this.GetJsonMember("Ankle")));
-            bodyInput.AnkleLeft = new Ankle(MemberToShapeMeasure(this.GetJsonMember("Hand")));
-            bodyInput.AnkleRight = new Ankle(MemberToShapeMeasure(this.GetJsonMember("Hand")));
+            //bodyInput.AnkleLeft = new Ankle(MemberToShapeMeasure(this.GetJsonMember("Hand")));
+            //bodyInput.AnkleRight = new Ankle(MemberToShapeMeasure(this.GetJsonMember("Hand")));
 
             return bodyInput;
         }

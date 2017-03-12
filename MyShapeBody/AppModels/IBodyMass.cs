@@ -38,15 +38,15 @@ namespace MyShapeBody.AppModels
         /// </summary>
         ArmMass ArmRight { get; set; }
 
-        /// <summary>
-        /// The left ankle mass
-        /// </summary>
-        AnkleMass AnkleLeft { get; set; }
+        ///// <summary>
+        ///// The left ankle mass
+        ///// </summary>
+        //AnkleMass AnkleLeft { get; set; }
 
-        /// <summary>
-        /// The right ankle mass
-        /// </summary>
-        AnkleMass AnkleRight { get; set; }
+        ///// <summary>
+        ///// The right ankle mass
+        ///// </summary>
+        //AnkleMass AnkleRight { get; set; }
 
         /// <summary>
         /// The neck mass

@@ -45,8 +45,8 @@ namespace MyShapeBody.Engine
         {
             // Masses generation
             bodyOutput.Abdomen = new AbdomenMass(GenerateShapeMass(bodyInput.Abdomen, density));
-            bodyOutput.AnkleLeft = new AnkleMass(GenerateShapeMass(bodyInput.AnkleLeft, density));
-            bodyOutput.AnkleRight = new AnkleMass(GenerateShapeMass(bodyInput.AnkleRight, density));
+            //bodyOutput.AnkleLeft = new AnkleMass(GenerateShapeMass(bodyInput.AnkleLeft, density));
+            //bodyOutput.AnkleRight = new AnkleMass(GenerateShapeMass(bodyInput.AnkleRight, density));
             bodyOutput.ArmLeft = new ArmMass(GenerateShapeMass(bodyInput.ArmLeft, density));
             bodyOutput.ArmRight = new ArmMass(GenerateShapeMass(bodyInput.ArmRight, density));
             bodyOutput.Bottom = new BottomMass(GenerateShapeMass(bodyInput.Bottom, density));

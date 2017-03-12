@@ -103,15 +103,15 @@ namespace MyShapeBody.AppModels
         /// </summary>
         public Arm ArmRight { get; set; }
 
-        /// <summary>
-        /// The left ankle
-        /// </summary>
-        public Ankle AnkleLeft { get; set; }
+        ///// <summary>
+        ///// The left ankle
+        ///// </summary>
+        //public Ankle AnkleLeft { get; set; }
 
-        /// <summary>
-        /// The right ankle
-        /// </summary>
-        public Ankle AnkleRight { get; set; }
+        ///// <summary>
+        ///// The right ankle
+        ///// </summary>
+        //public Ankle AnkleRight { get; set; }
 
         /// <summary>
         /// The neck
