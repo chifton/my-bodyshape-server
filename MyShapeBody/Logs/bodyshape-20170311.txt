@@ -1,0 +1,3 @@
+2017-03-11 00:33:08.192 +01:00 [Information] Successfully generated body masses for id a31c2c86-3b16-4da2-87dd-c3c7c72c2d48
+2017-03-11 00:33:08.599 +01:00 [Information] Successfully registered body masses for id a31c2c86-3b16-4da2-87dd-c3c7c72c2d48
+2017-03-11 00:33:08.599 +01:00 [Information] Successfully returned body masses to client

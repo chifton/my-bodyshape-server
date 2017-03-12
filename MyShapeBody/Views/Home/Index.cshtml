@@ -1197,6 +1197,12 @@
         
         $("#generate_button").click(function ()
         {
+            if ($("#generate_button").attr('value') == "Retry")
+            {
+                location.reload();
+                return;
+            }
+
             if (toutesphotosload)
             {
                 clearInterval(intervalFront);
@@ -1237,6 +1243,9 @@
                                 var myfinaljson = $.parseJSON(data);
                                 displayResults(myfinaljson); // Generation masses
                                 generate3DMesh(); // Generation 3D
+                                $("#photo_zone_1").css("pointer-events", "none"); // Disable front picture updates
+                                $("#photo_zone_2").css("pointer-events", "none"); // Disable side picture updates
+                                $("#generate_button").attr('value', 'Retry'); // Retry button
                             }
                         },
                         error: function () {

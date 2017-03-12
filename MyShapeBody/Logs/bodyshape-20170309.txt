@@ -22,3 +22,6 @@
 2017-03-09 20:00:38.150 +01:00 [Information] Successfully generated body masses for id f27672a6-ce93-4706-8c05-699f73bd23fa
 2017-03-09 20:00:38.521 +01:00 [Information] Successfully registered body masses for id f27672a6-ce93-4706-8c05-699f73bd23fa
 2017-03-09 20:00:38.521 +01:00 [Information] Successfully returned body masses to client
+2017-03-09 20:34:10.645 +01:00 [Information] Successfully generated body masses for id b082b03e-b9dd-4dcc-b918-91d2d298db7c
+2017-03-09 20:34:11.341 +01:00 [Information] Successfully registered body masses for id b082b03e-b9dd-4dcc-b918-91d2d298db7c
+2017-03-09 20:34:11.463 +01:00 [Information] Successfully returned body masses to client
