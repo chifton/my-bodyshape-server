@@ -1205,21 +1205,22 @@
 
             if (toutesphotosload)
             {
-                clearInterval(intervalFront);
-                clearInterval(intervalSide);
-
-                $("#generation_3D_canvas").css("background-image", "none");
-                $("#generation_3D_canvas").prepend('<img id="loadingleft" src="../Images/loader.gif" />');
-                $("#infos_2").prepend('<img id="loadingright" src="../Images/loader.gif" />');
-
-                var topload = $("#generation_3D_canvas").width() / 2 - $("#loadingleft").width() / 2;
-                $("#loadingleft").css("position", "relative");
-                $("#loadingright").css("position", "relative");
-                $("#loadingleft").css("top", topload + "px");
-                $("#loadingright").css("top", topload + "px");
-
                 // Taille entre 1m et 2m30
                 if ($("#height_human").val() >= 100 && $("#height_human").val() <= 230) {
+
+                    clearInterval(intervalFront);
+                    clearInterval(intervalSide);
+
+                    $("#generation_3D_canvas").css("background-image", "none");
+                    $("#generation_3D_canvas").prepend('<img id="loadingleft" src="../Images/loader.gif" />');
+                    $("#infos_2").prepend('<img id="loadingright" src="../Images/loader.gif" />');
+
+                    var topload = $("#generation_3D_canvas").width() / 2 - $("#loadingleft").width() / 2;
+                    $("#loadingleft").css("position", "relative");
+                    $("#loadingright").css("position", "relative");
+                    $("#loadingleft").css("top", topload + "px");
+                    $("#loadingright").css("top", topload + "px");
+
                     nbConversions = 0;
                     //console.log(JSON.stringify(positionsPointsObj));
                     //console.log(JSON.stringify(pathsObj));
@@ -1245,6 +1246,10 @@
                                 generate3DMesh(); // Generation 3D
                                 $("#photo_zone_1").css("pointer-events", "none"); // Disable front picture updates
                                 $("#photo_zone_2").css("pointer-events", "none"); // Disable side picture updates
+                                // Disable controls
+                                $("#generatecontrols").css("pointer-events", "none");
+                                $("#height_human").css("pointer-events", "none");
+                                $("#weight_human").css("pointer-events", "none");
                                 $("#generate_button").attr('value', 'Retry'); // Retry button
                             }
                         },

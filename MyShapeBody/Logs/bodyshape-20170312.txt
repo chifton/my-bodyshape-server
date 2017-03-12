@@ -38,3 +38,66 @@
 2017-03-12 15:47:05.906 +01:00 [Information] Successfully generated body masses for id e9c8bc1a-ab0d-4a1f-a748-24658cc368be
 2017-03-12 15:47:06.427 +01:00 [Information] Successfully registered body masses for id e9c8bc1a-ab0d-4a1f-a748-24658cc368be
 2017-03-12 15:47:06.535 +01:00 [Information] Successfully returned body masses to client
+2017-03-12 16:34:55.298 +01:00 [Information] Successfully generated body masses for id 2d235c8a-70d0-45ae-8a36-123ecf7f5415
+2017-03-12 16:34:55.939 +01:00 [Information] Successfully registered body masses for id 2d235c8a-70d0-45ae-8a36-123ecf7f5415
+2017-03-12 16:34:56.044 +01:00 [Information] Successfully returned body masses to client
+2017-03-12 16:37:36.255 +01:00 [Information] Successfully generated body masses for id 0d2224d8-a767-4d1f-a333-f4dd16794d75
+2017-03-12 16:37:37.137 +01:00 [Information] Successfully registered body masses for id 0d2224d8-a767-4d1f-a333-f4dd16794d75
+2017-03-12 16:37:37.138 +01:00 [Information] Successfully returned body masses to client
+2017-03-12 16:38:25.492 +01:00 [Information] Successfully generated body masses for id eef2cca0-0a59-43e0-be16-5ebdbc9f964f
+2017-03-12 16:38:25.705 +01:00 [Information] Successfully registered body masses for id eef2cca0-0a59-43e0-be16-5ebdbc9f964f
+2017-03-12 16:38:25.705 +01:00 [Information] Successfully returned body masses to client
+2017-03-12 18:09:37.538 +01:00 [Information] Successfully generated body masses for id 572533c1-cf23-428c-adfc-d89c44eaba1e
+2017-03-12 18:09:38.123 +01:00 [Information] Successfully registered body masses for id 572533c1-cf23-428c-adfc-d89c44eaba1e
+2017-03-12 18:09:38.124 +01:00 [Information] Successfully returned body masses to client
+2017-03-12 18:11:51.167 +01:00 [Information] Successfully generated body masses for id 3f7361b8-0052-4482-8193-8c4f511b9528
+2017-03-12 18:11:51.450 +01:00 [Information] Successfully registered body masses for id 3f7361b8-0052-4482-8193-8c4f511b9528
+2017-03-12 18:11:51.450 +01:00 [Information] Successfully returned body masses to client
+2017-03-12 18:16:30.615 +01:00 [Information] Successfully generated body masses for id 0234ebef-64dd-4a1a-b63e-fb7983af0040
+2017-03-12 18:16:31.298 +01:00 [Information] Successfully registered body masses for id 0234ebef-64dd-4a1a-b63e-fb7983af0040
+2017-03-12 18:16:31.298 +01:00 [Information] Successfully returned body masses to client
+2017-03-12 18:19:20.981 +01:00 [Information] Successfully generated body masses for id cc466422-a187-4e3b-9e14-1911629dc823
+2017-03-12 18:19:21.242 +01:00 [Information] Successfully registered body masses for id cc466422-a187-4e3b-9e14-1911629dc823
+2017-03-12 18:19:21.242 +01:00 [Information] Successfully returned body masses to client
+2017-03-12 18:21:09.944 +01:00 [Information] Successfully generated body masses for id cb0540f7-060c-4a2b-bfa1-36f19a0774ea
+2017-03-12 18:21:10.125 +01:00 [Information] Successfully registered body masses for id cb0540f7-060c-4a2b-bfa1-36f19a0774ea
+2017-03-12 18:21:10.126 +01:00 [Information] Successfully returned body masses to client
+2017-03-12 18:22:48.126 +01:00 [Information] Successfully generated body masses for id 36533664-8c9a-4550-8605-e98aa8f77ac9
+2017-03-12 18:22:48.351 +01:00 [Information] Successfully registered body masses for id 36533664-8c9a-4550-8605-e98aa8f77ac9
+2017-03-12 18:22:48.351 +01:00 [Information] Successfully returned body masses to client
+2017-03-12 18:23:46.283 +01:00 [Information] Successfully generated body masses for id ef01e995-6145-43b9-aef3-116fb2ee6f87
+2017-03-12 18:23:46.516 +01:00 [Information] Successfully registered body masses for id ef01e995-6145-43b9-aef3-116fb2ee6f87
+2017-03-12 18:23:46.516 +01:00 [Information] Successfully returned body masses to client
+2017-03-12 18:30:23.391 +01:00 [Information] Successfully generated body masses for id 5a144060-865c-43f0-af0b-2ecc430b010e
+2017-03-12 18:30:23.766 +01:00 [Information] Successfully registered body masses for id 5a144060-865c-43f0-af0b-2ecc430b010e
+2017-03-12 18:30:23.766 +01:00 [Information] Successfully returned body masses to client
+2017-03-12 18:32:46.031 +01:00 [Information] Successfully generated body masses for id f79cb6e2-6d12-4a60-9444-b92a03099dee
+2017-03-12 18:32:46.239 +01:00 [Information] Successfully registered body masses for id f79cb6e2-6d12-4a60-9444-b92a03099dee
+2017-03-12 18:32:46.239 +01:00 [Information] Successfully returned body masses to client
+2017-03-12 18:43:32.651 +01:00 [Information] Registering photo N°1 with id 696a3a30-940b-41c8-b080-928439510ab4
+2017-03-12 18:43:34.285 +01:00 [Information] Registering photo N°2 with id 696a3a30-940b-41c8-b080-928439510ab4
+2017-03-12 18:43:36.861 +01:00 [Information] Successfully generated body masses for id 9de841cb-28ea-4567-9eb6-402901d4a2c8
+2017-03-12 18:43:37.505 +01:00 [Information] Successfully registered body masses for id 9de841cb-28ea-4567-9eb6-402901d4a2c8
+2017-03-12 18:43:37.610 +01:00 [Information] Successfully returned body masses to client
+2017-03-12 18:44:04.266 +01:00 [Information] Registering photo N°1 with id 7abf157b-75c8-49be-bd96-4dec4cfa1339
+2017-03-12 18:44:08.484 +01:00 [Information] Registering photo N°2 with id 7abf157b-75c8-49be-bd96-4dec4cfa1339
+2017-03-12 18:44:22.609 +01:00 [Information] Successfully generated body masses for id 1efc7e90-fdc0-4422-b242-5d5f1b52d03b
+2017-03-12 18:44:22.908 +01:00 [Information] Successfully registered body masses for id 1efc7e90-fdc0-4422-b242-5d5f1b52d03b
+2017-03-12 18:44:22.909 +01:00 [Information] Successfully returned body masses to client
+2017-03-12 18:46:14.475 +01:00 [Information] Registering photo N°1 with id 7866efbd-0961-4b69-acbf-c25b0bec51a0
+2017-03-12 18:46:16.289 +01:00 [Information] Registering photo N°2 with id 7866efbd-0961-4b69-acbf-c25b0bec51a0
+2017-03-12 18:46:20.925 +01:00 [Information] Successfully generated body masses for id 4731bf21-245c-4676-b9a1-4e08a9060782
+2017-03-12 18:46:21.502 +01:00 [Information] Successfully registered body masses for id 4731bf21-245c-4676-b9a1-4e08a9060782
+2017-03-12 18:46:21.602 +01:00 [Information] Successfully returned body masses to client
+2017-03-12 18:46:29.196 +01:00 [Information] Registering photo N°1 with id ce1f9bb0-3193-4700-be04-c96e2c27018b
+2017-03-12 18:46:31.118 +01:00 [Information] Registering photo N°2 with id ce1f9bb0-3193-4700-be04-c96e2c27018b
+2017-03-12 18:46:46.076 +01:00 [Information] Registering photo N°1 with id ae894331-18db-4020-9294-4a72a94a038c
+2017-03-12 18:46:47.848 +01:00 [Information] Registering photo N°2 with id ae894331-18db-4020-9294-4a72a94a038c
+2017-03-12 18:46:56.845 +01:00 [Information] Successfully generated body masses for id f1dbfeeb-5be8-4f0c-ac2e-eb74ac53be76
+2017-03-12 18:46:57.065 +01:00 [Information] Successfully registered body masses for id f1dbfeeb-5be8-4f0c-ac2e-eb74ac53be76
+2017-03-12 18:46:57.065 +01:00 [Information] Successfully returned body masses to client
+2017-03-12 18:47:09.136 +01:00 [Information] Registering photo N°1 with id b00fc8a5-e953-4e4b-b61e-ad39000447f6
+2017-03-12 18:47:10.853 +01:00 [Information] Registering photo N°2 with id b00fc8a5-e953-4e4b-b61e-ad39000447f6
+2017-03-12 18:47:12.714 +01:00 [Information] Successfully generated body masses for id f3571dd6-fd11-4f17-9058-9e87ebd62e69
+2017-03-12 18:47:12.889 +01:00 [Information] Successfully registered body masses for id f3571dd6-fd11-4f17-9058-9e87ebd62e69
+2017-03-12 18:47:12.889 +01:00 [Information] Successfully returned body masses to client
