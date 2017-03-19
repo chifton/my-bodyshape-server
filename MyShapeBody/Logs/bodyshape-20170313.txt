@@ -4,3 +4,6 @@
 2017-03-13 00:02:12.069 +01:00 [Information] Successfully generated body masses for id 6384c503-2209-4404-8d34-4db3bbdce8e3
 2017-03-13 00:02:13.080 +01:00 [Information] Successfully registered body masses for id 6384c503-2209-4404-8d34-4db3bbdce8e3
 2017-03-13 00:02:13.218 +01:00 [Information] Successfully returned body masses to client
+2017-03-13 00:07:07.665 +01:00 [Information] Successfully generated body masses for id 4aac7779-6990-4178-bee4-3e2601f5e3e9
+2017-03-13 00:07:08.141 +01:00 [Information] Successfully registered body masses for id 4aac7779-6990-4178-bee4-3e2601f5e3e9
+2017-03-13 00:07:08.241 +01:00 [Information] Successfully returned body masses to client
