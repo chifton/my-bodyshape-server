@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>MyBodyShape</id>
+	 <version>0.0.0.0</version>
+    <title>MyBodyShape</title>
+    <description>MyBodyShape members weights generations</description>
+	<authors>Chift</authors>
+    <owners>Chift</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <copyright>$copyright$</copyright>
+    <tags>MyBodyShape</tags>
+  </metadata>
+</package>

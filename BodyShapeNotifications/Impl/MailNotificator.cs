@@ -26,7 +26,7 @@ namespace BodyShapeNotifications.Impl
         /// The mail configuration
         /// </summary>
         public IMailConfiguration MailConfiguration { get; set; }
-
+        
         /// <summary>
         /// The logo path.
         /// </summary>
@@ -69,9 +69,9 @@ namespace BodyShapeNotifications.Impl
                 byte[] reader = File.ReadAllBytes(path);
                 MemoryStream image = new MemoryStream(reader);
                 var alternativeView = AlternateView.CreateAlternateViewFromString(htmlOrjson, Encoding.UTF8, MediaTypeNames.Text.Html);
-                var logo = new LinkedResource(image, System.Net.Mime.MediaTypeNames.Image.Jpeg);
+                var logo = new LinkedResource(image, MediaTypeNames.Image.Jpeg);
                 logo.ContentId = "mybodyshapelogo";
-                logo.ContentType = new System.Net.Mime.ContentType("image/jpg");
+                logo.ContentType = new ContentType("image/jpg");
 
                 alternativeView.LinkedResources.Add(logo);
                 message.AlternateViews.Add(alternativeView);
