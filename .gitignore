@@ -44,6 +44,10 @@ dlldata.c
 project.lock.json
 artifacts/
 
+# Dossiers images perso et logs
+MyShapeBody/Images/pictures_profiles/
+MyShapeBody/Logs/
+
 *_i.c
 *_p.c
 *_i.h
