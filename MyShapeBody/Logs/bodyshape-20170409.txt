@@ -49,3 +49,5 @@ System.IO.FileNotFoundException: D:\Projets\Projects\OnProgress\MyShapeBody\MySh
 2017-04-09 12:39:43.113 +02:00 [Information] Registering photo N°2 with id 06fa18cb-5524-4df0-824b-195af0ef483b
 2017-04-09 12:41:21.920 +02:00 [Information] Registering photo N°1 with id 35e3d7a4-0220-4b91-9479-18786022535b
 2017-04-09 12:41:23.631 +02:00 [Information] Registering photo N°2 with id 35e3d7a4-0220-4b91-9479-18786022535b
+2017-04-09 12:42:07.605 +02:00 [Information] Registering photo N°1 with id 5afa823d-801b-4b88-8b52-eecac9b6e1fd
+2017-04-09 12:42:09.953 +02:00 [Information] Registering photo N°2 with id 5afa823d-801b-4b88-8b52-eecac9b6e1fd
