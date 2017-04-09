@@ -1270,89 +1270,6 @@
             }
         });
 
-        function CleanResults()
-        {
-            $("#titleresult").text("");
-
-            $("#headresult").text("");
-            $("#neckresult").text("");
-            $("#thoraxresult").text("");
-            $("#abdoresult").text("");
-            $("#fesseresult").text("");
-            $("#cuissegaucheresult").text("");
-            $("#cuissedroiteresult").text("");
-            $("#jambegaucheresult").text("");
-            $("#jambedroiteresult").text("");
-            //$("#chevillegaucheresult").text("");
-            //$("#chevilledroiteresult").text("");
-            $("#piedgaucheresult").text("");
-            $("#pieddroiteresult").text("");
-
-            $("#brasgaucheresult").text("");
-            $("#brasdroiteresult").text("");
-            $("#avantbrasgaucheresult").text("");
-            $("#avantbrasdroiteresult").text("");
-            $("#maingaucheresult").text("");
-            $("#maindroiteresult").text("");
-
-            $("#comparison").text("");
-            $("#totalmassresult").text("");
-        }
-
-        function displayResults(json)
-        {
-            CleanResults();
-
-            $("#titleresult").html("<span class='titleresultgeneration'>Generation Results</span>");
-
-            $("#headresult").html("Head : <span class='highlightresult'>" + json.Head.Mass + " kgs</span>");// with mass center " + json.Head.MassCenter);
-            $("#neckresult").html("Neck : <span class='highlightresult'>" + json.Neck.Mass + " kgs</span>");// with mass center " + json.Neck.MassCenter);
-            $("#thoraxresult").html("Thorax : <span class='highlightresult'>" + json.Thorax.Mass + " kgs</span>");// with mass center " + json.Thorax.MassCenter);
-            $("#abdoresult").html("Abdomen : <span class='highlightresult'>" + json.Abdomen.Mass + " kgs</span>");// with mass center " + json.Abdomen.MassCenter);
-            $("#fesseresult").html("Bottom : <span class='highlightresult'>" + json.Bottom.Mass + " kgs</span>");// with mass center " + json.Bottom.MassCenter);
-
-            $("#cuissegaucheresult").html("Left Thigh : <span class='highlightresult'>" + json.ThighLeft.Mass + " kgs</span>");// with mass center " + json.ThighLeft.MassCenter);
-            $("#cuissedroiteresult").html("Right Thigh : <span class='highlightresult'>" + json.ThighRight.Mass + " kgs</span>");// with mass center " + json.ThighRight.MassCenter);
-            $("#jambegaucheresult").html("Left Leg : <span class='highlightresult'>" + json.LegLeft.Mass + " kgs</span>");// with mass center " + json.LegLeft.MassCenter);
-            $("#jambedroiteresult").html("Right Leg : <span class='highlightresult'>" + json.LegRight.Mass + " kgs</span>");// with mass center " + json.LegRight.MassCenter);
-            //$("#chevillegaucheresult").html("Left Ankle : <span class='highlightresult'>" + json.AnkleLeft.Mass + " kgs</span>");// with mass center " + json.AnkleLeft.MassCenter);
-            //$("#chevilledroiteresult").html("Right Ankle : <span class='highlightresult'>" + json.AnkleRight.Mass + " kgs</span>");// with mass center " + json.AnkleRight.MassCenter);
-            $("#piedgaucheresult").html("Left Foot : <span class='highlightresult'>" + json.FootLeft.Mass + " kgs</span>");// with mass center " + json.FootLeft.MassCenter);
-            $("#pieddroiteresult").html("Right Foot : <span class='highlightresult'>" + json.FootRight.Mass + " kgs</span>");// with mass center " + json.FootRight.MassCenter);
-
-            $("#brasgaucheresult").html("Left Upperarm : <span class='highlightresult'>" + json.ArmLeft.Mass + " kgs</span>");// with mass center " + json.ArmLeft.MassCenter);
-            $("#brasdroiteresult").html("Right Upperarm : <span class='highlightresult'>" + json.ArmRight.Mass + " kgs</span>");// with mass center " + json.ArmRight.MassCenter);
-            $("#avantbrasgaucheresult").html("Left Forearm : <span class='highlightresult'>" + json.ForeArmLeft.Mass + " kgs</span>");// with mass center " + json.ForeArmLeft.MassCenter);
-            $("#avantbrasdroiteresult").html("Right Forearm : <span class='highlightresult'>" + json.ForeArmRight.Mass + " kgs</span>");// with mass center " + json.ForeArmRight.MassCenter);
-            $("#maingaucheresult").html("Left Hand : <span class='highlightresult'>" + json.HandLeft.Mass + " kgs</span>");// with mass center " + json.HandLeft.MassCenter);
-            $("#maindroiteresult").html("Right Hand : <span class='highlightresult'>" + json.HandRight.Mass + " kgs</span>");// with mass center " + json.HandRight.MassCenter);
-
-            // Comparaison
-            var error;
-            if ($("#weight_human").val() != null && $("#weight_human").val() != "")
-            {
-                error = parseFloat(json.TotalMass) - $("#weight_human").val();
-                error = error / $("#weight_human").val() * 100;
-                error = Math.round(error).toFixed(2);
-                $("#comparison").html("Only <span class='titleresultgeneration'>" + error + "%</span> of error during the generation !<br/><span class='highlightresult'>Congratulations !</span>");
-            }
-            $("#totalmassresult").html("Total Generated Mass : <span class='highlightresult'>" + json.TotalMass + " kgs</span>");
-
-            $('.highlightresult').addGlow({
-                radius: 40,
-                textColor: '#008000',
-                haloColor: '#008000',
-                duration: 400
-            });
-
-            $('.titleresultgeneration').addGlow({
-                radius: 40,
-                textColor: '#008000',
-                haloColor: '#008000',
-                duration: 400
-            });
-        }
-
         function pixelToRealLeft(pixel)
         {
             var pixelFloat = parseFloat(pixel.attr("cx"));
@@ -1752,7 +1669,85 @@
         /*********************************  AFFICHAGE DES RESULTATS   **********************************/
         /****************************************************************************************/
 
+        function CleanResults() {
+            $("#titleresult").text("");
 
+            $("#headresult").text("");
+            $("#neckresult").text("");
+            $("#thoraxresult").text("");
+            $("#abdoresult").text("");
+            $("#fesseresult").text("");
+            $("#cuissegaucheresult").text("");
+            $("#cuissedroiteresult").text("");
+            $("#jambegaucheresult").text("");
+            $("#jambedroiteresult").text("");
+            //$("#chevillegaucheresult").text("");
+            //$("#chevilledroiteresult").text("");
+            $("#piedgaucheresult").text("");
+            $("#pieddroiteresult").text("");
+
+            $("#brasgaucheresult").text("");
+            $("#brasdroiteresult").text("");
+            $("#avantbrasgaucheresult").text("");
+            $("#avantbrasdroiteresult").text("");
+            $("#maingaucheresult").text("");
+            $("#maindroiteresult").text("");
+
+            $("#comparison").text("");
+            $("#totalmassresult").text("");
+        }
+
+        function displayResults(json) {
+            CleanResults();
+
+            $("#titleresult").html("<span class='titleresultgeneration'>Generation Results</span>");
+
+            $("#headresult").html("Head : <span class='highlightresult'>" + json.Head.Mass + " kgs</span>");// with mass center " + json.Head.MassCenter);
+            $("#neckresult").html("Neck : <span class='highlightresult'>" + json.Neck.Mass + " kgs</span>");// with mass center " + json.Neck.MassCenter);
+            $("#thoraxresult").html("Thorax : <span class='highlightresult'>" + json.Thorax.Mass + " kgs</span>");// with mass center " + json.Thorax.MassCenter);
+            $("#abdoresult").html("Abdomen : <span class='highlightresult'>" + json.Abdomen.Mass + " kgs</span>");// with mass center " + json.Abdomen.MassCenter);
+            $("#fesseresult").html("Bottom : <span class='highlightresult'>" + json.Bottom.Mass + " kgs</span>");// with mass center " + json.Bottom.MassCenter);
+
+            $("#cuissegaucheresult").html("Left Thigh : <span class='highlightresult'>" + json.ThighLeft.Mass + " kgs</span>");// with mass center " + json.ThighLeft.MassCenter);
+            $("#cuissedroiteresult").html("Right Thigh : <span class='highlightresult'>" + json.ThighRight.Mass + " kgs</span>");// with mass center " + json.ThighRight.MassCenter);
+            $("#jambegaucheresult").html("Left Leg : <span class='highlightresult'>" + json.LegLeft.Mass + " kgs</span>");// with mass center " + json.LegLeft.MassCenter);
+            $("#jambedroiteresult").html("Right Leg : <span class='highlightresult'>" + json.LegRight.Mass + " kgs</span>");// with mass center " + json.LegRight.MassCenter);
+            //$("#chevillegaucheresult").html("Left Ankle : <span class='highlightresult'>" + json.AnkleLeft.Mass + " kgs</span>");// with mass center " + json.AnkleLeft.MassCenter);
+            //$("#chevilledroiteresult").html("Right Ankle : <span class='highlightresult'>" + json.AnkleRight.Mass + " kgs</span>");// with mass center " + json.AnkleRight.MassCenter);
+            $("#piedgaucheresult").html("Left Foot : <span class='highlightresult'>" + json.FootLeft.Mass + " kgs</span>");// with mass center " + json.FootLeft.MassCenter);
+            $("#pieddroiteresult").html("Right Foot : <span class='highlightresult'>" + json.FootRight.Mass + " kgs</span>");// with mass center " + json.FootRight.MassCenter);
+
+            $("#brasgaucheresult").html("Left Upperarm : <span class='highlightresult'>" + json.ArmLeft.Mass + " kgs</span>");// with mass center " + json.ArmLeft.MassCenter);
+            $("#brasdroiteresult").html("Right Upperarm : <span class='highlightresult'>" + json.ArmRight.Mass + " kgs</span>");// with mass center " + json.ArmRight.MassCenter);
+            $("#avantbrasgaucheresult").html("Left Forearm : <span class='highlightresult'>" + json.ForeArmLeft.Mass + " kgs</span>");// with mass center " + json.ForeArmLeft.MassCenter);
+            $("#avantbrasdroiteresult").html("Right Forearm : <span class='highlightresult'>" + json.ForeArmRight.Mass + " kgs</span>");// with mass center " + json.ForeArmRight.MassCenter);
+            $("#maingaucheresult").html("Left Hand : <span class='highlightresult'>" + json.HandLeft.Mass + " kgs</span>");// with mass center " + json.HandLeft.MassCenter);
+            $("#maindroiteresult").html("Right Hand : <span class='highlightresult'>" + json.HandRight.Mass + " kgs</span>");// with mass center " + json.HandRight.MassCenter);
+
+            // Comparaison
+            var error;
+            if ($("#weight_human").val() != null && $("#weight_human").val() != "") {
+                error = parseFloat(json.TotalMass) - $("#weight_human").val();
+                error = error / $("#weight_human").val() * 100;
+                error = Math.round(error).toFixed(2);
+                $("#comparison").html("Only <span class='titleresultgeneration'>" + error + "%</span> of error during the generation !<br/><span class='highlightresult'>Congratulations !</span>");
+            }
+            $("#totalmassresult").html("Total Generated Mass : <span class='highlightresult'>" + json.TotalMass + " kgs</span>");
+
+            $('.highlightresult').addGlow({
+                radius: 40,
+                textColor: '#008000',
+                haloColor: '#008000',
+                duration: 400
+            });
+
+            $('.titleresultgeneration').addGlow({
+                radius: 40,
+                textColor: '#008000',
+                haloColor: '#008000',
+                duration: 400
+            });
+        }
 
         /*********************************   MODELISATION 3D   **********************************/
         /****************************************************************************************/
