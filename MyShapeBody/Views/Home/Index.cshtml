@@ -1389,12 +1389,12 @@
                 {
                     Height: $("#height_human").val(),
                     Weight: weight,
-                    Picture_1: pict1[pict1.length - 1].substr(0, pict1[pict1.length - 1].length - 2),
+                    Picture_1: pict1[pict1.length - 1].substr(0, pict1[pict1.length - 1].length - 2).split('?')[0],
                     PictureWidth_1: null,
                     PictureHeight_1: $("#photo_zone_1").css("background-size").substr(5, $("#photo_zone_1").css("background-size").length - 7),
                     PictureLeft_1: $("#photo_zone_1").css("background-position-x").substr(0, $("#photo_zone_1").css("background-position-x").length - 2),
                     PictureTop_1: $("#photo_zone_1").css("background-position-y").substr(0, $("#photo_zone_1").css("background-position-y").length - 2),
-                    Picture_2: pict2[pict2.length - 1].substr(0, pict2[pict2.length - 1].length - 2),
+                    Picture_2: pict2[pict2.length - 1].substr(0, pict2[pict2.length - 1].length - 2).split('?')[0],
                     PictureWidth_2: null,
                     PictureHeight_2: $("#photo_zone_2").css("background-size").substr(5, $("#photo_zone_2").css("background-size").length - 7),
                     PictureLeft_2: $("#photo_zone_2").css("background-position-x").substr(0, $("#photo_zone_2").css("background-position-x").length - 2),
@@ -1550,21 +1550,70 @@
         var topmover;
         var downmover;
 
+        function unZoomFunction() {
+            var size = $("#photo_zone_" + selectedimage).css("background-size").split(" ");
+            var sizey = parseInt(size[1].split("px"));
+            sizey = sizey - 1;
+            var sizeyPhoto = sizey + "px";
+            if (dezooming == true) {
+                $("#photo_zone_" + selectedimage).css("background-size", "auto " + sizeyPhoto);
+                $("#photo_zone_" + selectedimage).css("background-position-x", "+=0.3%");
+                $("#photo_zone_" + selectedimage).css("background-position-y", "+=0.3%");
+            }
+        };
+
+        function zoomFunction() {
+            var size = $("#photo_zone_" + selectedimage).css("background-size").split(" ");
+            var sizey = parseInt(size[1].split("px"));
+            sizey = sizey + 1;
+            var sizeyPhoto = sizey + "px";
+            if (zooming == true) {
+                $("#photo_zone_" + selectedimage).css("background-size", "auto " + sizeyPhoto);
+                $("#photo_zone_" + selectedimage).css("background-position-x", "-=0.3%");
+                $("#photo_zone_" + selectedimage).css("background-position-y", "-=0.3%");
+            }
+        };
+
+        function leftFunction() {
+            //if (limx > -50 && limx < 50)
+            //{
+            if (leftmove == true) {
+                $("#photo_zone_" + selectedimage).css("background-position-x", "-=2px");
+                limx = limx - 20;
+            }
+            //}
+        };
+
+        function rightFunction() {
+            //if (limx > -50 && limx < 50) {
+            if (rightmove == true) {
+                $("#photo_zone_" + selectedimage).css("background-position-x", "+=2px");
+                limx = limx + 20;
+            }
+            //}
+        };
+
+        function topFunction() {
+            //if (limy > -50 && limy < 50) {
+            if (topmove == true) {
+                $("#photo_zone_" + selectedimage).css("background-position-y", "-=2px");
+                limy = limy - 20;
+            }
+            //}
+        };
+
+        function downFunction() {
+            //if (limy > -50 && limy < 50) {
+            if (downmove == true) {
+                $("#photo_zone_" + selectedimage).css("background-position-y", "+=2px");
+                limy = limy + 20;
+            }
+            //}
+        };
+
         $("#zoomx_button").mousedown(function () {
             zooming = true;
-
-            zoomer = setInterval(function () {
-                var size = $("#photo_zone_" + selectedimage).css("background-size").split(" ");
-                var sizey = parseInt(size[1].split("px"));
-                sizey = sizey + 1;
-                var sizeyPhoto = sizey + "px";
-                if (zooming == true) {
-                    $("#photo_zone_" + selectedimage).css("background-size", "auto " + sizeyPhoto);
-                    $("#photo_zone_" + selectedimage).css("background-position-x", "-=0.3%");
-                    $("#photo_zone_" + selectedimage).css("background-position-y", "-=0.3%");
-                }
-                //}
-            }), 50;
+            zoomer = setInterval(zoomFunction, 50);
         });
 
         $("#zoomx_button").mouseup(function () {
@@ -1574,19 +1623,7 @@
 
         $("#dezoomx_button").mousedown(function () {
             dezooming = true;
-
-            dezoomer = setInterval(function () {
-                var size = $("#photo_zone_" + selectedimage).css("background-size").split(" ");
-                var sizey = parseInt(size[1].split("px"));
-                sizey = sizey - 1;
-                var sizeyPhoto = sizey + "px";
-                if (dezooming == true) {
-                    $("#photo_zone_" + selectedimage).css("background-size", "auto " + sizeyPhoto);
-                    $("#photo_zone_" + selectedimage).css("background-position-x", "+=0.3%");
-                    $("#photo_zone_" + selectedimage).css("background-position-y", "+=0.3%");
-                }
-                //}
-            }), 50;
+            dezoomer = setInterval(unZoomFunction, 50);
         });
 
         $("#dezoomx_button").mouseup(function () {
@@ -1596,17 +1633,7 @@
 
         $("#left_movebutton").mousedown(function () {
             leftmove = true;
-
-            leftmover = setInterval(function () {
-                //if (limx > -50 && limx < 50)
-                //{
-                if(leftmove == true)
-                {
-                    $("#photo_zone_" + selectedimage).css("background-position-x", "-=2px");
-                    limx = limx - 20;
-                }
-                //}
-            }, 50);
+            leftmover = setInterval(leftFunction, 50);
         });
 
         $("#left_movebutton").mouseup(function () {
@@ -1616,15 +1643,7 @@
 
         $("#right_movebutton").mousedown(function () {
             rightmove = true;
-
-            rightmover = setInterval(function () {
-                //if (limx > -50 && limx < 50) {
-                if (rightmove == true) {
-                    $("#photo_zone_" + selectedimage).css("background-position-x", "+=2px");
-                    limx = limx + 20;
-                }
-                //}
-            }, 50);
+            rightmover = setInterval(rightFunction, 50);
         });
 
         $("#right_movebutton").mouseup(function () {
@@ -1634,15 +1653,7 @@
 
         $("#top_movebutton").mousedown(function () {
             topmove = true;
-
-            topmover = setInterval(function () {
-                //if (limy > -50 && limy < 50) {
-                if (topmove == true) {
-                    $("#photo_zone_" + selectedimage).css("background-position-y", "-=2px");
-                    limy = limy - 20;
-                }
-                //}
-            }, 50);
+            topmover = setInterval(topFunction, 50);
         });
 
         $("#top_movebutton").mouseup(function () {
@@ -1652,15 +1663,7 @@
 
         $("#down_movebutton").mousedown(function () {
             downmove = true;
-
-            downmover = setInterval(function () {
-                //if (limy > -50 && limy < 50) {
-                if (downmove == true) {
-                    $("#photo_zone_" + selectedimage).css("background-position-y", "+=2px");
-                    limy = limy + 20;
-                }
-                //}
-            }, 50);
+            downmover = setInterval(downFunction, 50);
         });
 
         $("#down_movebutton").mouseup(function () {
@@ -1671,14 +1674,16 @@
         $("#rotate_button").click(function () {
             var pict = $("#photo_zone_2").css("background-image").split('/');
             pict = pict[pict.length - 1].substr(0, pict[pict.length - 1].length - 2);
+            pict = pict.split('?')[0];
             $.ajax({
                 type: "GET",
                 url: "/Home/FlipImage?filename=" + pict,
                 success: function (data) {
                     if (data == "OK") {
                         $("#photo_zone_2").fadeOut(500, function () {
+                            var newId = generateUUID();
                             $("#photo_zone_2").css("background-image", "none");
-                            $("#photo_zone_2").css("background-image", "url(/Images/pictures_profiles/" + pict);
+                            $("#photo_zone_2").css("background-image", "url(/Images/pictures_profiles/" + pict + "?v=" + newId);
                             $("#photo_zone_2").fadeIn(500);  
                         });
                     }
@@ -1695,14 +1700,16 @@
         $("#pivotright_button").click(function () {
             var pict = $("#photo_zone_" + selectedimage).css("background-image").split('/');
             pict = pict[pict.length - 1].substr(0, pict[pict.length - 1].length - 2);
+            pict = pict.split('?')[0];
             $.ajax({
                 type: "GET",
                 url: "/Home/RotateImage?filename=" + pict + "&sense=right",
                 success: function (data) {
                     if (data == "OK") {
                         $("#photo_zone_" + selectedimage).fadeOut(500, function () {
+                            var newId = generateUUID();
                             $("#photo_zone_" + selectedimage).css("background-image", "none");
-                            $("#photo_zone_" + selectedimage).css("background-image", "url(/Images/pictures_profiles/" + pict);
+                            $("#photo_zone_" + selectedimage).css("background-image", "url(/Images/pictures_profiles/" + pict + "?v=" + newId);
                             $("#photo_zone_" + selectedimage).fadeIn(500);
                         });
                     }
@@ -1719,14 +1726,16 @@
         $("#pivotleft_button").click(function () {
             var pict = $("#photo_zone_" + selectedimage).css("background-image").split('/');
             pict = pict[pict.length - 1].substr(0, pict[pict.length - 1].length - 2);
+            pict = pict.split('?')[0];
             $.ajax({
                 type: "GET",
                 url: "/Home/RotateImage?filename=" + pict + "&sense=left",
                 success: function (data) {
                     if (data == "OK") {
                         $("#photo_zone_" + selectedimage).fadeOut(500, function () {
+                            var newId = generateUUID();
                             $("#photo_zone_" + selectedimage).css("background-image", "none");
-                            $("#photo_zone_" + selectedimage).css("background-image", "url(/Images/pictures_profiles/" + pict);
+                            $("#photo_zone_" + selectedimage).css("background-image", "url(/Images/pictures_profiles/" + pict + "?v=" + newId);
                             $("#photo_zone_" + selectedimage).fadeIn(500);
                         });
                     }

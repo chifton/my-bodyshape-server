@@ -1,0 +1,47 @@
+2017-04-09 11:52:44.803 +02:00 [Information] Registering photo N°1 with id b7b5d0e9-973d-448e-9cfd-113676bdae13
+2017-04-09 11:54:09.445 +02:00 [Information] Registering photo N°1 with id 66ef1655-e2ab-472d-8a50-30a2b21ef3b1
+2017-04-09 11:58:26.641 +02:00 [Information] Registering photo N°1 with id 18bd806d-76d4-426e-acf4-8f046bbc70a5
+2017-04-09 12:02:08.509 +02:00 [Information] Registering photo N°1 with id 9f2249f0-d2d8-4753-a059-051ecb8f7cb3
+2017-04-09 12:10:29.667 +02:00 [Information] Registering photo N°1 with id eb8db3ff-d832-47b5-92d9-88c1f279dae2
+2017-04-09 12:10:45.462 +02:00 [Information] Successfully rotated picture 1619ffb3-b671-40a5-bce4-4c19fc6c5858-2017-4-9Picture_1.png
+2017-04-09 12:10:47.164 +02:00 [Information] Successfully rotated picture 1619ffb3-b671-40a5-bce4-4c19fc6c5858-2017-4-9Picture_1.png
+2017-04-09 12:10:48.342 +02:00 [Information] Successfully rotated picture 1619ffb3-b671-40a5-bce4-4c19fc6c5858-2017-4-9Picture_1.png
+2017-04-09 12:10:52.678 +02:00 [Information] Registering photo N°2 with id eb8db3ff-d832-47b5-92d9-88c1f279dae2
+2017-04-09 12:10:57.678 +02:00 [Information] Successfully flipped picture 1619ffb3-b671-40a5-bce4-4c19fc6c5858-2017-4-9Picture_2.png
+2017-04-09 12:10:59.053 +02:00 [Information] Successfully flipped picture 1619ffb3-b671-40a5-bce4-4c19fc6c5858-2017-4-9Picture_2.png
+2017-04-09 12:11:01.794 +02:00 [Information] Successfully rotated picture 1619ffb3-b671-40a5-bce4-4c19fc6c5858-2017-4-9Picture_2.png
+2017-04-09 12:11:03.864 +02:00 [Information] Successfully rotated picture 1619ffb3-b671-40a5-bce4-4c19fc6c5858-2017-4-9Picture_2.png
+2017-04-09 12:11:05.253 +02:00 [Information] Successfully rotated picture 1619ffb3-b671-40a5-bce4-4c19fc6c5858-2017-4-9Picture_2.png
+2017-04-09 12:11:06.561 +02:00 [Information] Successfully rotated picture 1619ffb3-b671-40a5-bce4-4c19fc6c5858-2017-4-9Picture_2.png
+2017-04-09 12:11:09.090 +02:00 [Information] Successfully flipped picture 1619ffb3-b671-40a5-bce4-4c19fc6c5858-2017-4-9Picture_2.png
+2017-04-09 12:11:10.342 +02:00 [Information] Successfully flipped picture 1619ffb3-b671-40a5-bce4-4c19fc6c5858-2017-4-9Picture_2.png
+2017-04-09 12:12:18.542 +02:00 [Information] Registering photo N°1 with id 0668e2b0-b954-474c-ae05-f40afc41720a
+2017-04-09 12:12:34.485 +02:00 [Information] Successfully rotated picture bde5d362-7d21-432c-9497-77abf9efe3b4-2017-4-9Picture_1.png
+2017-04-09 12:12:36.601 +02:00 [Information] Successfully rotated picture bde5d362-7d21-432c-9497-77abf9efe3b4-2017-4-9Picture_1.png
+2017-04-09 12:12:38.112 +02:00 [Information] Successfully rotated picture bde5d362-7d21-432c-9497-77abf9efe3b4-2017-4-9Picture_1.png
+2017-04-09 12:12:39.512 +02:00 [Information] Successfully rotated picture bde5d362-7d21-432c-9497-77abf9efe3b4-2017-4-9Picture_1.png
+2017-04-09 12:12:50.009 +02:00 [Information] Registering photo N°2 with id 0668e2b0-b954-474c-ae05-f40afc41720a
+2017-04-09 12:12:51.367 +02:00 [Information] Successfully flipped picture bde5d362-7d21-432c-9497-77abf9efe3b4-2017-4-9Picture_2.png
+2017-04-09 12:12:52.437 +02:00 [Information] Successfully flipped picture bde5d362-7d21-432c-9497-77abf9efe3b4-2017-4-9Picture_2.png
+2017-04-09 12:12:58.736 +02:00 [Information] Successfully rotated picture bde5d362-7d21-432c-9497-77abf9efe3b4-2017-4-9Picture_2.png
+2017-04-09 12:13:00.465 +02:00 [Information] Successfully rotated picture bde5d362-7d21-432c-9497-77abf9efe3b4-2017-4-9Picture_2.png
+2017-04-09 12:13:51.610 +02:00 [Information] Registering photo N°1 with id fc25188f-2be6-4175-ad02-68edb4fc06ec
+2017-04-09 12:15:53.738 +02:00 [Information] Registering photo N°1 with id 0b4f2181-e940-4760-9e8b-64f989120ea2
+2017-04-09 12:16:01.761 +02:00 [Information] Successfully rotated picture 11f3792e-e7a7-49ff-b829-7dfc222f1fe8-2017-4-9Picture_1.png
+2017-04-09 12:16:03.383 +02:00 [Information] Successfully rotated picture 11f3792e-e7a7-49ff-b829-7dfc222f1fe8-2017-4-9Picture_1.png
+2017-04-09 12:16:07.110 +02:00 [Information] Registering photo N°2 with id 0b4f2181-e940-4760-9e8b-64f989120ea2
+2017-04-09 12:16:13.510 +02:00 [Information] Successfully rotated picture 11f3792e-e7a7-49ff-b829-7dfc222f1fe8-2017-4-9Picture_2.png
+2017-04-09 12:16:15.231 +02:00 [Information] Successfully rotated picture 11f3792e-e7a7-49ff-b829-7dfc222f1fe8-2017-4-9Picture_2.png
+2017-04-09 12:16:16.929 +02:00 [Information] Successfully flipped picture 11f3792e-e7a7-49ff-b829-7dfc222f1fe8-2017-4-9Picture_2.png
+2017-04-09 12:16:18.002 +02:00 [Information] Successfully flipped picture 11f3792e-e7a7-49ff-b829-7dfc222f1fe8-2017-4-9Picture_2.png
+2017-04-09 12:17:01.216 +02:00 [Information] Registering photo N°1 with id 72ea4829-e283-460a-95fd-cc6c36b106eb
+2017-04-09 12:17:17.597 +02:00 [Error] An error occured during pictures rotation	
+System.IO.FileNotFoundException: D:\Projets\Projects\OnProgress\MyShapeBody\MyShapeBody\MyBodyShape\MyShapeBody\Images\pictures_profiles\no
+   à ImageProcessor.ImageFactory.Load(String imagePath)
+   à MyShapeBody.Controllers.HomeController.RotateImage(String filename, String sense) dans D:\Projets\Projects\OnProgress\MyShapeBody\MyShapeBody\MyBodyShape\MyShapeBody\Controllers\HomeController.cs:ligne 282
+2017-04-09 12:18:44.399 +02:00 [Information] Registering photo N°1 with id 85b37e6c-e746-44ee-97f8-facaaff9981a
+2017-04-09 12:18:50.613 +02:00 [Information] Registering photo N°2 with id 85b37e6c-e746-44ee-97f8-facaaff9981a
+2017-04-09 12:18:54.431 +02:00 [Error] An error occured during pictures rotation	
+System.IO.FileNotFoundException: D:\Projets\Projects\OnProgress\MyShapeBody\MyShapeBody\MyBodyShape\MyShapeBody\Images\pictures_profiles\no
+   à ImageProcessor.ImageFactory.Load(String imagePath)
+   à MyShapeBody.Controllers.HomeController.RotateImage(String filename, String sense) dans D:\Projets\Projects\OnProgress\MyShapeBody\MyShapeBody\MyBodyShape\MyShapeBody\Controllers\HomeController.cs:ligne 282

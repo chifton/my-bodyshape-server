@@ -250,6 +250,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\jquery-ui.css" />
+    <Content Include="Images\android.png" />
     <Content Include="Images\down_button.png" />
     <Content Include="Images\examples\example_front_female.png" />
     <Content Include="Images\examples\example_front_male.png" />
@@ -258,6 +259,7 @@
     <Content Include="Images\favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\ios.png" />
     <Content Include="Images\mascotte.png" />
     <Content Include="Images\myshapebodymail.jpg" />
     <Content Include="Images\next_button.png" />
