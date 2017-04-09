@@ -15,7 +15,8 @@
 
     document.addEventListener("DOMContentLoaded", function() {
 
-            var pixelHeight;
+            var pixelHeightFront;
+            var pixelHeightSide;
             var myJsonData;
             var nbConversions = 0;
             var examplefrontmale = "example_front_male.png";
@@ -1272,19 +1273,35 @@
 
         function pixelToRealLeft(pixel)
         {
+            var realPixelHeightResult;
+            if (pixel.attr("id").indexOf("_u") > -1)
+            {
+                realPixelHeightResult = pixelHeightFront;
+            }
+            else
+            {
+                realPixelHeightResult = pixelHeightSide;
+            }
             var pixelFloat = parseFloat(pixel.attr("cx"));
             //console.log("LEFT " + pixel.attr('id') + " : " + pixelFloat);
-            var result = Math.round(pixelFloat) * $("#height_human").val() / pixelHeight;
+            var result = Math.round(pixelFloat) * $("#height_human").val() / realPixelHeightResult;
             nbConversions = nbConversions + 1;
             return result;
         }
 
         function pixelToRealTop(pixel, pixel2)
         {
+            var realPixelHeightResultY;
+            if (pixel.attr("id").indexOf("_u") > -1) {
+                realPixelHeightResultY = pixelHeightFront;
+            }
+            else {
+                realPixelHeightResultY = pixelHeightSide;
+            }
             var pixelFloat = parseFloat(pixel.attr("cy"));
             var pixelFloat2 = parseFloat(pixel2.attr("cy"));
             //console.log("TOP " + pixel.attr('id') + " and " + pixel2.attr('id') + " : " + pixelFloat + " and " + pixelFloat2);
-            var result = (Math.round(pixelFloat) + Math.round(pixelFloat2)) * $("#height_human").val() / pixelHeight / 2;
+            var result = (Math.round(pixelFloat) + Math.round(pixelFloat2)) * $("#height_human").val() / realPixelHeightResultY / 2;
             nbConversions = nbConversions + 1;
             return result;
         }
@@ -1292,7 +1309,8 @@
         function GenerateDataCoordinates()
         {
             // Calcul taille pixel
-            pixelHeight = parseInt($("#pied1_u3_1").attr("cy")) - parseInt($("#head_u1_1").attr("cy"));
+            pixelHeightFront = parseInt($("#pied1_u3_1").attr("cy")) - parseInt($("#head_u1_1").attr("cy"));
+            pixelHeightSide = parseInt($("#pied_v3_1").attr("cy")) - parseInt($("#head_v1_1").attr("cy"));
 
             var pict1 = $("#photo_zone_1").css("background-image").split('/');
             var pict2 = $("#photo_zone_2").css("background-image").split('/');

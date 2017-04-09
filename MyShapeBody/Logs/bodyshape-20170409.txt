@@ -51,3 +51,12 @@ System.IO.FileNotFoundException: D:\Projets\Projects\OnProgress\MyShapeBody\MySh
 2017-04-09 12:41:23.631 +02:00 [Information] Registering photo N°2 with id 35e3d7a4-0220-4b91-9479-18786022535b
 2017-04-09 12:42:07.605 +02:00 [Information] Registering photo N°1 with id 5afa823d-801b-4b88-8b52-eecac9b6e1fd
 2017-04-09 12:42:09.953 +02:00 [Information] Registering photo N°2 with id 5afa823d-801b-4b88-8b52-eecac9b6e1fd
+2017-04-09 17:49:07.327 +02:00 [Information] Registering photo N°1 with id df9199cb-00c0-4589-bd57-af3a47128876
+2017-04-09 17:49:14.571 +02:00 [Information] Registering photo N°2 with id df9199cb-00c0-4589-bd57-af3a47128876
+2017-04-09 18:03:43.435 +02:00 [Information] Registering photo N°1 with id 6e968c4b-f6ed-464d-8de0-29a06b6e2820
+2017-04-09 18:03:48.538 +02:00 [Information] Registering photo N°2 with id 6e968c4b-f6ed-464d-8de0-29a06b6e2820
+2017-04-09 18:06:06.994 +02:00 [Information] Registering photo N°1 with id 85b3ed4f-cc20-4c19-8ccc-e1637d922908
+2017-04-09 18:06:08.991 +02:00 [Information] Registering photo N°2 with id 85b3ed4f-cc20-4c19-8ccc-e1637d922908
+2017-04-09 18:06:11.945 +02:00 [Information] Successfully generated body masses for id 40aaa65a-77fd-445a-8f63-8e4486ba172e
+2017-04-09 18:06:12.660 +02:00 [Information] Successfully registered body masses for id 40aaa65a-77fd-445a-8f63-8e4486ba172e
+2017-04-09 18:06:12.802 +02:00 [Information] Successfully returned body masses to client
