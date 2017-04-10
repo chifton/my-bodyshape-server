@@ -14,5 +14,6 @@
   <files>
     <file src="*.*" target="" exclude="*.config;*.cs;*.csproj;*.html;*.ico;*.user;" />
 	<file src="Web.Deploy.config" target="Web.config" />
+	<file src="Images\favicon.ico" target="favicon.ico" />
   </files>
 </package>
