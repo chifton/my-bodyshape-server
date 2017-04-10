@@ -123,7 +123,7 @@ namespace MyShapeBody.Controllers
                     if (fileContent != null && fileContent.ContentLength > 0)
                     {
                         var stream = fileContent.InputStream;
-                        var fileNameJson = rootFileName + ".png";
+                        var fileNameJson = rootFileName;
 
                         var path = Path.Combine(Server.MapPath("~/Images/pictures_profiles"), fileNameJson);
 
