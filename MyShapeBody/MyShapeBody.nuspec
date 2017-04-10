@@ -11,4 +11,8 @@
     <copyright>$copyright$</copyright>
     <tags>MyBodyShape</tags>
   </metadata>
+  <files>
+    <file src="*.*" target="" exclude="*.config;*.cs;*.csproj;*.html;*.ico;*.user;" />
+	<file src="Web.Deploy.config" target="Web.config" />
+  </files>
 </package>
