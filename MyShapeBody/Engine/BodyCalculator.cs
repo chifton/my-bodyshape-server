@@ -137,9 +137,9 @@ namespace MyShapeBody.Engine
                     - Math.Pow(actual.Side_Down, 2) * Math.Pow(actual.Height_Top, 2) * actual.Height_Middle)
                     / p;
 
-            var k = (actual.Side_Down / actual.Front_Down + actual.Side_Middle / actual.Front_Middle
-                     + actual.Side_Top / actual.Front_Top) / 3;
-
+            var k = (actual.Front_Down / actual.Side_Down + actual.Front_Middle / actual.Side_Middle
+                     + actual.Front_Top / actual.Side_Top) / 3;
+            
             // Results
 
             var mass = density * Math.PI * k * actual.Height_Top
