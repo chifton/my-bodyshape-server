@@ -1289,6 +1289,21 @@
             return result;
         }
 
+        function pixelToRealSimpleTop(pixel) {
+            var realPixelHeightResultXY;
+            if (pixel.attr("id").indexOf("_u") > -1) {
+                realPixelHeightResultXY = pixelHeightFront;
+            }
+            else {
+                realPixelHeightResultXY = pixelHeightSide;
+            }
+            var pixelFloat = parseFloat(pixel.attr("cy"));
+            //console.log("LEFT " + pixel.attr('id') + " : " + pixelFloat);
+            var result = Math.round(pixelFloat) * $("#height_human").val() / realPixelHeightResultXY;
+            nbConversions = nbConversions + 1;
+            return result;
+        }
+
         function pixelToRealTop(pixel, pixel2)
         {
             var realPixelHeightResultY;
@@ -1415,12 +1430,12 @@
                         U1: Math.abs(pixelToRealLeft($("#pied1_u1_1")) - pixelToRealLeft($("#pied2_u1_1"))),
                         U2: Math.abs(pixelToRealLeft($("#pied1_u2_1")) - pixelToRealLeft($("#pied2_u2_1"))),
                         U3: Math.abs(pixelToRealLeft($("#pied1_u3_1")) - pixelToRealLeft($("#pied2_u3_1"))),
-                        V1: Math.abs(pixelToRealLeft($("#pied_v2_1")) - pixelToRealLeft($("#pied_v3_1"))),
-                        V2: Math.abs(pixelToRealLeft($("#pied_v2_1")) - pixelToRealLeft($("#pied_v3_1"))) / 2,
-                        V3: Math.abs(pixelToRealLeft($("#pied_v3_2")) - pixelToRealLeft($("#pied_v3_2"))),
+                        V1: Math.abs(pixelToRealLeft($("#pied_v1_2")) - pixelToRealLeft($("#pied_v1_1"))),
+                        V2: Math.abs(pixelToRealLeft($("#pied_v2_2")) - pixelToRealLeft($("#pied_v2_1"))),
+                        V3: Math.abs(pixelToRealLeft($("#pied_v3_2")) - pixelToRealLeft($("#pied_v3_1"))),
                         Z1: 0,
-                        Z2: Math.abs(pixelToRealLeft($("#pied_v3_2")) - pixelToRealLeft($("#pied_v3_1"))) / 2,
-                        Z3: Math.abs(pixelToRealLeft($("#pied_v3_2")) - pixelToRealLeft($("#pied_v3_1")))
+                        Z2: Math.abs(pixelToRealTop($("#pied_v1_1"), $("#pied_v1_2")) - pixelToRealTop($("#pied_v3_1"), $("#pied_v3_2"))) / 2,
+                        Z3: Math.abs(pixelToRealTop($("#pied_v1_1"), $("#pied_v1_2")) - pixelToRealTop($("#pied_v3_1"), $("#pied_v3_2"))),
                     },
                     Hand: {
                         U1: Math.abs(pixelToRealLeft($("#maingauche_u1_2")) - pixelToRealLeft($("#maingauche_u1_1"))),
