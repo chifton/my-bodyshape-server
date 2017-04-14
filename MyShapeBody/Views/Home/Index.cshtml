@@ -63,189 +63,200 @@
 
         // Gestion du choix de la photo
         $('#file_choose').on('change', function (e) {
-            if (!toutesphotosload) {
 
-                $("#generation_3D_canvas").css("background-image", "none");
-                $("#generation_3D_canvas").prepend('<img id="loadingleft" src="../Images/loader.gif" />');
-                $("#infos_2").prepend('<img id="loadingright" src="../Images/loader.gif" />');
+            var val = $(this).val();
 
-                var topload = $("#generation_3D_canvas").width() / 2 - $("#loadingleft").width() / 2;
-                $("#loadingleft").css("position", "relative");
-                $("#loadingright").css("position", "relative");
-                $("#loadingleft").css("top", topload + "px");
-                $("#loadingright").css("top", topload + "px");
+            switch (val.substring(val.lastIndexOf('.') + 1).toLowerCase())
+            {
+                case 'gif': case 'jpg': case 'jpeg': case 'png': case 'bmp' :
+                    if (!toutesphotosload) {
 
-                var files = e.target.files;
-                if (firstPhoto) {
-                    // On ne sélectionne qu'un seul fichier à la fois
-                    if (files.length == 1) {
-                        if (window.FormData !== undefined) {
-                            var data = new FormData();
-                            for (var x = 0; x < files.length; x++) {
-                                data.append("file" + x, files[x]);
-                            }
-                            $.ajax({
-                                type: "POST",
-                                url: '/Home/UploadFile?id=' + id + '&order=1',
-                                contentType: false,
-                                processData: false,
-                                data: data,
-                                success: function (result) {
-                                    $("#loadingleft").remove();
-                                    $("#loadingright").remove();
+                        $("#generation_3D_canvas").css("background-image", "none");
+                        $("#generation_3D_canvas").prepend('<img id="loadingleft" src="../Images/loader.gif" />');
+                        $("#infos_2").prepend('<img id="loadingright" src="../Images/loader.gif" />');
 
-                                    $("#photo_zone_1").css("background-image", "url(/Images/pictures_profiles/" + result);
-                                    $("#photo_zone_1").css("background-repeat", "no-repeat");
-                                    $("#photo_zone_1").getBgImage(function () {
-                                        // var percent1 = Math.round($(this).width() * 100 / $("#photo_zone_1").width());
-                                        // Affichage de l'image dans la zone Photo
-                                        $("#photo_zone_1").css("background-size", "auto " + $(this).height() + "px");
-                                        $("#photo_zone_1").css("background-position-x", "0px");
-                                        $("#photo_zone_1").css("background-position-y", "0px");
+                        var topload = $("#generation_3D_canvas").width() / 2 - $("#loadingleft").width() / 2;
+                        $("#loadingleft").css("position", "relative");
+                        $("#loadingright").css("position", "relative");
+                        $("#loadingleft").css("top", topload + "px");
+                        $("#loadingright").css("top", topload + "px");
+
+                        var files = e.target.files;
+                        if (firstPhoto) {
+                            // On ne sélectionne qu'un seul fichier à la fois
+                            if (files.length == 1) {
+                                if (window.FormData !== undefined) {
+                                    var data = new FormData();
+                                    for (var x = 0; x < files.length; x++) {
+                                        data.append("file" + x, files[x]);
+                                    }
+                                    $.ajax({
+                                        type: "POST",
+                                        url: '/Home/UploadFile?id=' + id + '&order=1',
+                                        contentType: false,
+                                        processData: false,
+                                        data: data,
+                                        success: function (result) {
+                                            $("#loadingleft").remove();
+                                            $("#loadingright").remove();
+
+                                            $("#photo_zone_1").css("background-image", "url(/Images/pictures_profiles/" + result);
+                                            $("#photo_zone_1").css("background-repeat", "no-repeat");
+                                            $("#photo_zone_1").getBgImage(function () {
+                                                // var percent1 = Math.round($(this).width() * 100 / $("#photo_zone_1").width());
+                                                // Affichage de l'image dans la zone Photo
+                                                $("#photo_zone_1").css("background-size", "auto " + $(this).height() + "px");
+                                                $("#photo_zone_1").css("background-position-x", "0px");
+                                                $("#photo_zone_1").css("background-position-y", "0px");
+                                            });
+
+                                            $("#previous_icon").css("display", "none");
+                                            $("#next_icon").css("display", "none");
+
+                                            // La première photo est chargée
+                                            firstPhoto = false;
+                                            selectedimage = 1;
+                                            console.log("First load success !");
+
+                                            // Chargement photo exemple 1
+                                            $("#generation_3D_canvas").css("background-repeat", "no-repeat");
+                                            $("#generation_3D_canvas").css("background-size", "contain");
+                                            $("#generation_3D_canvas").css("background-position", "center center");
+
+                                            $("#generation_3D_canvas").css("background-image", "url(/Images/examples/" + examplefrontmale);
+                                            currentFront = examplefrontfemale;
+                                            intervalFront = setInterval(function () {
+                                                $("#generation_3D_canvas").fadeOut(1000, function () {
+                                                    $("#generation_3D_canvas").fadeIn(10);
+                                                    $("#generation_3D_canvas").css("background-image", "url(/Images/examples/" + currentFront);
+                                                    if (currentFront == examplefrontfemale) {
+                                                        currentFront = examplefrontmale;
+                                                    }
+                                                    else if (currentFront == examplefrontmale) {
+                                                        currentFront = examplefrontfemale;
+                                                    }
+                                                });
+                                            }, 10000);
+
+                                            // Affichage des points
+                                            generateFrontBones($("#photo_zone_1"));
+                                        },
+                                        error: function (xhr, status, p3, p4) {
+                                            var err = "Error " + " " + status + " " + p3 + " " + p4;
+                                            if (xhr.responseText && xhr.responseText[0] == "{")
+                                                err = JSON.parse(xhr.responseText).Message;
+                                            console.log(err);
+                                        }
                                     });
-
-                                    $("#previous_icon").css("display", "none");
-                                    $("#next_icon").css("display", "none");
-
-                                    // La première photo est chargée
-                                    firstPhoto = false;
-                                    selectedimage = 1;
-                                    console.log("First load success !");
-
-                                    // Chargement photo exemple 1
-                                    $("#generation_3D_canvas").css("background-repeat", "no-repeat");
-                                    $("#generation_3D_canvas").css("background-size", "contain");
-                                    $("#generation_3D_canvas").css("background-position", "center center");
-
-                                    $("#generation_3D_canvas").css("background-image", "url(/Images/examples/" + examplefrontmale);
-                                    currentFront = examplefrontfemale;
-                                    intervalFront = setInterval(function () {
-                                        $("#generation_3D_canvas").fadeOut(1000, function () {
-                                            $("#generation_3D_canvas").fadeIn(10);
-                                            $("#generation_3D_canvas").css("background-image", "url(/Images/examples/" + currentFront);
-                                            if (currentFront == examplefrontfemale) {
-                                                currentFront = examplefrontmale;
-                                            }
-                                            else if (currentFront == examplefrontmale) {
-                                                currentFront = examplefrontfemale;
-                                            }
-                                        });
-                                    }, 10000);
-
-                                    // Affichage des points
-                                    generateFrontBones($("#photo_zone_1"));
-                                },
-                                error: function (xhr, status, p3, p4) {
-                                    var err = "Error " + " " + status + " " + p3 + " " + p4;
-                                    if (xhr.responseText && xhr.responseText[0] == "{")
-                                        err = JSON.parse(xhr.responseText).Message;
-                                    console.log(err);
+                                } else {
+                                    alert("This browser doesn't support HTML5 file uploads ! Upgrade your browser...");
                                 }
-                            });
-                        } else {
-                            alert("This browser doesn't support HTML5 file uploads ! Upgrade your browser...");
+                            }
+                        }
+                        else {
+                            // On ne sélectionne qu'un seul fichier à la fois
+                            if (files.length == 1) {
+                                if (window.FormData !== undefined) {
+                                    var data = new FormData();
+                                    for (var x = 0; x < files.length; x++) {
+                                        data.append("file" + x, files[x]);
+                                    }
+                                    $.ajax({
+                                        type: "POST",
+                                        url: '/Home/UploadFile?id=' + id + '&order=2',
+                                        contentType: false,
+                                        processData: false,
+                                        data: data,
+                                        success: function (result) {
+                                            $("#loadingleft").remove();
+                                            $("#loadingright").remove();
+
+                                            // Affichage de l'image dans la zone Photo
+                                            $("#photo_zone_2").css("background-image", "url(/Images/pictures_profiles/" + result);
+                                            $("#photo_zone_2").css("background-repeat", "no-repeat");
+                                            $("#photo_zone_2").getBgImage(function () {
+                                                // var percent2 = Math.round($(this).width() * 100 / $("#photo_zone_2").width());
+                                                // Affichage de l'image dans la zone Photo
+                                                $("#photo_zone_2").css("background-size", "auto " + $(this).height() + "px");
+                                                $("#photo_zone_2").css("background-position-x", "0px");
+                                                $("#photo_zone_2").css("background-position-y", "0px");
+                                            });
+                                            toutesphotosload = true;
+                                            selectedimage = 2;
+                                            $("#photo_zone_2").css("visibility", "visible");
+                                            $("#photo_zone_2").css("display", "block");
+
+                                            $("#photo_zone_2").css("height", "600px");
+                                            $("#photo_zone_2").css("width", "90%");
+                                            $("#photo_zone_2").css("margin-top", "30px");
+                                            $("#photo_zone_2").css("margin-left", "25px");
+                                            $("#photo_zone_2").css("border", "2px groove white");
+
+                                            $("#photo_zone_1").css("visibility", "hidden");
+                                            $("#photo_zone_1").css("display", "none");
+                                            $("#photo_zone_1").insertAfter("#photo_zone_2");
+
+                                            $("#photo_zone_1").css("height", "1px");
+                                            $("#photo_zone_1").css("width", "1px");
+                                            $("#photo_zone_1").css("margin-top", "0px");
+                                            $("#photo_zone_1").css("margin-left", "0px");
+                                            $("#photo_zone_1").css("border", "0px groove white");
+
+                                            $("#previous_icon").css("display", "inline");
+                                            $("#next_icon").css("display", "none");
+
+                                            console.log("Second load success !");
+
+                                            // Chargement photo exemple 2
+                                            $("#generation_3D_canvas").css("background-repeat", "no-repeat");
+                                            $("#generation_3D_canvas").css("background-size", "contain");
+                                            $("#generation_3D_canvas").css("background-position", "center center");
+
+                                            clearInterval(intervalFront);
+                                            $("#generation_3D_canvas").css("background-image", "url(/Images/examples/" + examplesidemale);
+                                            currentSide = examplesidefemale;
+                                            intervalSide = setInterval(function () {
+                                                $("#generation_3D_canvas").fadeOut(1000, function () {
+                                                    $("#generation_3D_canvas").fadeIn(10);
+                                                    $("#generation_3D_canvas").css("background-image", "url(/Images/examples/" + currentSide);
+                                                    if (currentSide == examplesidefemale) {
+                                                        currentSide = examplesidemale;
+                                                    }
+                                                    else if (currentSide == examplesidemale) {
+                                                        currentSide = examplesidefemale;
+                                                    }
+                                                });
+                                            }, 10000);
+
+                                            // Affichage des points
+                                            generateSideBones($("#photo_zone_2"), 1);
+
+                                            $("#rotate_button").css("display", "inline");
+                                        },
+                                        error: function (xhr, status, p3, p4) {
+                                            var err = "Error " + " " + status + " " + p3 + " " + p4;
+                                            if (xhr.responseText && xhr.responseText[0] == "{")
+                                                err = JSON.parse(xhr.responseText).Message;
+                                            console.log(err);
+                                        }
+                                    });
+                                } else {
+                                    alert("This browser doesn't support HTML5 file uploads ! Upgrade your browser...");
+                                }
+                            }
                         }
                     }
-                }
-                else {
-                    // On ne sélectionne qu'un seul fichier à la fois
-                    if (files.length == 1) {
-                        if (window.FormData !== undefined) {
-                            var data = new FormData();
-                            for (var x = 0; x < files.length; x++) {
-                                data.append("file" + x, files[x]);
+                    else {
+                        var response = jConfirm("You have already uploaded your two photos ! Do you want to reload for another shape generation ?", 'Reload !', function (r) {
+                            if (r) {
+                                location.reload();
                             }
-                            $.ajax({
-                                type: "POST",
-                                url: '/Home/UploadFile?id=' + id + '&order=2',
-                                contentType: false,
-                                processData: false,
-                                data: data,
-                                success: function (result) {
-                                    $("#loadingleft").remove();
-                                    $("#loadingright").remove();
-
-                                    // Affichage de l'image dans la zone Photo
-                                    $("#photo_zone_2").css("background-image", "url(/Images/pictures_profiles/" + result);
-                                    $("#photo_zone_2").css("background-repeat", "no-repeat");
-                                    $("#photo_zone_2").getBgImage(function () {
-                                        // var percent2 = Math.round($(this).width() * 100 / $("#photo_zone_2").width());
-                                        // Affichage de l'image dans la zone Photo
-                                        $("#photo_zone_2").css("background-size", "auto " + $(this).height() + "px");
-                                        $("#photo_zone_2").css("background-position-x", "0px");
-                                        $("#photo_zone_2").css("background-position-y", "0px");
-                                    });
-                                    toutesphotosload = true;
-                                    selectedimage = 2;
-                                    $("#photo_zone_2").css("visibility", "visible");
-                                    $("#photo_zone_2").css("display", "block");
-
-                                    $("#photo_zone_2").css("height", "600px");
-                                    $("#photo_zone_2").css("width", "90%");
-                                    $("#photo_zone_2").css("margin-top", "30px");
-                                    $("#photo_zone_2").css("margin-left", "25px");
-                                    $("#photo_zone_2").css("border", "2px groove white");
-
-                                    $("#photo_zone_1").css("visibility", "hidden");
-                                    $("#photo_zone_1").css("display", "none");
-                                    $("#photo_zone_1").insertAfter("#photo_zone_2");
-
-                                    $("#photo_zone_1").css("height", "1px");
-                                    $("#photo_zone_1").css("width", "1px");
-                                    $("#photo_zone_1").css("margin-top", "0px");
-                                    $("#photo_zone_1").css("margin-left", "0px");
-                                    $("#photo_zone_1").css("border", "0px groove white");
-
-                                    $("#previous_icon").css("display", "inline");
-                                    $("#next_icon").css("display", "none");
-
-                                    console.log("Second load success !");
-
-                                    // Chargement photo exemple 2
-                                    $("#generation_3D_canvas").css("background-repeat", "no-repeat");
-                                    $("#generation_3D_canvas").css("background-size", "contain");
-                                    $("#generation_3D_canvas").css("background-position", "center center");
-
-                                    clearInterval(intervalFront);
-                                    $("#generation_3D_canvas").css("background-image", "url(/Images/examples/" + examplesidemale);
-                                    currentSide = examplesidefemale;
-                                    intervalSide = setInterval(function () {
-                                        $("#generation_3D_canvas").fadeOut(1000, function () {
-                                            $("#generation_3D_canvas").fadeIn(10);
-                                            $("#generation_3D_canvas").css("background-image", "url(/Images/examples/" + currentSide);
-                                            if (currentSide == examplesidefemale) {
-                                                currentSide = examplesidemale;
-                                            }
-                                            else if (currentSide == examplesidemale) {
-                                                currentSide = examplesidefemale;
-                                            }
-                                        });
-                                    }, 10000);
-
-                                    // Affichage des points
-                                    generateSideBones($("#photo_zone_2"), 1);
-
-                                    $("#rotate_button").css("display", "inline");
-                                },
-                                error: function (xhr, status, p3, p4) {
-                                    var err = "Error " + " " + status + " " + p3 + " " + p4;
-                                    if (xhr.responseText && xhr.responseText[0] == "{")
-                                        err = JSON.parse(xhr.responseText).Message;
-                                    console.log(err);
-                                }
-                            });
-                        } else {
-                            alert("This browser doesn't support HTML5 file uploads ! Upgrade your browser...");
-                        }
+                        });
                     }
-                }
-            }
-            else {
-                var response = jConfirm("You have already uploaded your two photos ! Do you want to reload for another shape generation ?", 'Reload !', function (r) {
-                    if (r) {
-                        location.reload();
-                    }
-                });
+                    break;
+                default:
+                    console.log("No image selected.")
+                    break;
             }
         });
 
