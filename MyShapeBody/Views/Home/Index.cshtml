@@ -58,6 +58,9 @@
         var selectedimage = 1;
         var id = generateUUID();
 
+        var borderGap = Math.round(($("#infos_1").width() - $("#photo_zone_1").width()) / 2) - 2; // We soustract the border too :)
+        $("#photo_zone_1").css("margin-left", borderGap);
+
         // Bouton rotate invisible
         $("#rotate_button").css("display", "none");
 
@@ -189,7 +192,7 @@
                                             $("#photo_zone_2").css("height", "600px");
                                             $("#photo_zone_2").css("width", "90%");
                                             $("#photo_zone_2").css("margin-top", "30px");
-                                            $("#photo_zone_2").css("margin-left", "25px");
+                                            $("#photo_zone_2").css("margin-left", borderGap);
                                             $("#photo_zone_2").css("border", "2px groove white");
 
                                             $("#photo_zone_1").css("visibility", "hidden");
@@ -289,7 +292,7 @@
                     $("#photo_zone_1").css("height", "600px");
                     $("#photo_zone_1").css("width", "90%");
                     $("#photo_zone_1").css("margin-top", "30px");
-                    $("#photo_zone_1").css("margin-left", "25px");
+                    $("#photo_zone_1").css("margin-left", borderGap);
                     $("#photo_zone_1").css("border", "2px groove white");
 
                     $("#photo_zone_2").insertAfter("#photo_zone_1");
@@ -334,11 +337,11 @@
                     $("#photo_zone_2").css("height", "600px");
                     $("#photo_zone_2").css("width", "90%");
                     $("#photo_zone_2").css("margin-top", "30px");
-                    $("#photo_zone_2").css("margin-left", "25px");
+                    $("#photo_zone_2").css("margin-left", borderGap);
                     $("#photo_zone_2").css("border", "2px groove white");
                     $("#photo_zone_1").css("height", "1px");
                     $("#photo_zone_1").css("width", "1px");
-                    $("#photo_zone_1").css("margin-top", "00px");
+                    $("#photo_zone_1").css("margin-top", "0px");
                     $("#photo_zone_1").css("margin-left", "0px");
                     $("#photo_zone_1").css("border", "0px groove white");
 

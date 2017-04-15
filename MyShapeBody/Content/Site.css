@@ -50,19 +50,6 @@
     padding-left : 0px;
 }
 
-#photo_zone_1
-{
-    position: relative;
-    height : 600px;
-    width : 90%;
-}
-
-#photo_zone_2
-{
-    height : 600px;
-    width : 90%;
-}
-
 /* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 
 */
@@ -400,23 +387,22 @@ footer{
     bottom : 5px;
 }
 
-#photo_zone_1
-{
-    margin-top : 30px;
-    margin-left : 25px;
-    height : 600px;
-    width : 90%;
-    border : 2px groove white;
-    display : block;
-    visibility : visible;
+#photo_zone_1 {
+    margin-top: 30px;
+    height: 600px;
+    width: 90%;
+    border: 2px groove white;
+    display: block;
+    visibility: visible;
+    position: relative;
 }
 
-#photo_zone_2
-{
-    width : 1px;
-    height : 1px;
-    display : inline;
-    visibility : hidden;
+#photo_zone_2 {
+    margin-top: 30px;
+    width: 1px;
+    height: 1px;
+    display: inline;
+    visibility: hidden;
 }
 
 .menu_droit_item ::before
