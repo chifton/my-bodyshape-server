@@ -20,17 +20,21 @@
     cursor : pointer;
 }
 
-.massresult
+.platformText
 {
-    color : white;
-    height : 30px;
-    line-height : 30px;
-    padding-left : 30px;
-    text-align : left;
-    font-weight : bold;
-    font-family : Garamond, Perpetua, Arial;
     font-size : 15px;
-    cursor : pointer;
+}
+
+.massresult {
+    color: white;
+    height: 30px;
+    line-height: 30px;
+    padding-left: 30px;
+    text-align: left;
+    font-weight: bold;
+    font-family: Garamond, Perpetua, Arial;
+    font-size: 15px;
+    cursor: pointer;
 }
 
 .titleresultgeneration
@@ -106,12 +110,11 @@ footer{
     margin-top : 20px;
 }
 
-#height_human
-{
-    border-radius : 5px;
-    width : 60px;
-    text-align : right;
-    color : black;
+#height_human {
+    border-radius: 5px;
+    width: 60px;
+    text-align: right;
+    color: black;
 }
 
 #weight_human

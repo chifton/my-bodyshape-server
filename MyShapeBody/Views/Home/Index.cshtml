@@ -9,7 +9,9 @@
 <script src="~/Scripts/jquery-glowing.js"></script>
 <script src="~/Scripts/jquery.browser.js"></script>
 <script src="~/Scripts/jquery.alerts.js"></script>
+<script src="~/Scripts/jquery.magnific-popup.min.js"></script>
 <link href="~/Content/jquery-ui.css" rel="stylesheet" />
+<link href="~/Content/magnific-popup.css" rel="stylesheet" />
 <script src="~/Scripts/three.min.js"></script>
 <script type="text/javascript">
 
@@ -58,8 +60,17 @@
         var selectedimage = 1;
         var id = generateUUID();
 
+        // On load adjustments
         var borderGap = Math.round(($("#infos_1").width() - $("#photo_zone_1").width()) / 2) - 2; // We soustract the border too :)
         $("#photo_zone_1").css("margin-left", borderGap);
+        var helpHeight = Math.round($("#infos_2").height() / 3) - 10;
+        var help2Width = Math.round($("#infos_2").width()) - 10;
+        $("#infos_2").prepend('<a title="Step 3" class="magnificboxbodyshape" href="../Images/help/help3.jpg"><img id="help3" style="cursor:pointer;width:auto;height:' + helpHeight + 'px" src="../Images/help/help3.jpg" /></a>');
+        $("#infos_2").prepend('<a title="Step 2" class="magnificboxbodyshape" href="../Images/help/help2.jpg"><img id="help2" style="cursor:pointer;margin-top:5px;width:' + help2Width + 'px;height:' + helpHeight + 'px" src="../Images/help/help2.jpg" /></a>');
+        $("#infos_2").prepend('<a title="Step 1" class="magnificboxbodyshape" href="../Images/help/help1.jpg"><img id="help1" style="cursor:pointer;margin-top:5px;width:auto;height:' + helpHeight + 'px" src="../Images/help/help1.jpg" /></a>');
+
+        // Light boxes for zooming images
+        $('.magnificboxbodyshape').magnificPopup({type: 'image' });
 
         // Bouton rotate invisible
         $("#rotate_button").css("display", "none");
@@ -76,7 +87,7 @@
 
                         $("#generation_3D_canvas").css("background-image", "none");
                         $("#generation_3D_canvas").prepend('<img id="loadingleft" src="../Images/loader.gif" />');
-                        $("#infos_2").prepend('<img id="loadingright" src="../Images/loader.gif" />');
+                        //$("#infos_2").prepend('<img id="loadingright" src="../Images/loader.gif" />');
 
                         var topload = $("#generation_3D_canvas").width() / 2 - $("#loadingleft").width() / 2;
                         $("#loadingleft").css("position", "relative");
@@ -1228,7 +1239,7 @@
 
                     $("#generation_3D_canvas").css("background-image", "none");
                     $("#generation_3D_canvas").prepend('<img id="loadingleft" src="../Images/loader.gif" />');
-                    $("#infos_2").prepend('<img id="loadingright" src="../Images/loader.gif" />');
+                    //$("#infos_2").prepend('<img id="loadingright" src="../Images/loader.gif" />');
 
                     var topload = $("#generation_3D_canvas").width() / 2 - $("#loadingleft").width() / 2;
                     $("#loadingleft").css("position", "relative");
@@ -1256,6 +1267,8 @@
                                 alert("The generation failed due to a too much big error. Try again by correctly moving the points on the pictures.")
                             }
                             else {
+                                // We build the table for further displaying results
+                                buildResultsTable();
                                 var myfinaljson = $.parseJSON(data);
                                 displayResults(myfinaljson); // Generation masses
                                 generate3DMesh(); // Generation 3D
@@ -1284,6 +1297,14 @@
                 alert("Please upload your front and side photos before body generation.");
             }
         });
+
+        function buildResultsTable()
+        {
+            $("#help1").remove();
+            $("#help2").remove();
+            $("#help3").remove();
+            $("#infos_2").prepend('<br /><div class="massresult" id="titleresult" ></div ><br /><br /><br /><br /><div class="massresult" id="headresult"></div><div class="massresult" id="neckresult"></div><div class="massresult" id="thoraxresult"></div><div class="massresult" id="abdoresult"></div><div class="massresult" id="fesseresult"></div><div class="massresult" id="cuissegaucheresult"></div><div class="massresult" id="cuissedroiteresult"></div><div class="massresult" id="jambegaucheresult"></div><div class="massresult" id="jambedroiteresult"></div>@*<div class="massresult" id="chevillegaucheresult"></div><div class="massresult" id="chevilledroiteresult"></div>*@<div class="massresult" id="piedgaucheresult"></div><div class="massresult" id="pieddroiteresult"></div><div class="massresult" id="brasgaucheresult"></div><div class="massresult" id="brasdroiteresult"></div><div class="massresult" id="avantbrasgaucheresult"></div><div class="massresult" id="avantbrasdroiteresult"></div><div class="massresult" id="maingaucheresult"></div><div class="massresult" id="maindroiteresult"></div><div class="massresult" id="totalmassresult"></div><div class="massresult" id="comparison"></div>');
+        }
 
         function pixelToRealLeft(pixel)
         {
@@ -1906,32 +1927,5 @@
 
     </div>
     <div id="infos_2">
-        <br />
-        <div class="massresult" id="titleresult"></div>
-        <br/>
-        <br />
-        <br />
-        <br />
-        <div class="massresult" id="headresult"></div>
-        <div class="massresult" id="neckresult"></div>
-        <div class="massresult" id="thoraxresult"></div>
-        <div class="massresult" id="abdoresult"></div>
-        <div class="massresult" id="fesseresult"></div>
-        <div class="massresult" id="cuissegaucheresult"></div>
-        <div class="massresult" id="cuissedroiteresult"></div>
-        <div class="massresult" id="jambegaucheresult"></div>
-        <div class="massresult" id="jambedroiteresult"></div>
-        @*<div class="massresult" id="chevillegaucheresult"></div>
-        <div class="massresult" id="chevilledroiteresult"></div>*@
-        <div class="massresult" id="piedgaucheresult"></div>
-        <div class="massresult" id="pieddroiteresult"></div>
-        <div class="massresult" id="brasgaucheresult"></div>
-        <div class="massresult" id="brasdroiteresult"></div>
-        <div class="massresult" id="avantbrasgaucheresult"></div>
-        <div class="massresult" id="avantbrasdroiteresult"></div>
-        <div class="massresult" id="maingaucheresult"></div>
-        <div class="massresult" id="maindroiteresult"></div>
-        <div class="massresult" id="totalmassresult"></div>
-        <div class="massresult" id="comparison"></div>
     </div>
 </div>

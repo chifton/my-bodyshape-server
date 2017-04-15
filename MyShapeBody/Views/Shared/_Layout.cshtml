@@ -21,11 +21,11 @@
 </header>
         @RenderBody()
     <br/><br/><br /><br /><br /><br />
-        <footer style="display:block;">
-            &copy; @DateTime.Now.Year - MyBodyShape 1.0 - Developped by François & Chérif
-            <br/>Available on Android <a target="_blank" href="https://play.google.com/store"><img style="display:inline;" src="~/Images/android.png" width="20" height="20" /></a> - Soon available on iOS <img style="display:inline;" src="~/Images/ios.png" width="20" height="20" />
-        </footer>
-
+    <footer style="display:block;">
+        &copy; @DateTime.Now.Year - MyBodyShape 1.0 - Developped by François & Chérif
+        <br />Available on <a target="_blank" style="text-decoration: none;" href="https://play.google.com/store"><span class="platformText">Android </span><img style="display:inline;" src="~/Images/android.png" width="20" height="20" /></a> - Soon available on <a target="_blank" style="text-decoration: none;" href="https://itunes.apple.com/fr/genre/ios-forme-et-sant%C3%A9"><span class="platformText">iOS </span><img style="display:inline;" src="~/Images/ios.png" width="20" height="20" /></a>
+    </footer>
+    
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 </body>
