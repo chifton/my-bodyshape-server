@@ -65,10 +65,13 @@
         $("#photo_zone_1").css("margin-left", borderGap);
         var helpHeight = Math.round($("#infos_2").height() / 3) - 10;
         var help2Width = Math.round($("#infos_2").width()) - 10;
-        $("#infos_2").prepend('<a title="Step 3" class="magnificboxbodyshape" href="../Images/help/help3.jpg"><img id="help3" style="cursor:pointer;width:auto;height:' + helpHeight + 'px" src="../Images/help/help3.jpg" /></a>');
-        $("#infos_2").prepend('<a title="Step 2" class="magnificboxbodyshape" href="../Images/help/help2.jpg"><img id="help2" style="cursor:pointer;margin-top:5px;width:' + help2Width + 'px;height:' + helpHeight + 'px" src="../Images/help/help2.jpg" /></a>');
-        $("#infos_2").prepend('<a title="Step 1" class="magnificboxbodyshape" href="../Images/help/help1.jpg"><img id="help1" style="cursor:pointer;margin-top:5px;width:auto;height:' + helpHeight + 'px" src="../Images/help/help1.jpg" /></a>');
-
+        var picture2WidthRatio = 873 / 507;
+        var help2Height = Math.round(help2Width / picture2WidthRatio);
+        var marginPictures = Math.round((Math.round($("#infos_2").height()) - 2 * helpHeight - help2Height) / 4);
+        $("#infos_2").prepend('<a title="Step 3" class="magnificboxbodyshape" href="../Images/help/help3.jpg"><img id="help3" style="margin-top:' + marginPictures + 'px;cursor:pointer;width:auto;height:' + helpHeight + 'px" src="../Images/help/help3.jpg" /></a>');
+        $("#infos_2").prepend('<a title="Step 2" class="magnificboxbodyshape" href="../Images/help/help2.jpg"><img id="help2" style="margin-top:' + marginPictures + 'px;cursor:pointer;width:' + help2Width + 'px;height:auto;" src="../Images/help/help2.jpg" /></a>');
+        $("#infos_2").prepend('<a title="Step 1" class="magnificboxbodyshape" href="../Images/help/help1.jpg"><img id="help1" style="margin-top:' + marginPictures + 'px;cursor:pointer;width:auto;height:' + helpHeight + 'px" src="../Images/help/help1.jpg" /></a>');
+        
         // Light boxes for zooming images
         $('.magnificboxbodyshape').magnificPopup({type: 'image' });
 
