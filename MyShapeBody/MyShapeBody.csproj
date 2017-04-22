@@ -275,7 +275,6 @@
     <Content Include="Images\top_button.png" />
     <Content Include="Images\zoomout.png" />
     <Content Include="Images\myshapebody.png" />
-    <Content Include="Images\myshapebody_old.png" />
     <Content Include="Images\next.png" />
     <Content Include="Images\zoomin.png" />
     <Content Include="Images\point.png" />

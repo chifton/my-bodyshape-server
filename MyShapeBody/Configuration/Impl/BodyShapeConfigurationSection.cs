@@ -47,7 +47,7 @@ namespace MyShapeBody.Configuration.Impl
         }
 
         /// <summary>
-        /// The maximum error percentage.
+        /// The logs folder.
         /// </summary>
         [ConfigurationProperty(PropertyNames.FolderLog, IsRequired = true)]
         public string FolderLog

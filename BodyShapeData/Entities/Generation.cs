@@ -74,6 +74,11 @@ namespace BodyShapeData.Entities
         public double? ExpectedWeight { get; set; }
 
         /// <summary>
+        /// The user generated weight.
+        /// </summary>
+        public double GeneratedWeight { get; set; }
+        
+        /// <summary>
         /// The body schema.
         /// </summary>
         public virtual BodySchema BodySchema { get; set; }

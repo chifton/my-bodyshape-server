@@ -85,6 +85,7 @@ namespace MyShapeBody.Services
                 SidePicture = schema.Picture_2,
                 Height = schema.Height,
                 ExpectedWeight = schema.Weight,
+                GeneratedWeight = result.TotalMass,
                 BodySchema = schema,
                 BodyResult = result
             };
