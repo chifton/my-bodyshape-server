@@ -15,8 +15,6 @@ namespace MyShapeBody
 
     using AutoMapper;
 
-    using ConfigMig = BodyShapeData.Migrations.Configuration;
-
     using BodyShapeData;
 
     public partial class Startup
@@ -34,7 +32,6 @@ namespace MyShapeBody
             using (var db = new BodyShapeContext())
             {
                 db.Database.Initialize(true);
-                Database.SetInitializer(new MigrateDatabaseToLatestVersion<BodyShapeContext, ConfigMig>());
             }     
         }
     }
