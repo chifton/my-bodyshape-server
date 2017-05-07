@@ -1,7 +1,30 @@
-﻿body {
+﻿html {
+    -webkit-transition: background-color 1s;
+    transition: background-color 1s;
+}
+
+html, body {
+    min-height: 100%;
+}
+
+body {
     padding-top: 5px;
-    background-color : black;
-    font-family : 'Buxton Sketch', Verdana;
+    background-color: black;
+    font-family: 'Buxton Sketch', Verdana;
+    -webkit-transition: opacity 1s ease-in;
+    transition: opacity 1s ease-in;
+}
+
+html.bodyshapeloader {
+    background: #000000 url(../Images/loader.gif) 50% 50% no-repeat;
+    -webkit-transition: background-color 0;
+    transition: background-color 0;
+}
+
+html.bodyshapeloader body {
+    opacity: 0;
+    -webkit-transition: opacity 0;
+    transition: opacity 0;
 }
 
 #titre_centre
