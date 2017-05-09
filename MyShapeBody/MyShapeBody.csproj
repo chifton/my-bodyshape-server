@@ -264,6 +264,7 @@
     <Content Include="Images\help\help2.JPG" />
     <Content Include="Images\help\help3.jpg" />
     <Content Include="Images\ios.png" />
+    <Content Include="Images\loaderStart.gif" />
     <Content Include="Images\mascotte.png" />
     <Content Include="Images\myshapebodymail.jpg" />
     <Content Include="Images\next_button.png" />
