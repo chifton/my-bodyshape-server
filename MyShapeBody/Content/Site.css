@@ -16,7 +16,7 @@ body {
 }
 
 html.bodyshapeloader {
-    background: #000000 url(../Images/loader.gif) 50% 50% no-repeat;
+    background: #000000 url(../Images/loaderStart.gif) 50% 50% no-repeat;
     -webkit-transition: background-color 0;
     transition: background-color 0;
 }
