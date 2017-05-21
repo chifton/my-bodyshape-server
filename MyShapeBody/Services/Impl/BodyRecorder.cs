@@ -24,7 +24,7 @@ namespace MyShapeBody.Services
     /// <summary>
     /// The recorder class
     /// </summary>
-    public class BodyRecorder
+    public class BodyRecorder : IBodyRecorder
     {
         /// <summary>
         /// The mapper.

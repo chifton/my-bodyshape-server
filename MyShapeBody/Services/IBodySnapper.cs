@@ -1,6 +1,6 @@
 ﻿// ===============================
 // *******************************
-// The body recorder interface.
+// The body snapper interface.
 // ===============================
 // *******************************
 
@@ -10,15 +10,14 @@ namespace MyShapeBody.Services
     using System.Collections.Generic;
     using System.Linq;
     using System.Web;
-    using System.Security.Principal;
 
     using MyShapeBody.AppModels;
 
     /// <summary>
-    /// The recorder inteface
+    /// The snapper inteface
     /// </summary>
-    public interface IBodyRecorder
+    public interface IBodySnapper
     {
-        void RecordBody(Body body, BodyTicket bodyTicket, decimal decError, bool toCompare, IIdentity user, bool hasAccountNow);
+        bool SnapMorphoBody(BodyTicket bodyTicket);
     }
 }

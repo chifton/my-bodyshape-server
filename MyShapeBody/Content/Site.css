@@ -50,31 +50,55 @@ html.bodyshapeloader body {
 
 .massresult {
     color: white;
-    height: 30px;
-    line-height: 30px;
-    padding-left: 30px;
-    text-align: left;
+    display: block;
+    height: 25px;
+    text-align: center;
     font-weight: bold;
     font-family: Garamond, Perpetua, Arial;
-    font-size: 15px;
+    font-size: 11px;
     cursor: pointer;
+    position: relative;
 }
 
-.titleresultgeneration
-{
-    font-family : Garamond, Perpetua, Arial;
-    font-size : 30px;
-    cursor : pointer;
+.membertitle {
+    text-align: center;
+    color: white;
+    margin : auto;
+    display : block;
+}
+
+#resultTitleGenerationEnd {
+    position: relative;
+    color: #589ce8;
+}
+
+#totalmassresult {
+    position: relative;
+    font-family: Garamond, Perpetua, Arial;
+    font-weight: bold;
+    font-size: 18px;
+    display: inline-block;
+    color: #589ce8;
+    position : relative;
+}
+
+.titleresultgeneration {
+    font-family: Garamond, Perpetua, Arial;
+    font-size: 18px;
+    cursor: pointer;
 }
 
 #titleresult
 {
     color : #589ce8;
-    font-size : 20px;
-    height : 40px;
-    line-height : 40px;
+    font-size : 15px;
+    height : 30px;
+    line-height : 30px;
     text-align : center;
     padding-left : 0px;
+    margin-top : 10px;
+    top : 0px;
+    position : relative;
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 

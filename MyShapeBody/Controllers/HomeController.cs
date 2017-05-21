@@ -45,9 +45,14 @@ namespace MyShapeBody.Controllers
         private IBodyShapeConfiguration configuration;
 
         /// <summary>
+        /// The body snapper
+        /// </summary>
+        private IBodySnapper bodySnapper;
+
+        /// <summary>
         /// The body recorder
         /// </summary>
-        private BodyRecorder bodyRecorder;
+        private IBodyRecorder bodyRecorder;
 
         /// <summary>
         /// The logger
@@ -59,8 +64,9 @@ namespace MyShapeBody.Controllers
         /// </summary>
         public HomeController()
         {
-            this.bodyRecorder = new BodyRecorder();
             this.configuration = this.GetBodyShapeConfiguration();
+            this.bodyRecorder = new BodyRecorder();
+            this.bodySnapper = new BodySnapper(this.configuration.FolderLog);
         }
 
         /// <summary>
@@ -348,12 +354,15 @@ namespace MyShapeBody.Controllers
                 this.bodyRecorder.RecordBody(body, result, decError, toCompare, user, User.Identity.IsAuthenticated);
                 logger.Information($"Successfully registered body masses for id " + id);
 
+                // Snaps client results
+                var snapResult = this.bodySnapper.SnapMorphoBody(result);
+
                 // Send to clients
                 var jsonResult = string.Empty;
                 if ((toCompare && Math.Abs(decError) <= this.configuration.MaxError) || !toCompare)
                 {
-                    // Serializing
-                    jsonResult = JsonConvert.SerializeObject(result.BodyMass);
+                    // Serializing or not
+                    jsonResult = snapResult ? JsonConvert.SerializeObject(result) : "Error";
                 }
                 else
                 {
