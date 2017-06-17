@@ -1,3 +1,0 @@
-2017-02-19 20:24:07.663 +01:00 [Information] Registering photo N°1 with id 4ecf725d-6303-48b3-b7eb-9315689a5948
-2017-02-19 21:14:17.354 +01:00 [Information] Registering photo N°1 with id 3dd41a6b-faf7-40cd-b6cc-6a07f24b382c
-2017-02-19 22:31:06.586 +01:00 [Information] Registering photo N°1 with id 607e9b58-1711-4423-80aa-dea45d395034

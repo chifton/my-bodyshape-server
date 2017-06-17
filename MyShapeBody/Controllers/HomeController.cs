@@ -83,11 +83,11 @@ namespace MyShapeBody.Controllers
                 .CreateLogger();
         }
 
-    /// <summary>
-    /// Page d'accueil
-    /// </summary>
-    /// <returns></returns>
-    public ActionResult Index()
+        /// <summary>
+        /// Page d'accueil
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Index()
         {
             return View();
         }
@@ -381,6 +381,16 @@ namespace MyShapeBody.Controllers
             }
         }
 
+
+        /// <summary>
+        /// Simulations number.
+        /// </summary>
+        [HttpGet]
+        public int GetSimulationsNumber()
+        {
+            var dataTotalNumber = bodyRecorder.GetSimulationsNumber();
+            return dataTotalNumber == 0 ? 10000 : dataTotalNumber;
+        }
 
         /// <summary>
         /// The get bodyshape configuration method.

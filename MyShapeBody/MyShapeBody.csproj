@@ -304,6 +304,7 @@
     <Content Include="Scripts\jquery-ui.min.js" />
     <Content Include="Scripts\jquery.magnific-popup.js" />
     <Content Include="Scripts\jquery.magnific-popup.min.js" />
+    <Content Include="Scripts\jquery.magnify.js" />
     <Content Include="Scripts\jquery.path.js" />
     <Content Include="Scripts\jquery.simulate.js" />
     <Content Include="Scripts\jquery.validate.js" />

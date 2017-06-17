@@ -55,7 +55,7 @@
             }
         });
 
-        // Première photo ou pas
+        // First picture or not
         var firstPhoto = true;
         var toutesphotosload = false;
         var selectedimage = 1;
@@ -73,8 +73,8 @@
         var help2Width = Math.round($("#infos_2").width()) - 10;
         var picture2WidthRatio = 873 / 507;
         var help2Height = Math.round(help2Width / picture2WidthRatio);
-        var marginPictures = Math.round((Math.round($("#infos_2").height()) - 2 * helpHeight - help2Height) / 4);
-        $("#infos_2").prepend('<a title="Step 3" class="magnificboxbodyshape" href="../Images/help/help3.jpg"><img id="help3" style="margin-top:' + marginPictures + 'px;cursor:pointer;width:auto;height:' + helpHeight + 'px" src="../Images/help/help3.jpg" /></a>');
+        var marginPictures = Math.round((Math.round($("#infos_2").height()) - 2 * help2Height - helpHeight) / 4);
+        $("#infos_2").prepend('<a title="Step 3" class="magnificboxbodyshape" href="../Images/help/help3.jpg"><img id="help3" style="margin-top:' + marginPictures + 'px;cursor:pointer;width:' + help2Width + 'px;height:auto;" src="../Images/help/help3.jpg" /></a>');
         $("#infos_2").prepend('<a title="Step 2" class="magnificboxbodyshape" href="../Images/help/help2.jpg"><img id="help2" style="margin-top:' + marginPictures + 'px;cursor:pointer;width:' + help2Width + 'px;height:auto;" src="../Images/help/help2.jpg" /></a>');
         $("#infos_2").prepend('<a title="Step 1" class="magnificboxbodyshape" href="../Images/help/help1.jpg"><img id="help1" style="margin-top:' + marginPictures + 'px;cursor:pointer;width:auto;height:' + helpHeight + 'px" src="../Images/help/help1.jpg" /></a>');
 
@@ -1291,9 +1291,9 @@
             $("#help1").remove();
             $("#help2").remove();
             $("#help3").remove();
-            $("#infos_2").prepend('<div class="massresult" id="totalmassresult"></div>');
-            $("#infos_2").prepend('<div class="massresult" id="comparison"></div/>');
-            $("#infos_2").prepend('<br /><div class="massresult" id="titleresult"></div>');
+            $("#infos_2").prepend('<span class="massresult" id="totalmassresult"></span>');
+            //$("#infos_2").prepend('<div class="massresult" id="comparison"></div/>');
+            $("#infos_2").prepend('<br /><span class="massresult" id="titleresult"></span>');
             //$("#infos_2").prepend('<br /><div class="massresult" id="titleresult"><div/><div class="massresult" id="headresult"></div><div class="massresult" id="thoraxresult"></div><div class="massresult" id="brasdroiteresult"></div><div class="massresult" id="abdoresult"></div><div class="massresult" id="avantbrasdroiteresult"></div><div class="massresult" id="fesseresult"></div><div class="massresult" id="maindroiteresult"></div><div class="massresult" id="cuissedroiteresult"></div><div class="massresult" id="cuissegaucheresult"></div><div class="massresult" id="jambegaucheresult"></div><div class="massresult" id="jambedroiteresult"></div>@*<div class="massresult" id="chevillegaucheresult"></div><div class="massresult" id="chevilledroiteresult"></div>*@<div class="massresult" id="piedgaucheresult"></div><div class="massresult" id="pieddroiteresult"></div><div class="massresult" id="brasgaucheresult"></div><div class="massresult" id="avantbrasgaucheresult"></div><div class="massresult" id="maingaucheresult"></div><div class="massresult" id="totalmassresult"></div><div class="massresult" id="comparison"></div>');
         }
 
@@ -1750,7 +1750,8 @@
             //$("#maingaucheresult").text("");
             //$("#maindroiteresult").text("");
 
-            $("#comparison").text("");
+            //$("#comparison").text("");
+
             $("#totalmassresult").text("");
         }
 
@@ -1763,12 +1764,35 @@
         
         function displayResults(json) {
             CleanResults();
-
+            
             $("#infos_2").css("background-image", "url(../Images/snaps/snap_" + json.Ticket + ".png)");
             $("#infos_2").css("background-repeat", "no-repeat");
-            $("#infos_2").css("background-size", "contain");
-            $("#infos_2").css("background-position", "0px 70px");
 
+            var originalWidth = parseInt($("#resultZoomImgRatio").css("width").split("px")[0]);
+            var originalHeight = parseInt($("#resultZoomImgRatio").css("height").split("px")[0]);
+            var goodImgRatio = originalWidth / originalHeight;
+            var resultsWidth = parseInt($("#infos_2").css("width").split("px")[0]);
+            var desiredHeight = parseInt($("#infos_2").css("height").split("px")[0]) - 100 - 150; // For top and bottoms title and results strings
+            var desiredWidth = desiredHeight * goodImgRatio;
+            var leftResultsLag = Math.abs(desiredWidth - resultsWidth) / 2;
+            var backgroundSizeExpression = desiredWidth + "px " + desiredHeight + "px";
+            
+            if (desiredWidth >= resultsWidth)
+            {
+                desiredWidth = resultsWidth;
+                desiredHeight = parseFloat(desiredWidth / desiredHeight);
+                backgroundSizeExpression = "contain";
+                leftResultsLag = 0;
+            }
+
+            var topLagExpression = parseInt((parseInt($("#infos_2").css("height").split("px")[0]) - desiredHeight) / 2);
+
+            // Original to sized ratios
+            var resultsWidthRatio = originalWidth / desiredWidth;
+            var resultsHeightRatio = originalHeight / desiredHeight;
+
+            $("#infos_2").css("background-position", leftResultsLag + "px " + topLagExpression + "px");
+            $("#infos_2").css("background-size", backgroundSizeExpression);
             $("#titleresult").html("<span id='resultTitleGenerationEnd' class='titleresultgeneration'>Generation Results</span>");
 
             //buildSingleResult($("#headresult"), "<span class='membertitle'>Head</span><span class='highlightresult'>" + json.Head.Mass + " kg -> " + Math.ceil(json.Head.Mass / json.TotalMass * 100) + "%</span>", 353, 18, "1"); // with mass center " + json.Head.MassCenter);
@@ -1794,7 +1818,8 @@
             //buildSingleResult($("#maindroiteresult"), "<span class='membertitle'>Right Hand</span><span class='highlightresult'>" + json.HandRight.Mass + " kg -> " + Math.ceil(json.HandRight.Mass / json.TotalMass * 100) + "%</span>", 353, 250, "16");// with mass center " + json.HandRight.MassCenter);
 
             // Résultats
-            $("#totalmassresult").css("margin-top", parseInt($("#infos_2").css("height").split("px")[0] - 120) + "px");
+            var weightMarginExpression = parseInt($("#infos_2").css("height").split("px")[0] - 120) + "px";
+            $("#totalmassresult").css("margin-top", weightMarginExpression);
             $("#totalmassresult").html("Total Generated Mass : <span style='color:red;' class='highlightresult'>" + json.BodyMass.TotalMass + " kgs</span>");
             
             // Comparaison
@@ -1829,8 +1854,44 @@
                 $("#resultZoomImg").attr("src", "../Images/snaps/snap_" + json.Ticket + ".png");
                 $("#resultZoomLink").trigger("click");
             });
-        }
 
+            // Magnify funcionnalities
+            $("#infos_2").append("<span id='resultsMagnifier'></span>");
+            $("#resultsMagnifier").insertBefore("#totalmassresult");
+            $("#resultsMagnifier").append("<span id='resultsMagnifierHandle'></span>");
+            
+            // Magnify events
+            $("#infos_2").mouseenter(function () {
+                $("#resultsMagnifier").css("display", "inline-block");
+                $("#resultsMagnifier").css("background-color", "black");
+                $("#resultsMagnifier").css("background-image", "url(../Images/snaps/snap_" + json.Ticket + ".png)");
+                $("#resultsMagnifier").css("background-repeat", "no-repeat");
+                $("#resultsMagnifierHandle").css("display", "inline-block");
+                $("#totalmassresult").css("top", "-=150px")
+            }).mousemove(function (e)
+            {
+                // Magnifier position
+                var parentOffset = $(this).offset();
+                var relX = e.pageX - parentOffset.left - 75 - 2; // -rayon -bordure
+                var relY = e.pageY - parentOffset.top - 150 - 4 - 75 - 4; // -rayon -bordure -rayon -bordure pour centrer le curseur sur la loupe
+                $("#resultsMagnifier").css("left", relX + "px");
+                $("#resultsMagnifier").css("top", relY + "px");
+
+                // Zommed image
+                var newZoomLeft = -resultsWidthRatio * relX;
+                var newZoomTop = -resultsHeightRatio * relY;
+                $("#resultsMagnifier").css("background-position", newZoomLeft + "px " + newZoomTop + "px");
+                
+            }).mouseleave(function () {
+                $("#resultsMagnifier").css("display", "none");
+                $("#resultsMagnifier").css("left", "0px");
+                $("#resultsMagnifier").css("top", "0px");
+                $("#resultsMagnifier").css("background-color", "transparent");
+                $("#resultsMagnifierHandle").css("display", "none");
+                $("#totalmassresult").css("top", "+=150px")
+            });
+        }
+        
         /*********************************   MODELISATION 3D   **********************************/
         /****************************************************************************************/
 
@@ -1941,8 +2002,10 @@
 
     </div>
     <div id="infos_2">
+        
     </div>
     <a id="resultZoomLink" title="Your results !" style="display:none;" class="magnificboxbodyshape" href="../Images/examples/morphoResult.png">
-        <img id="resultZoomImg" href="../Images/examples/morphoResult.png">
+        <img id="resultZoomImg" src="../Images/examples/morphoResult.png">
     </a>
+    <img id="resultZoomImgRatio" style="display:none;" src="../Images/examples/morphoResult.png"> 
 </div>

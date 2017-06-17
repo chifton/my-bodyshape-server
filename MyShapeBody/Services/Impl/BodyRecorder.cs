@@ -96,5 +96,13 @@ namespace MyShapeBody.Services
             dbContext.Generations.Add(generation);
             dbContext.SaveChanges();
         }
+
+        /// <summary>
+        /// The get simulations number method.
+        /// </summary>
+        public int GetSimulationsNumber()
+        {
+            return dbContext.Generations.Count();
+        }
     }
 }

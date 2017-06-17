@@ -19,6 +19,14 @@ namespace MyShapeBody.Services
     /// </summary>
     public interface IBodyRecorder
     {
+        /// <summary>
+        /// The record body method.
+        /// </summary>
         void RecordBody(Body body, BodyTicket bodyTicket, decimal decError, bool toCompare, IIdentity user, bool hasAccountNow);
+
+        /// <summary>
+        /// The get simulations number method.
+        /// </summary>
+        int GetSimulationsNumber();
     }
 }

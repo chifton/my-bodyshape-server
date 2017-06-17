@@ -57,19 +57,19 @@ namespace MyShapeBody.Services
             watermarksModels.Add(new Models.SnapModel("Abdomen", "Abdomen", new Point(347, 246)));
             watermarksModels.Add(new Models.SnapModel("Bottom", "Bottom", new Point(345, 355)));
 
-            watermarksModels.Add(new Models.SnapModel("ThighLeft", "Left Thigh", new Point(35, 466)));
-            watermarksModels.Add(new Models.SnapModel("ThighRight", "Right Thigh", new Point(320, 468)));
-            watermarksModels.Add(new Models.SnapModel("LegLeft", "Left Leg", new Point(40, 611)));
-            watermarksModels.Add(new Models.SnapModel("LegRight", "Right Leg", new Point(320, 616)));
-            watermarksModels.Add(new Models.SnapModel("FootLeft", "Left Foot", new Point(40, 700)));
-            watermarksModels.Add(new Models.SnapModel("FootRight", "Right Foot", new Point(315, 698)));
+            watermarksModels.Add(new Models.SnapModel("ThighLeft", "Left Thigh", new Point(320, 468)));
+            watermarksModels.Add(new Models.SnapModel("ThighRight", "Right Thigh", new Point(35, 466)));
+            watermarksModels.Add(new Models.SnapModel("LegLeft", "Left Leg", new Point(320, 616)));
+            watermarksModels.Add(new Models.SnapModel("LegRight", "Right Leg", new Point(40, 611)));
+            watermarksModels.Add(new Models.SnapModel("FootLeft", "Left Foot", new Point(315, 698)));
+            watermarksModels.Add(new Models.SnapModel("FootRight", "Right Foot", new Point(40, 700)));
 
-            watermarksModels.Add(new Models.SnapModel("ArmLeft", "Left Upperarm", new Point(5, 178)));
-            watermarksModels.Add(new Models.SnapModel("ArmRight", "Right Upperarm", new Point(347, 168)));
-            watermarksModels.Add(new Models.SnapModel("ForeArmLeft", "Left Forearm", new Point(5, 314)));
-            watermarksModels.Add(new Models.SnapModel("ForeArmRight", "Right Forearm", new Point(353, 315)));
-            watermarksModels.Add(new Models.SnapModel("HandLeft", "Left Hand", new Point(5, 424)));
-            watermarksModels.Add(new Models.SnapModel("HandRight", "Right Hand", new Point(340, 424)));
+            watermarksModels.Add(new Models.SnapModel("ArmLeft", "Left Upperarm", new Point(350, 168)));
+            watermarksModels.Add(new Models.SnapModel("ArmRight", "Right Upperarm", new Point(5, 178)));
+            watermarksModels.Add(new Models.SnapModel("ForeArmLeft", "Left Forearm", new Point(353, 315)));
+            watermarksModels.Add(new Models.SnapModel("ForeArmRight", "Right Forearm", new Point(5, 314)));
+            watermarksModels.Add(new Models.SnapModel("HandLeft", "Left Hand", new Point(340, 424)));
+            watermarksModels.Add(new Models.SnapModel("HandRight", "Right Hand", new Point(5, 424)));
 
             // Font family
             resultsFontFamily = this.LoadFont(Path.Combine(System.Web.HttpContext.Current.Server.MapPath("~/fonts"), "GARABD.TTF"));
@@ -176,67 +176,67 @@ namespace MyShapeBody.Services
                 {
                     Text = newText,
                     FontColor = Color.White,
-                    FontSize = 11,
+                    FontSize = 10,
                     FontFamily = resultsFontFamily,
-                    //Style = FontStyle.Bold,
+                    Style = FontStyle.Bold,
                     Position = watermark.Position,
                     DropShadow = false
                 });
             }
 
             // Adjust percentages
-            var percentagesSum = watermarks.Where(p => p.Text != "TEST").Select(r => Convert.ToInt32(r.Text.Split('%')[0].Split(' ').Last())).Sum();
-            if (percentagesSum != 100)
-            {
-                if(percentagesSum > 100)
-                {
-                    var maximumPercentage = watermarks.Where(p => p.Text != "TEST").Select(r => Convert.ToInt32(r.Text.Split('%')[0].Split(' ').Last())).Max();
-                    var maximumElements = watermarks.Where(p => p.Text != "TEST").Where(r => Convert.ToInt32(r.Text.Split('%')[0].Split(' ').Last()) == maximumPercentage).ToList();
-                    if(maximumElements.Count == 1)
-                    {
-                        var element = maximumElements.FirstOrDefault();
-                        var index = watermarks.IndexOf(element);
-                        watermarks.ElementAt(index).Text = element?.Text.Replace(maximumPercentage.ToString(), (maximumPercentage - (percentagesSum - 100)).ToString());
-                    }
-                    else if(maximumElements.Count > 1)
-                    {
-                        var gap = Math.Floor((double) (percentagesSum - 100) / maximumElements.Count);
-                        foreach(var el in maximumElements)
-                        {
-                            var index = watermarks.IndexOf(el);
-                            watermarks.ElementAt(index).Text = el?.Text.Replace(maximumPercentage.ToString(), (maximumPercentage - (gap == 0 ? Math.Floor((double)(percentagesSum - 100)) : gap)).ToString());
-                            if(gap == 0)
-                            {
-                                break; // Soustract only for the first element
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    var minimumPercentage = watermarks.Where(p => p.Text != "TEST").Select(r => Convert.ToInt32(r.Text.Split('%')[0].Split(' ').Last())).Min();
-                    var minimumElements = watermarks.Where(p => p.Text != "TEST").Where(r => Convert.ToInt32(r.Text.Split('%')[0].Split(' ').Last()) == minimumPercentage).ToList();
-                    if (minimumElements.Count == 1)
-                    {
-                        var element = minimumElements.FirstOrDefault();
-                        var index = watermarks.IndexOf(element);
-                        watermarks.ElementAt(index).Text = element?.Text.Replace(minimumPercentage.ToString(), (minimumPercentage + (100 - percentagesSum)).ToString());
-                    }
-                    else if (minimumElements.Count > 1)
-                    {
-                        var gap = Math.Floor((double)(100 - percentagesSum) / minimumElements.Count);
-                        foreach (var el in minimumElements)
-                        {
-                            var index = watermarks.IndexOf(el);
-                            watermarks.ElementAt(index).Text = el?.Text.Replace(minimumPercentage.ToString(), (minimumPercentage + (gap == 0 ? Math.Floor((double)(100 - percentagesSum)) : gap)).ToString());
-                            if (gap == 0)
-                            {
-                                break; // Add only for the first element
-                            }
-                        }
-                    }
-                }
-            }
+            //var percentagesSum = watermarks.Where(p => p.Text != "TEST").Select(r => Convert.ToInt32(r.Text.Split('%')[0].Split(' ').Last())).Sum();
+            //if (percentagesSum != 100)
+            //{
+            //    if(percentagesSum > 100)
+            //    {
+            //        var maximumPercentage = watermarks.Where(p => p.Text != "TEST").Select(r => Convert.ToInt32(r.Text.Split('%')[0].Split(' ').Last())).Max();
+            //        var maximumElements = watermarks.Where(p => p.Text != "TEST").Where(r => Convert.ToInt32(r.Text.Split('%')[0].Split(' ').Last()) == maximumPercentage).ToList();
+            //        if(maximumElements.Count == 1)
+            //        {
+            //            var element = maximumElements.FirstOrDefault();
+            //            var index = watermarks.IndexOf(element);
+            //            watermarks.ElementAt(index).Text = element?.Text.Replace(maximumPercentage.ToString(), (maximumPercentage - (percentagesSum - 100)).ToString());
+            //        }
+            //        else if(maximumElements.Count > 1)
+            //        {
+            //            var gap = Math.Floor((double) (percentagesSum - 100) / maximumElements.Count);
+            //            foreach(var el in maximumElements)
+            //            {
+            //                var index = watermarks.IndexOf(el);
+            //                watermarks.ElementAt(index).Text = el?.Text.Replace(maximumPercentage.ToString(), (maximumPercentage - (gap == 0 ? Math.Floor((double)(percentagesSum - 100)) : gap)).ToString());
+            //                if(gap == 0)
+            //                {
+            //                    break; // Soustract only for the first element
+            //                }
+            //            }
+            //        }
+            //    }
+            //    else
+            //    {
+            //        var minimumPercentage = watermarks.Where(p => p.Text != "TEST").Select(r => Convert.ToInt32(r.Text.Split('%')[0].Split(' ').Last())).Min();
+            //        var minimumElements = watermarks.Where(p => p.Text != "TEST").Where(r => Convert.ToInt32(r.Text.Split('%')[0].Split(' ').Last()) == minimumPercentage).ToList();
+            //        if (minimumElements.Count == 1)
+            //        {
+            //            var element = minimumElements.FirstOrDefault();
+            //            var index = watermarks.IndexOf(element);
+            //            watermarks.ElementAt(index).Text = element?.Text.Replace(minimumPercentage.ToString(), (minimumPercentage + (100 - percentagesSum)).ToString());
+            //        }
+            //        else if (minimumElements.Count > 1)
+            //        {
+            //            var gap = Math.Floor((double)(100 - percentagesSum) / minimumElements.Count);
+            //            foreach (var el in minimumElements)
+            //            {
+            //                var index = watermarks.IndexOf(el);
+            //                watermarks.ElementAt(index).Text = el?.Text.Replace(minimumPercentage.ToString(), (minimumPercentage + (gap == 0 ? Math.Floor((double)(100 - percentagesSum)) : gap)).ToString());
+            //                if (gap == 0)
+            //                {
+            //                    break; // Add only for the first element
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
             
             return watermarks;
         }

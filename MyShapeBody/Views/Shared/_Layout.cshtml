@@ -1,10 +1,43 @@
 ﻿<!DOCTYPE html>
 <html class="bodyshapeloader">
 <head>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/jquery-glowing.js"></script>
+    <script type="text/javascript">
+
+        document.addEventListener("DOMContentLoaded", function () {
+            $.ajax({
+                type: "GET",
+                url: "/Home/GetSimulationsNumber",
+                success: function (data) {
+                    if (data > 0) {
+
+                        // Display
+                        $("#nbSimulations").html("Already <span class='nbSimul'>" + data + "</span> bodyshape simulations !!!")
+
+                        // Glowing
+                        $('.nbSimul').addGlow({
+                            radius: 40,
+                            textColor: '#008000',
+                            haloColor: '#008000',
+                            duration: 400
+                        });
+                    }
+                    else
+                    {
+                        $("#nbSimulations").remove();
+                        $("#nbSimulationsBr").remove();
+                    }
+                }
+            });
+        });
+
+
+    </script>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MyBodyShape - Generate your 3D shape model with member weights from your pictures</title>
+    <title>MyBodyShape - Generate your 3D bodyshape with member weights from your pictures</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
@@ -21,7 +54,9 @@
         @RenderBody()
     <br/><br/><br /><br /><br /><br />
     <footer style="display:block;">
-        &copy; @DateTime.Now.Year - MyBodyShape 1.0 - Developped by François & Chérif
+        <span id="nbSimulations"></span>
+        <br id="nbSimulationsBr" />
+        &copy; @DateTime.Now.Year - MyBodyShape 1.0 - Developed by François & Chérif
         <br />Available on <a target="_blank" style="text-decoration: none;" href="https://play.google.com/store"><span class="platformText">Android </span><img style="display:inline;" src="~/Images/android.png" width="20" height="20" /></a> - Soon available on <a target="_blank" style="text-decoration: none;" href="https://itunes.apple.com/fr/genre/ios-forme-et-sant%C3%A9"><span class="platformText">iOS </span><img style="display:inline;" src="~/Images/ios.png" width="20" height="20" /></a>
     </footer>
     
