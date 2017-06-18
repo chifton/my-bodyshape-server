@@ -47,6 +47,7 @@ artifacts/
 # Dossiers images perso et logs
 MyShapeBody/Images/pictures_profiles/
 MyShapeBody/Images/snaps/
+MyShapeBody/Images/snaps/resized/
 MyShapeBody/Logs/
 
 *_i.c

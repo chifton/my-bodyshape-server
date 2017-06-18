@@ -391,7 +391,47 @@ namespace MyShapeBody.Controllers
             var dataTotalNumber = bodyRecorder.GetSimulationsNumber();
             return dataTotalNumber == 0 ? 10000 : dataTotalNumber;
         }
+        
+        /// <summary>
+        /// The download snap results image method.
+        /// </summary>
+        [HttpGet]
+        public ActionResult DownloadSnapResult(string id, int height)
+        {
+            try
+            {
+                var dir = Server.MapPath("/Images/snaps");
+                var path = Path.Combine(dir, "snap_" + id + ".png");
+                var resizedDir = Server.MapPath("/Images/snaps/resized");
+                var resizedImagePath = Path.Combine(resizedDir, "snap_resized_" + id + ".png");
+                
+                using (MemoryStream outStream = new MemoryStream())
+                {
+                    using (ImageFactory imageFactory = new ImageFactory(preserveExifData: true))
+                    {
+                        imageFactory.Load(path)
+                                    .Resize(new ResizeLayer(new Size(0, height), ResizeMode.Pad))
+                                    .Quality(100)
+                                    .Save(outStream);
+                    }
 
+                    using (var fileOutStream = System.IO.File.Create(resizedImagePath))
+                    {
+                        outStream.CopyTo(fileOutStream);
+                    }
+
+                    logger.Information($"Successfully resized snap picture with id " + id);
+
+                    return base.File(resizedImagePath, "image/png");
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error($"An error occured during resizing picture with id { id }\t\n{ ex }");
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+            }
+        }
+        
         /// <summary>
         /// The get bodyshape configuration method.
         /// </summary>
