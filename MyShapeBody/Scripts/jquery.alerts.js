@@ -127,15 +127,11 @@
 						if( e.keyCode == 27 ) $("#popup_cancel").trigger('click');
 					});
 				break;
-				case 'prompt':
-				    $("#popup_message").append('<br /><input type="text" size="30" spellcheck="false" id="popup_prompt" />').after('<div id="popup_panel"><input type="button" value="' + $.alerts.okButton + '" id="popup_ok" /> <input type="button" value="' + $.alerts.cancelButton + '" id="popup_cancel" /></div>');
-				    $("#popup_prompt").width($("#popup_message").width());
-				    $("#popup_prompt").click(function () {
-				        if($("#popup_prompt").attr("value") == "Your nutter name !")
-				        {
-				            $("#popup_prompt").attr("value","");
-				        }
-				    });
+                case 'prompt':
+                    $("#popup_container").height(500); // For text area
+                    $("#popup_message").append('<br /><textarea id="popup_prompt" spellcheck="false" cols="40" rows="14"></textarea>').after('<div id="popup_panel"><input type="button" value="' + $.alerts.okButton + '" id="popup_ok" /> <input type="button" value="' + $.alerts.cancelButton + '" id="popup_cancel" /></div>');
+                    $("#popup_message").css("font-size", "16px");
+                    $("#popup_prompt").width($("#popup_message").width());
 					$("#popup_ok").click( function() {
 						var val = $("#popup_prompt").val();
 						$.alerts._hide();

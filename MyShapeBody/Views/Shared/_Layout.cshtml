@@ -3,6 +3,7 @@
 <head>
     <script src="~/Scripts/jquery-1.10.2.min.js"></script>
     <script src="~/Scripts/jquery-glowing.js"></script>
+    <script src="~/Scripts/jquery.alerts.js"></script>
     <script type="text/javascript">
 
         document.addEventListener("DOMContentLoaded", function () {
@@ -30,9 +31,23 @@
                     }
                 }
             });
+
+            $("#feedback").click(function () {
+                var response = jPrompt("Give us your comments (please specify your name) :", '', 'Feedback !', function (r) {
+                    if (r) {
+                        $.ajax({
+                            type: "POST",
+                            url: "/Home/FeedBack?mailContent=" + r,
+                            success: function () {
+                                alert("Your feedback has been successfully sent !");
+                                location.reload();
+                            }
+                        });
+                    }
+                });
+            });
         });
-
-
+        
     </script>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta charset="utf-8" />
@@ -43,9 +58,9 @@
 </head>
 <body>
     <header>
-        <a href="@Href("~/Home/Index")"> 
-            <div id="titre_centre"><img style="display:inline-block;" src="~/Images/myshapebody.png" width="500" /></div>
-        </a>
+        <div id="titre_centre">
+                <a href="@Href("~/Home/Index")"><img style="display:inline-block;" src="~/Images/myshapebody.png" width="500" /></a>
+        </div>
         <div class="menu_droit">
             @Html.Partial("_LoginPartial")
         </div>

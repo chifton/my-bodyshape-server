@@ -38,6 +38,17 @@ html.bodyshapeloader {
     user-select: none;
 }
 
+#feedback
+{
+    cursor : pointer;
+    color : white;
+}
+
+#feedback:hover
+{
+    color : lightgreen;
+}
+
 #resultsMagnifier {
     border-radius: 50%;
     float: left;
@@ -629,7 +640,8 @@ a {
     font-family: 'MV Boli', Mistral, Helvetica, Sans-Serif;
     margin: auto;
     color: black;
-    text-align: center;
+    text-align: left;
+    font-size : 14px;
 }
 
 #popup_ok {

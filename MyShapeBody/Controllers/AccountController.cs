@@ -157,7 +157,7 @@ namespace MyShapeBody.Controllers
                     return View(model);
             }
         }
-
+        
         //
         // GET: /Account/Register
         [AllowAnonymous]

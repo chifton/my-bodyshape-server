@@ -454,8 +454,8 @@
 
             var id1 = mymember + "_" + mypart + "_1";
             var id2 = mymember + "_" + mypart + "_2";
-            var circleCool1 = paper.circle(realcoordinate1X, realcoordinateY, rayon).drag(funcmove, start, end).attr("cursor", "pointer").attr("pointer-events", "all").attr("z-index", "1").attr("fill", color).attr("-webkit-tap-highlight-color", color).attr("stroke", color);
-            var circleCool2 = paper.circle(realcoordinate2X, realcoordinateY, rayon).drag(funcmove, start, end).attr("cursor", "pointer").attr("pointer-events", "all").attr("z-index", "1").attr("fill", color).attr("-webkit-tap-highlight-color", color).attr("stroke", color);
+            var circleCool1 = paper.circle(realcoordinate1X, realcoordinateY, rayon).drag(funcmove, start, end).attr("cursor", "pointer").attr("pointer-events", "all").attr("z-index", "1").attr("fill", color).attr("-webkit-tap-highlight-color", color).attr("stroke", "white");
+            var circleCool2 = paper.circle(realcoordinate2X, realcoordinateY, rayon).drag(funcmove, start, end).attr("cursor", "pointer").attr("pointer-events", "all").attr("z-index", "1").attr("fill", color).attr("-webkit-tap-highlight-color", color).attr("stroke", "white");
             circleCool1.id = id1;
             circleCool1.node.id = id1;
             circleCool1.data('svgpath', chaine1 + ' ' + color);
@@ -1764,7 +1764,12 @@
         
         function displayResults(json) {
             CleanResults();
-            
+
+            // Clean pictures
+            $("#photo_zone_1").css("background", "none");
+            $("#photo_zone_2").css("background", "none");
+
+            // Results
             $("#infos_2").css("background-image", "url(../Images/snaps/snap_" + json.Ticket + ".png)");
             $("#infos_2").css("background-repeat", "no-repeat");
 
@@ -1793,8 +1798,8 @@
 
             $("#infos_2").css("background-position", leftResultsLag + "px " + topLagExpression + "px");
             $("#infos_2").css("background-size", backgroundSizeExpression);
-            $("#titleresult").html("<span id='resultTitleGenerationEnd' class='titleresultgeneration'>Generation Results</span>");
-
+            $("#titleresult").html("<span id='resultTitleGenerationEnd' class='titleresultgeneration'>RESULTS<br/><span class='highlightresult'>Mouse over or click to increase size</span></span>");
+            
             //buildSingleResult($("#headresult"), "<span class='membertitle'>Head</span><span class='highlightresult'>" + json.Head.Mass + " kg -> " + Math.ceil(json.Head.Mass / json.TotalMass * 100) + "%</span>", 353, 18, "1"); // with mass center " + json.Head.MassCenter);
             ////buildSingleResult($("#neckresult"), "Neck : <span class='highlightresult'>" + json.Neck.Mass + " kg<br/>" + Math.ceil(json.Neck.Mass / json.TotalMass * 100) + "%</span>", 353, 35);// with mass center " + json.Neck.MassCenter);
             //buildSingleResult($("#thoraxresult"), "<span class='membertitle'>Chest</span><span class='highlightresult'>" + (json.Thorax.Mass + json.Neck.Mass) + " kg -> " + Math.ceil((json.Thorax.Mass + json.Neck.Mass) / json.TotalMass * 100) + "%</span>", 353, 60, "2");// with mass center " + json.Thorax.MassCenter);

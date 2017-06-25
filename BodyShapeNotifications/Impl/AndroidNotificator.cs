@@ -35,5 +35,15 @@ namespace BodyShapeNotifications.Impl
         {
             return true;
         }
+
+        /// <summary>
+        /// The auto send method.
+        /// </summary>
+        /// <param name="html">the content.</param>
+        /// <returns>The result.</returns>
+        public bool AutoSend(string htmlOrjson, string subject)
+        {
+            return true;
+        }
     }
 }

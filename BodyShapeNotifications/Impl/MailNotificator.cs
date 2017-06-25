@@ -51,6 +51,16 @@ namespace BodyShapeNotifications.Impl
         }
 
         /// <summary>
+        /// The auto send method.
+        /// </summary>
+        /// <param name="html">the content.</param>
+        /// <returns>The result.</returns>
+        public bool AutoSend(string htmlOrjson, string subject)
+        {
+            return this.Send(htmlOrjson, this.MailConfiguration.SenderEmail, this.MailConfiguration.SenderName, $"AutoSend : { subject }");
+        }
+
+        /// <summary>
         /// The send method.
         /// </summary>
         /// <param name="html">the content.</param>

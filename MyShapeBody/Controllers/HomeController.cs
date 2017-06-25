@@ -10,7 +10,7 @@ namespace MyShapeBody.Controllers
     using System.Collections.Generic;
     using System.Drawing;
     using System.Drawing.Imaging;
-    using System.IO;
+    using SystemIO = System.IO;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
@@ -36,6 +36,8 @@ namespace MyShapeBody.Controllers
     using MyShapeBody.Services;
     using MyShapeBody.Configuration;
     using MyShapeBody.Configuration.Impl;
+    using BodyShapeNotifications;
+    using BodyShapeNotifications.Impl;
 
     public class HomeController : Controller
     {
@@ -55,6 +57,11 @@ namespace MyShapeBody.Controllers
         private IBodyRecorder bodyRecorder;
 
         /// <summary>
+        /// The mail notificator.
+        /// </summary>
+        private INotificator mailNotificator;
+
+        /// <summary>
         /// The logger
         /// </summary>
         private ILogger logger;
@@ -67,6 +74,7 @@ namespace MyShapeBody.Controllers
             this.configuration = this.GetBodyShapeConfiguration();
             this.bodyRecorder = new BodyRecorder();
             this.bodySnapper = new BodySnapper(this.configuration.FolderLog);
+            this.mailNotificator = new MailNotificator(this.configuration.FolderLog);
         }
 
         /// <summary>
@@ -77,7 +85,7 @@ namespace MyShapeBody.Controllers
         {
             base.Initialize(requestContext);
 
-            var path = Path.Combine(Server.MapPath("~/" + this.configuration.FolderLog + ""), "bodyshape-{Date}.txt");
+            var path = SystemIO.Path.Combine(Server.MapPath("~/" + this.configuration.FolderLog + ""), "bodyshape-{Date}.txt");
             this.logger = new LoggerConfiguration()
                 .WriteTo.RollingFile(path, shared: true)
                 .CreateLogger();
@@ -118,38 +126,39 @@ namespace MyShapeBody.Controllers
         /// Images loading from mobiles
         /// </summary>
         [HttpPost]
-        public JsonResult UploadFromMobile(string rootFileName)
+        public async Task<JsonResult> UploadFromMobile(string rootFileName)
         {
             try
-            {               
-                foreach (string file in Request.Files)
-                {
-                    //var medre = Request.Files;
-                    var fileContent = Request.Files[file];
-                    if (fileContent != null && fileContent.ContentLength > 0)
-                    {
-                        var stream = fileContent.InputStream;
-                        var fileNameJson = rootFileName;
+            {
+                await Task.Delay(TimeSpan.FromSeconds(5));
+                //foreach (string file in Request.Files)
+                //{
+                //    //var medre = Request.Files;
+                //    var fileContent = Request.Files[file];
+                //    if (fileContent != null && fileContent.ContentLength > 0)
+                //    {
+                //        var stream = fileContent.InputStream;
+                //        var fileNameJson = rootFileName;
 
-                        var path = Path.Combine(Server.MapPath("~/Images/pictures_profiles"), fileNameJson);
+                //        var path = SystemIO.Path.Combine(Server.MapPath("~/Images/pictures_profiles"), fileNameJson);
 
-                        using (MemoryStream outStream = new MemoryStream())
-                        {
-                            using (ImageFactory imageFactory = new ImageFactory(preserveExifData: true))
-                            {
-                                imageFactory.Load(stream)
-                                            .Resize(new ResizeLayer(new Size(0, 600), ResizeMode.Pad))
-                                            .Quality(100)
-                                            .Save(outStream);
-                            }
+                //        using (SystemIO.MemoryStream outStream = new SystemIO.MemoryStream())
+                //        {
+                //            using (ImageFactory imageFactory = new ImageFactory(preserveExifData: true))
+                //            {
+                //                imageFactory.Load(stream)
+                //                            .Resize(new ResizeLayer(new Size(0, 600), ResizeMode.Pad))
+                //                            .Quality(100)
+                //                            .Save(outStream);
+                //            }
 
-                            using (var fileOutStream = System.IO.File.Create(path))
-                            {
-                                outStream.CopyTo(fileOutStream);
-                            }
-                        }
-                    }
-                }
+                //            using (var fileOutStream = System.IO.File.Create(path))
+                //            {
+                //                outStream.CopyTo(fileOutStream);
+                //            }
+                //        }
+                //    }
+                //}
             }
             catch (Exception ex)
             {
@@ -157,7 +166,7 @@ namespace MyShapeBody.Controllers
                 logger.Error($"An error occured during pictures upload\t\n{ ex }");
                 return Json("Upload failed");
             }
-
+            
             return Json(rootFileName, JsonRequestBehavior.AllowGet);
         }
 
@@ -202,9 +211,9 @@ namespace MyShapeBody.Controllers
 
                         fileNameJson = fileName;
 
-                        var path = Path.Combine(Server.MapPath("~/Images/pictures_profiles"), fileName);
+                        var path = SystemIO.Path.Combine(Server.MapPath("~/Images/pictures_profiles"), fileName);
 
-                        using (MemoryStream outStream = new MemoryStream())
+                        using (SystemIO.MemoryStream outStream = new SystemIO.MemoryStream())
                         {
                             using (ImageFactory imageFactory = new ImageFactory(preserveExifData: true))
                             {
@@ -243,8 +252,8 @@ namespace MyShapeBody.Controllers
         {      
             try
             {
-                var path = Path.Combine(Server.MapPath("~/Images/pictures_profiles"), filename);
-                using (MemoryStream outStream = new MemoryStream())
+                var path = SystemIO.Path.Combine(Server.MapPath("~/Images/pictures_profiles"), filename);
+                using (SystemIO.MemoryStream outStream = new SystemIO.MemoryStream())
                 {
                     using (ImageFactory imageFactory = new ImageFactory(preserveExifData: true))
                     {
@@ -280,8 +289,8 @@ namespace MyShapeBody.Controllers
         {
             try
             {
-                var path = Path.Combine(Server.MapPath("~/Images/pictures_profiles"), filename);
-                using (MemoryStream outStream = new MemoryStream())
+                var path = SystemIO.Path.Combine(Server.MapPath("~/Images/pictures_profiles"), filename);
+                using (SystemIO.MemoryStream outStream = new SystemIO.MemoryStream())
                 {
                     using (ImageFactory imageFactory = new ImageFactory(preserveExifData: true))
                     {
@@ -317,7 +326,7 @@ namespace MyShapeBody.Controllers
             {
                 // Deserializing
                 string json;
-                using (var reader = new StreamReader(Request.InputStream))
+                using (var reader = new SystemIO.StreamReader(Request.InputStream))
                 {
                     json = reader.ReadToEnd();
                 }
@@ -370,6 +379,13 @@ namespace MyShapeBody.Controllers
                     jsonResult = "Error";
                 }
 
+                // Delete pictures
+                var serverImagesPath = Server.MapPath("~/Images/pictures_profiles");
+                var fileNameFront = SystemIO.Path.Combine(serverImagesPath, body.Picture_1);
+                var fileNameSide = SystemIO.Path.Combine(serverImagesPath, body.Picture_2);
+                SystemIO.File.Delete(fileNameFront);
+                SystemIO.File.Delete(fileNameSide);
+
                 // Returning to client
                 logger.Information("Successfully returned body masses to client");
                 return Json(jsonResult, JsonRequestBehavior.AllowGet);
@@ -381,6 +397,18 @@ namespace MyShapeBody.Controllers
             }
         }
 
+        /// <summary>
+        /// Sends feedback mails.
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public void FeedBack(string mailContent)
+        {
+            // Send email
+            var html = @"<html><body style='font-weight:bold;color:black;'>
+                                     <p><span style='text-decoration:underline;'>Comment from a new user</span> :<br/><br/>" + mailContent + "</p></body></html>";
+            var mail = mailNotificator.AutoSend(html, "User feedback !");
+        }
 
         /// <summary>
         /// Simulations number.
@@ -401,11 +429,11 @@ namespace MyShapeBody.Controllers
             try
             {
                 var dir = Server.MapPath("/Images/snaps");
-                var path = Path.Combine(dir, "snap_" + id + ".png");
+                var path = SystemIO.Path.Combine(dir, "snap_" + id + ".png");
                 var resizedDir = Server.MapPath("/Images/snaps/resized");
-                var resizedImagePath = Path.Combine(resizedDir, "snap_resized_" + id + ".png");
+                var resizedImagePath = SystemIO.Path.Combine(resizedDir, "snap_resized_" + id + ".png");
                 
-                using (MemoryStream outStream = new MemoryStream())
+                using (SystemIO.MemoryStream outStream = new SystemIO.MemoryStream())
                 {
                     using (ImageFactory imageFactory = new ImageFactory(preserveExifData: true))
                     {
