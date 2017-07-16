@@ -22,7 +22,7 @@ namespace MyShapeBody.Services
         /// <summary>
         /// The record body method.
         /// </summary>
-        void RecordBody(Body body, BodyTicket bodyTicket, decimal decError, bool toCompare, IIdentity user, bool hasAccountNow);
+        void RecordBody(Body body, BodyTicket bodyTicket, decimal decError, bool toCompare, IIdentity user, bool hasAccountNow, decimal maxError);
 
         /// <summary>
         /// The get simulations number method.

@@ -63,7 +63,7 @@ namespace MyShapeBody.Services
         /// <param name="bodyTicket">The body ticket.</param>
         /// <param name="decError">The error.</param>
         /// <param name="toCompare">The compare to boolean.</param>
-        public void RecordBody(Models.Body body, Models.BodyTicket bodyTicket, decimal decError, bool toCompare, IIdentity user, bool hasAccountNow)
+        public void RecordBody(Models.Body body, Models.BodyTicket bodyTicket, decimal decError, bool toCompare, IIdentity user, bool hasAccountNow, decimal maxError)
         {
             var schema = this.mapper.Map<Entities.BodySchema>(body);
             var result = this.mapper.Map<Entities.BodyResult>(bodyTicket.BodyMass);
@@ -79,7 +79,7 @@ namespace MyShapeBody.Services
                 HasAccount = hasAccountNow,
                 AnonymousId = Guid.NewGuid(),
                 GenerationDate = DateTime.Now,
-                Success = toCompare ? (decError <= 5 ? true : false) : boolean,
+                Success = toCompare ? (decError <= maxError ? true : false) : boolean,
                 ErrorPercent = toCompare ? Convert.ToDouble(decimal.Divide(decError, 100)) : doublan,
                 FrontPicture = schema.Picture_1,
                 SidePicture = schema.Picture_2,

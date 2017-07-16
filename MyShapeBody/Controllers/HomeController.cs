@@ -360,7 +360,7 @@ namespace MyShapeBody.Controllers
 
                 // Recording
                 var user = User.Identity.IsAuthenticated ? User.Identity : null;
-                this.bodyRecorder.RecordBody(body, result, decError, toCompare, user, User.Identity.IsAuthenticated);
+                this.bodyRecorder.RecordBody(body, result, decError, toCompare, user, User.Identity.IsAuthenticated, (decimal) this.configuration.MaxError);
                 logger.Information($"Successfully registered body masses for id " + id);
 
                 // Snaps client results
@@ -408,6 +408,8 @@ namespace MyShapeBody.Controllers
             var html = @"<html><body style='font-weight:bold;color:black;'>
                                      <p><span style='text-decoration:underline;'>Comment from a new user</span> :<br/><br/>" + mailContent + "</p></body></html>";
             var mail = mailNotificator.AutoSend(html, "User feedback !");
+
+            logger.Information("A client feedback was sent");
         }
 
         /// <summary>

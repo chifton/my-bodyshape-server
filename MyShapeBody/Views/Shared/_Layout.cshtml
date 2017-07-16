@@ -33,7 +33,7 @@
             });
 
             $("#feedback").click(function () {
-                var response = jPrompt("Give us your comments (please specify your name) :", '', 'Feedback !', function (r) {
+                var response = jPrompt("Give us your comments :", '', 'Feedback !', function (r) {
                     if (r) {
                         $.ajax({
                             type: "POST",
