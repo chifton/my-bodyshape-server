@@ -383,7 +383,7 @@
   <PropertyGroup>
     <RunOctoPack>true</RunOctoPack>
     <OctoPackEnforceAddingFiles>True</OctoPackEnforceAddingFiles>
-    <OctoPackPublishPackageToFileShare>D:\Projets\Projects\OnProgress\MyShapeBody\OctoPackages\MyShapeBody</OctoPackPublishPackageToFileShare>
+    <OctoPackPublishPackageToFileShare>D:\Projets\Projects\OnProgress\MyShapeBody\Packages\OctoPackages\MyShapeBody</OctoPackPublishPackageToFileShare>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Deploy|AnyCPU'">
     <OutputPath>bin\</OutputPath>
