@@ -421,7 +421,27 @@ namespace MyShapeBody.Controllers
             var dataTotalNumber = bodyRecorder.GetSimulationsNumber();
             return dataTotalNumber == 0 ? 10000 : dataTotalNumber;
         }
-        
+
+        /// <summary>
+        /// Gets MyBodyShape url.
+        /// </summary>
+        [HttpGet]
+        public string GetMyBodyShapeUrl()
+        {
+            var request = System.Web.HttpContext.Current.Request;
+            return $"{request.Url.Scheme}://{ request.Url.Authority }";
+        }
+
+        /// <summary>
+        /// Gets MyBodyShape privacy policy url.
+        /// </summary>
+        [HttpGet]
+        public string GetMyBodyShapePrivacyPolicyUrl()
+        {
+            var request = System.Web.HttpContext.Current.Request;
+            return $"{request.Url.Scheme}://{ request.Url.Authority }/Static/PrivacyPolicy.html";
+        }
+
         /// <summary>
         /// The download snap results image method.
         /// </summary>

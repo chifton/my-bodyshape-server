@@ -49,6 +49,16 @@ html.bodyshapeloader {
     color : lightgreen;
 }
 
+#privacypolicies {
+    cursor: pointer;
+    color: white;
+}
+
+    #privacypolicies:hover {
+        color: lightgreen;
+    }
+
+
 #resultsMagnifier {
     border-radius: 50%;
     float: left;
@@ -255,6 +265,34 @@ footer {
     font-family: Georgia, serif;
     text-decoration: none;
     vertical-align: middle;
+}
+
+#backwebsite_button {
+    margin-right: 50px;
+    text-align: center;
+    display: inline-block;
+    height: 30px;
+    line-height: 30px;
+    border-top: 1px solid #96d1f8;
+    background: #65a9d7;
+    background: -webkit-gradient(linear, left top, left bottom, from(#276791), to(#65a9d7));
+    background: -webkit-linear-gradient(top, #276791, #65a9d7);
+    background: -moz-linear-gradient(top, #276791, #65a9d7);
+    background: -ms-linear-gradient(top, #276791, #65a9d7);
+    background: -o-linear-gradient(top, #276791, #65a9d7);
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    -webkit-box-shadow: rgba(0,0,0,1) 0 1px 0;
+    -moz-box-shadow: rgba(0,0,0,1) 0 1px 0;
+    box-shadow: rgba(0,0,0,1) 0 1px 0;
+    text-shadow: rgba(0,0,0,.4) 0 1px 0;
+    color: white;
+    font-size: 17px;
+    font-family: Georgia, serif;
+    text-decoration: none;
+    vertical-align: middle;
+    cursor : pointer;
 }
 
 .rotate_button {
@@ -480,8 +518,8 @@ footer {
 .menu_droit_item ::before {
     font-size: 20px;
     color: white;
-    margin-left: 20px;
-    margin-right: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 a {
@@ -505,8 +543,8 @@ a {
 .menu_droit_item {
     font-size: 20px;
     color: white;
-    margin-left: 20px;
-    margin-right: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
     .menu_droit_item a:hover {

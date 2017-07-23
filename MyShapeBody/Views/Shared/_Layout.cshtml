@@ -7,6 +7,8 @@
     <script type="text/javascript">
 
         document.addEventListener("DOMContentLoaded", function () {
+
+            // Simulations number
             $.ajax({
                 type: "GET",
                 url: "/Home/GetSimulationsNumber",
@@ -32,6 +34,7 @@
                 }
             });
 
+            // Feedback
             $("#feedback").click(function () {
                 var response = jPrompt("Give us your comments :", '', 'Feedback !', function (r) {
                     if (r) {
@@ -46,6 +49,22 @@
                     }
                 });
             });
+
+            // Privacy policy
+            $("#privacypolicies").click(function () {
+                $.ajax({
+                    type: "GET",
+                    url: "/Home/GetMyBodyShapePrivacyPolicyUrl",
+                    contentType: false,
+                    processData: false,
+                    success: function (result) {
+                        location.href = result;
+                    },
+                    error: function (xhr, status, p3, p4) {
+                        alert("An error occured during privacy policy page loading... Try again later...");
+                    }
+                });
+            });           
         });
         
     </script>

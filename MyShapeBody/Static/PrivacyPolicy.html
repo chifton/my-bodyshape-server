@@ -1,0 +1,90 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <script src="../Scripts/jquery-1.10.2.min.js"></script>
+    <link href="../Content/Site.css" rel="stylesheet" />
+    <script type="text/javascript">
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            // GO HOME
+
+            $("#titre_centre").click(function () {
+                $.ajax({
+                    type: "GET",
+                    url: '/Home/GetMyBodyShapeUrl',
+                    contentType: false,
+                    processData: false,
+                    success: function (result) {
+                        location.href = result;
+                    },
+                    error: function (xhr, status, p3, p4) {
+                        alert("An error occured during MyBodyShape page loading... Try again later...");
+                    }
+                });
+            });
+
+            $("#backwebsite_button").click(function () {
+                $.ajax({
+                    type: "GET",
+                    url: '/Home/GetMyBodyShapeUrl',
+                    contentType: false,
+                    processData: false,
+                    success: function (result) {
+                        location.href = result;
+                    },
+                    error: function (xhr, status, p3, p4) {
+                        alert("An error occured during MyBodyShape page loading... Try again later...");
+                    }
+                });
+            });
+
+            // Hide if mobile
+            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Mobile|Opera Mini/i.test(navigator.userAgent)) {
+                $("#footerprivacy").css("display", "none");
+                $("#backwebsite_button").css("display", "none");
+                $("#titre_centre").css("display", "none");
+            }
+    });
+    </script>
+    <link href="../Content/Site.css" rel="stylesheet" />
+    <meta charset="utf-8" />
+    <title>MyBodyShape Privacy policy</title>
+</head>
+<body style="color:white;">
+    <div id="titre_centre">
+        <img style="display:inline-block;cursor:pointer;" src="../Images/myshapebody.png" width="500" />
+    </div>
+    <h1>Privacy policy      <input id="backwebsite_button" class="gobutton" type="button" value="Back to website" /></h1><br/>
+    <h2>MyBodyShape Privacy Policy</h2>
+    <p>Posted / Effective Date : July 23, 2017</p>
+    <p>Thanks for using MyBodyShape !<br/>We describe below how and why we require that you takes or loads pictures using our application (both mobile and website).</p>
+    <h2>Who ?</h2>
+    <p>MyBodyShape is a French tech team which creates applications for the purpose of showing the mass distribution and measures of a user's body, member by member. That can help for athletics, health, clothes industry...</p>
+    <h2>Where ?</h2>
+    <p>MyBodyShape Team : CD 56 13790 Rousset-Sur-Arc, France<br/>Email : mybodyshapenotifs@gmail.com<br/>Owners and creators : Chérif Tessilimi and François Druelle</p>
+    <h2>What ?</h2>
+    <p>Two user's pictures are necessary. MyBodyShape is an application which simulates and computes your members weights and generates a 3d model from your real body. Your body will be analyzed with the help of two pictures, one front and one side. Only our servers have access to these pictures.</p>
+    <h2>How and why ?</h2>
+    <p>The application asks you to take OR load pictures. Our mathematics model needs distances between body members to work. That explains why we need two pictures.</p>
+    <h2>Storage</h2>
+    <p>Your two pictures are just stored for the time of simulation. When you finally generates your model, they are automatically destroyed.</p>
+    <h2>Security</h2>
+    <p>During the time they are stored (time of simulation which is small with good internet connection), your pictures are encrypted and secured. No data is stored for a long time or for good. No user's request access is necessary because the pictures are automatically destroyed at the end of simulation.</p>
+    <h2>User data access</h2>
+    <p>If you wants to check, verify or modify your data and ensure they have been deleted, please email us at bodyshapenotifs@gmail.com.</p>
+    <h2>Updates</h2>
+    <p>You will be notified by email for any changes about this privacy policy.</p>
+    <p id="footerprivacy" style="text-align:center;margin:auto;">MyBodyShape 1.0 - Developed by François & Chérif
+    <br />Available on
+    <a target="_blank" style="text-decoration: none;" href="https://play.google.com/store">
+        <span class="platformText">Android </span>
+        <img style="display:inline;" src="../Images/android.png" width="20" height="20" />
+    </a> - Soon available on 
+    <a target="_blank" style="text-decoration: none;" href="https://itunes.apple.com/fr/genre/ios-forme-et-sant%C3%A9">
+        <span class="platformText">iOS </span>
+        <img style="display:inline;" src="../Images/ios.png" width="20" height="20" />
+    </a>
+    <p/>
+</body>
+</html>

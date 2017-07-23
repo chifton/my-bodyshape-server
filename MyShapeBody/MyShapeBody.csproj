@@ -319,6 +319,9 @@
     <Content Include="Scripts\three.min.js" />
     <Content Include="Scripts\_references.js" />
     <None Include="Web.config" />
+    <Content Include="Static\PrivacyPolicy.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
