@@ -40,7 +40,21 @@
             });
 
             // Hide if mobile
-            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Mobile|Opera Mini/i.test(navigator.userAgent)) {
+            if (navigator.userAgent.toLowerCase().indexOf("Android") == -1
+                || navigator.userAgent.toLowerCase().indexOf("webOS") == -1
+                || navigator.userAgent.toLowerCase().indexOf("iPhone") == -1
+                || navigator.userAgent.toLowerCase().indexOf("iPad") == -1
+                || navigator.userAgent.toLowerCase().indexOf("iPod") == -1
+                || navigator.userAgent.toLowerCase().indexOf("BlackBerry") == -1
+                || navigator.userAgent.toLowerCase().indexOf("BB") == -1
+                || navigator.userAgent.toLowerCase().indexOf("PlayBook") == -1
+                || navigator.userAgent.toLowerCase().indexOf("IEMobile") == -1
+                || navigator.userAgent.toLowerCase().indexOf("Windows Phone") == -1
+                || navigator.userAgent.toLowerCase().indexOf("Kindle") == -1
+                || navigator.userAgent.toLowerCase().indexOf("Silk") == -1
+                || navigator.userAgent.toLowerCase().indexOf("Mobile") == -1
+                || navigator.userAgent.toLowerCase().indexOf("Opera Mini") == -1)
+            {
                 $("#footerprivacy").css("display", "none");
                 $("#backwebsite_button").css("display", "none");
                 $("#titre_centre").css("display", "none");
