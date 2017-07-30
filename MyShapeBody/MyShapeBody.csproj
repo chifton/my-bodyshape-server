@@ -277,6 +277,7 @@
     <Content Include="Images\pivotright.png" />
     <Content Include="Images\previous_button.png" />
     <Content Include="Images\rotate.png" />
+    <Content Include="Images\examples\privacy_example.png" />
     <Content Include="Images\top_button.png" />
     <Content Include="Images\zoomout.png" />
     <Content Include="Images\myshapebody.png" />
