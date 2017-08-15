@@ -18,7 +18,7 @@ using System.Configuration;
 namespace MyShapeBody.Controllers
 {
     [Authorize]
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         /// <summary>
         /// The mail notificator.

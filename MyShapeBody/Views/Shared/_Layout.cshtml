@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using MyBodyShape.Languages
+    <!DOCTYPE html>
 <html class="bodyshapeloader">
 <head>
     <script src="~/Scripts/jquery-1.10.2.min.js"></script>
@@ -16,7 +17,9 @@
                     if (data > 0) {
 
                         // Display
-                        $("#nbSimulations").html("Already <span class='nbSimul'>" + data + "</span> bodyshape simulations !!!")
+                        var simulText = "@Resources.Res_SimulationsNumber";
+                        var newSimulText = simulText.replace("{0}", "<span class='nbSimul'>" + data + "</span>");
+                        $("#nbSimulations").html(newSimulText);
 
                         // Glowing
                         $('.nbSimul').addGlow({
@@ -64,7 +67,41 @@
                         alert("An error occured during privacy policy page loading... Try again later...");
                     }
                 });
-            });           
+            });
+
+            // Traductions
+            $("#english_trad").click(function () {
+                var language = "en-US";
+                $.ajax({
+                    type: "POST",
+                    url: "/Home/SetCulture?culture=" + language,
+                    success: function (result) {
+                        if (result == "OK")
+                        {
+                            location.reload();
+                        }
+                    },
+                    error: function (xhr, status, p3, p4) {
+                        alert("An error occured during language swipe... Try again later...");
+                    }
+                });
+            });
+
+            $("#french_trad").click(function () {
+                var language = "fr-FR";
+                $.ajax({
+                    type: "POST",
+                    url: "/Home/SetCulture?culture=" + language,
+                    success: function (result) {
+                        if (result == "OK") {
+                            location.reload();
+                        }
+                    },
+                    error: function (xhr, status, p3, p4) {
+                        alert("An error occured during language swipe... Try again later...");
+                    }
+                });
+            });
         });
         
     </script>
@@ -80,6 +117,10 @@
         <div id="titre_centre">
                 <a href="@Href("~/Home/Index")"><img style="display:inline-block;" src="~/Images/myshapebody.png" width="500" /></a>
         </div>
+        <div id="trads">
+            <img id="english_trad" style="height:30px;width:auto;cursor:pointer;display:inline;margin-left:5px;" src="~/Images/english.png" alt="English" title="English" />
+            <img id="french_trad" style="height:30px;width:auto;cursor:pointer;display:inline;margin-left:5px;" src="~/Images/french.png" alt="Français" title="Français" />
+        </div>
         <div class="menu_droit">
             @Html.Partial("_LoginPartial")
         </div>
@@ -88,10 +129,11 @@
         @RenderBody()
     <br/><br/><br /><br /><br /><br />
     <footer style="display:block;">
+        <br/>
         <span id="nbSimulations"></span>
         <br id="nbSimulationsBr" />
-        &copy; @DateTime.Now.Year - MyBodyShape 1.0 - Developed by François & Chérif
-        <br />Available on <a target="_blank" style="text-decoration: none;" href="https://play.google.com/store"><span class="platformText">Android </span><img style="display:inline;" src="~/Images/android.png" width="20" height="20" /></a> - Soon available on <a target="_blank" style="text-decoration: none;" href="https://itunes.apple.com/fr/genre/ios-forme-et-sant%C3%A9"><span class="platformText">iOS </span><img style="display:inline;" src="~/Images/ios.png" width="20" height="20" /></a>
+        &copy; @DateTime.Now.Year - MyBodyShape 1.0 - @Resources.Res_DevelopedBy François & Chérif
+        <br />@Resources.Res_AndroidResource <a target="_blank" style="text-decoration: none;" href="https://play.google.com/store"><span class="platformText">Android </span><img style="display:inline;" src="~/Images/android.png" width="20" height="20" /></a> - @Resources.Res_iOsResource <a target="_blank" style="text-decoration: none;" href="https://itunes.apple.com/fr/genre/ios-forme-et-sant%C3%A9"><span class="platformText">iOS </span><img style="display:inline;" src="~/Images/ios.png" width="20" height="20" /></a>
     </footer>
     
     @Scripts.Render("~/bundles/bootstrap")

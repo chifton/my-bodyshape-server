@@ -38,8 +38,11 @@ namespace MyShapeBody.Controllers
     using MyShapeBody.Configuration.Impl;
     using BodyShapeNotifications;
     using BodyShapeNotifications.Impl;
+    using MyShapeBody.Helpers;
+    using MyBodyShape.Languages;
+    using System.Threading;
 
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         /// <summary>
         /// The bodyshape configuration
@@ -97,6 +100,22 @@ namespace MyShapeBody.Controllers
         /// <returns></returns>
         public ActionResult Index()
         {
+            // Set the cookie culture
+            HttpCookie cookie = Request.Cookies["_culture"];
+
+            if(cookie == null)
+            {
+                Resources.Culture = new System.Globalization.CultureInfo(Thread.CurrentThread.CurrentUICulture.Name);
+            }
+            else
+            {
+                var culture = CultureHelper.GetImplementedCulture(cookie?.Value);
+                var cultureInfo = new System.Globalization.CultureInfo(culture);
+                Thread.CurrentThread.CurrentCulture = cultureInfo;
+                Thread.CurrentThread.CurrentUICulture = cultureInfo;
+                Resources.Culture = cultureInfo;
+            }
+            
             return View();
         }
 
@@ -481,7 +500,49 @@ namespace MyShapeBody.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }
         }
-        
+
+        /// <summary>
+        /// Sets the language culture.
+        /// </summary>
+        [HttpPost]
+        public string SetCulture(string culture)
+        {
+            if(culture != Thread.CurrentThread.CurrentUICulture.Name)
+            {
+                culture = CultureHelper.GetImplementedCulture(culture);
+
+                HttpCookie cookie = Request.Cookies["_culture"];
+                if (cookie != null)
+                {
+                    if (cookie.Value == culture)
+                    {
+                        var cultureInfo = new System.Globalization.CultureInfo(culture);
+                        Thread.CurrentThread.CurrentCulture = cultureInfo;
+                        Thread.CurrentThread.CurrentUICulture = cultureInfo;
+                        Resources.Culture = cultureInfo;
+                        return "SET";
+                    }
+
+                    cookie.Value = culture;
+                }
+                else
+                {
+                    cookie = new HttpCookie("_culture");
+                    cookie.Value = culture;
+                    cookie.Expires = DateTime.Now.AddYears(1);
+                }
+                Response.Cookies.Add(cookie);
+                var cultureInfoLast = new System.Globalization.CultureInfo(culture);
+                Thread.CurrentThread.CurrentCulture = cultureInfoLast;
+                Thread.CurrentThread.CurrentUICulture = cultureInfoLast;
+                Resources.Culture = cultureInfoLast;
+
+                return "OK";
+            }
+
+            return "SET";
+        }
+
         /// <summary>
         /// The get bodyshape configuration method.
         /// </summary>

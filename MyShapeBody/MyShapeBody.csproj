@@ -64,6 +64,9 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="MyBodyShape.Languages, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MyBodyShape.Languages.1.0.0\lib\net452\MyBodyShape.Languages.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -231,6 +234,7 @@
     <Compile Include="Configuration\IBodyShapeConfiguration.cs" />
     <Compile Include="Configuration\Impl\BodyShapeConfigurationSection.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Engine\BodyGenerator.cs" />
@@ -238,6 +242,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\CultureHelper.cs" />
     <Compile Include="Mapping\BodyMapProfile.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -256,6 +261,7 @@
     <Content Include="Content\magnific-popup.css" />
     <Content Include="Images\android.png" />
     <Content Include="Images\down_button.png" />
+    <Content Include="Images\english.png" />
     <Content Include="Images\examples\example_front_female.png" />
     <Content Include="Images\examples\example_front_male.png" />
     <Content Include="Images\examples\example_side_female.png" />
@@ -263,6 +269,7 @@
     <Content Include="Images\favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\french.png" />
     <Content Include="Images\help\help1.JPG" />
     <Content Include="Images\help\help2.JPG" />
     <Content Include="Images\help\help3.jpg" />

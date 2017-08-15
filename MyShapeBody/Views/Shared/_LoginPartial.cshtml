@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNet.Identity
+@using MyBodyShape.Languages
 @if (Request.IsAuthenticated)
 {
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
@@ -16,15 +17,15 @@
 else
 {
     <span class="menu_droit_item">
-        <span id="feedback">Feedback</span>
+        <span id="feedback">@Resources.Res_FeedBack</span>
     </span>
     <span class="menu_droit_item">
-        <span id="privacypolicies">Privacy policies</span>
+        <span id="privacypolicies">@Resources.Res_PrivacyPolicies</span>
     </span>
     <span class="menu_droit_item">
-        @Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: null)
+        @Html.ActionLink(Resources.Res_Register, "Register", "Account", routeValues: null, htmlAttributes: null)
     </span>
     <span class="menu_droit_item">
-        @Html.ActionLink("Login", "Login", "Account", routeValues: null, htmlAttributes: null)
+        @Html.ActionLink(Resources.Res_Login, "Login", "Account", routeValues: null, htmlAttributes: null)
     </span>
 }

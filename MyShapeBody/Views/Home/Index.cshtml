@@ -1,4 +1,5 @@
-﻿@{
+﻿@using MyBodyShape.Languages
+@{
     ViewBag.Title = "3D Generation";
 }
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
@@ -61,6 +62,12 @@
         var selectedimage = 1;
         var id = generateUUID();
 
+        // Localized load button
+        if ("@Resources.Culture.Name" == "fr-FR")
+        {
+            $("#load_photos_button").css("width", "160px");
+        }
+
         // Disable buttons before first load
         $("#generatecontrols").css("pointer-events", "none");
         $("#height_human").css("pointer-events", "none");
@@ -87,7 +94,7 @@
         // Gestion du choix de la photo
         $('#file_choose').on('change', function (e) {
             var val = $(this).val();
-            
+
             switch (val.substring(val.lastIndexOf('.') + 1).toLowerCase()) {
                 case 'jpg': case 'jpeg': case 'png': case 'bmp':
                     if (!toutesphotosload) {
@@ -1761,7 +1768,7 @@
             currentDiv.css("z-index", currentzindex);
             currentDiv.html(htmlString);
         }
-        
+
         function displayResults(json) {
             CleanResults();
 
@@ -1781,9 +1788,8 @@
             var desiredWidth = desiredHeight * goodImgRatio;
             var leftResultsLag = Math.abs(desiredWidth - resultsWidth) / 2;
             var backgroundSizeExpression = desiredWidth + "px " + desiredHeight + "px";
-            
-            if (desiredWidth >= resultsWidth)
-            {
+
+            if (desiredWidth >= resultsWidth) {
                 desiredWidth = resultsWidth;
                 desiredHeight = parseFloat(desiredWidth / desiredHeight);
                 backgroundSizeExpression = "contain";
@@ -1799,7 +1805,7 @@
             $("#infos_2").css("background-position", leftResultsLag + "px " + topLagExpression + "px");
             $("#infos_2").css("background-size", backgroundSizeExpression);
             $("#titleresult").html("<span id='resultTitleGenerationEnd' class='titleresultgeneration'>RESULTS<br/><span class='highlightresult'>Mouse over or click to increase size</span></span>");
-            
+
             //buildSingleResult($("#headresult"), "<span class='membertitle'>Head</span><span class='highlightresult'>" + json.Head.Mass + " kg -> " + Math.ceil(json.Head.Mass / json.TotalMass * 100) + "%</span>", 353, 18, "1"); // with mass center " + json.Head.MassCenter);
             ////buildSingleResult($("#neckresult"), "Neck : <span class='highlightresult'>" + json.Neck.Mass + " kg<br/>" + Math.ceil(json.Neck.Mass / json.TotalMass * 100) + "%</span>", 353, 35);// with mass center " + json.Neck.MassCenter);
             //buildSingleResult($("#thoraxresult"), "<span class='membertitle'>Chest</span><span class='highlightresult'>" + (json.Thorax.Mass + json.Neck.Mass) + " kg -> " + Math.ceil((json.Thorax.Mass + json.Neck.Mass) / json.TotalMass * 100) + "%</span>", 353, 60, "2");// with mass center " + json.Thorax.MassCenter);
@@ -1814,7 +1820,7 @@
             //////$("#chevilledroiteresult").html("Right Ankle : <span class='highlightresult'>" + json.AnkleRight.Mass + "  kg</span>");// with mass center " + json.AnkleRight.MassCenter);
             //buildSingleResult($("#piedgaucheresult"), "<span class='membertitle'>Left Foot</span><span class='highlightresult'>" + json.FootLeft.Mass + " kg -> " + Math.ceil(json.FootLeft.Mass / json.TotalMass * 100) + "%</span>", 24, 700, "9");// with mass center " + json.FootLeft.MassCenter);
             //buildSingleResult($("#pieddroiteresult"), "<span class='membertitle'>Right Foot</span><span class='highlightresult'>" + json.FootRight.Mass + " kg -> " + Math.ceil(json.FootRight.Mass / json.TotalMass * 100) + "%</span>", 353, 698, "10");// with mass center " + json.FootRight.MassCenter);
-            
+
             //buildSingleResult($("#brasgaucheresult"), "<span class='membertitle'>Left Upperarm</span><span class='highlightresult'>" + json.ArmLeft.Mass + " kg -> " + Math.ceil(json.ArmLeft.Mass / json.TotalMass * 100) + "%</span>", 24, 178, "11");// with mass center " + json.ArmLeft.MassCenter);
             //buildSingleResult($("#brasdroiteresult"), "<span class='membertitle'>Right Upperarm</span><span class='highlightresult'>" + json.ArmRight.Mass + " kg -> " + Math.ceil(json.ArmRight.Mass / json.TotalMass * 100) + "%</span>", 353, 100, "12");// with mass center " + json.ArmRight.MassCenter);
             //buildSingleResult($("#avantbrasgaucheresult"), "<span class='membertitle'>Left Forearm</span><span class='highlightresult'>" + json.ForeArmLeft.Mass + " kg -> " + Math.ceil(json.ForeArmLeft.Mass / json.TotalMass * 100) + "%</span>", 24, 314, "13");;// with mass center " + json.ForeArmLeft.MassCenter);
@@ -1826,7 +1832,7 @@
             var weightMarginExpression = parseInt($("#infos_2").css("height").split("px")[0] - 120) + "px";
             $("#totalmassresult").css("margin-top", weightMarginExpression);
             $("#totalmassresult").html("Total Generated Mass : <span style='color:red;' class='highlightresult'>" + json.BodyMass.TotalMass + " kgs</span>");
-            
+
             // Comparaison
             var error;
             if ($("#weight_human").val() != null && $("#weight_human").val() != "") {
@@ -1864,7 +1870,7 @@
             $("#infos_2").append("<span id='resultsMagnifier'></span>");
             $("#resultsMagnifier").insertBefore("#totalmassresult");
             $("#resultsMagnifier").append("<span id='resultsMagnifierHandle'></span>");
-            
+
             // Magnify events
             $("#infos_2").mouseenter(function () {
                 $("#resultsMagnifier").css("display", "inline-block");
@@ -1873,8 +1879,7 @@
                 $("#resultsMagnifier").css("background-repeat", "no-repeat");
                 $("#resultsMagnifierHandle").css("display", "inline-block");
                 $("#totalmassresult").css("top", "-=150px")
-            }).mousemove(function (e)
-            {
+            }).mousemove(function (e) {
                 // Magnifier position
                 var parentOffset = $(this).offset();
                 var relX = e.pageX - parentOffset.left - 75 - 2; // -rayon -bordure
@@ -1886,7 +1891,7 @@
                 var newZoomLeft = -resultsWidthRatio * relX;
                 var newZoomTop = -resultsHeightRatio * relY;
                 $("#resultsMagnifier").css("background-position", newZoomLeft + "px " + newZoomTop + "px");
-                
+
             }).mouseleave(function () {
                 $("#resultsMagnifier").css("display", "none");
                 $("#resultsMagnifier").css("left", "0px");
@@ -1896,12 +1901,11 @@
                 $("#totalmassresult").css("top", "+=150px")
             });
         }
-        
+
         /*********************************   MODELISATION 3D   **********************************/
         /****************************************************************************************/
 
-        function generate3DMesh()
-        {
+        function generate3DMesh() {
             var canvas = document.getElementById("generation_3D_canvas");
             while (canvas.hasChildNodes()) {
                 canvas.removeChild(canvas.lastChild);
@@ -1991,13 +1995,13 @@
             </div>
             <div>
                 <div>
-                    <input id="load_photos_button" class="gobutton" type="button" value="Load picture" />
-                    <input id="generate_button" class="gobutton" type="button" value="Generate" />
+                    <input id="load_photos_button" class="gobutton" type="button" value="@Resources.Res_LoadButton" />
+                    <input id="generate_button" class="gobutton" type="button" value="@Resources.Res_GenerateButton" />
                 </div>
                 <br/><br />
                 <div style="color:white;font-weight:bold;font-size : 12px;display:block;margin:auto;text-align:center;">
-                    <span>Height (cm) : <input id="height_human" type="number" name="height_human" width="10" height="20" /></span>
-                    <span>Weight (kg) : <input id="weight_human" type="number" name="weight_human" width="10" height="20" /></span>
+                    <span>@Resources.Res_HeightText (cm) : <input id="height_human" type="number" name="height_human" width="10" height="20" /></span>
+                    <span>@Resources.Res_Weight (kg) : <input id="weight_human" type="number" name="weight_human" width="10" height="20" /></span>
                 </div>
                 <input id="file_choose" type="file" name="file_choose" style="display: none;" accept="image/*">
                 </div>
