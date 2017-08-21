@@ -271,8 +271,11 @@
     <Content Include="Content\Site.css" />
     <Content Include="Images\french.png" />
     <Content Include="Images\help\help1.JPG" />
+    <Content Include="Images\help\help1_fr.JPG" />
     <Content Include="Images\help\help2.JPG" />
+    <Content Include="Images\help\help2_fr.jpg" />
     <Content Include="Images\help\help3.jpg" />
+    <Content Include="Images\help\help3_fr.jpg" />
     <Content Include="Images\ios.png" />
     <Content Include="Images\loaderStart.gif" />
     <Content Include="Images\mascotte.png" />
@@ -327,6 +330,9 @@
     <Content Include="Scripts\three.min.js" />
     <Content Include="Scripts\_references.js" />
     <None Include="Web.config" />
+    <Content Include="Static\PrivacyPolicy_Fr.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Static\PrivacyPolicy.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

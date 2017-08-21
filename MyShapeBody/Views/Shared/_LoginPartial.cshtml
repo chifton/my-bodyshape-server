@@ -7,10 +7,10 @@
     @Html.AntiForgeryToken()
 
     <span class="menu_droit_item">
-        @Html.ActionLink("Welcome " + User.Identity.GetUserName().Split('@')[0], "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+        @Html.ActionLink(Resources.Res_Welcome + " " + User.Identity.GetUserName().Split('@')[0], "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
     </span>
     <span class="menu_droit_item">
-        <a href="javascript:document.getElementById('logoutForm').submit()">Log out</a>
+        <a href="javascript:document.getElementById('logoutForm').submit()">@Resources.Res_Logout</a>
     </span>
     }
 }

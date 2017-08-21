@@ -20,6 +20,7 @@ namespace MyShapeBody.Services
     using Serilog;
 
     using Models = MyShapeBody.AppModels;
+    using MyBodyShape.Languages;
 
     /// <summary>
     /// The snapper class
@@ -52,24 +53,24 @@ namespace MyShapeBody.Services
                 .CreateLogger();
 
             watermarksModels = new List<Models.SnapModel>();
-            watermarksModels.Add(new Models.SnapModel("Head", "Head", new Point(347, 42)));
-            watermarksModels.Add(new Models.SnapModel("Neck;Thorax", "Chest", new Point(353, 112)));
-            watermarksModels.Add(new Models.SnapModel("Abdomen", "Abdomen", new Point(347, 246)));
-            watermarksModels.Add(new Models.SnapModel("Bottom", "Bottom", new Point(345, 355)));
+            watermarksModels.Add(new Models.SnapModel("Head", Resources.Res_Head, new Point(347, 42)));
+            watermarksModels.Add(new Models.SnapModel("Neck;Thorax", Resources.Res_Chest, new Point(353, 112)));
+            watermarksModels.Add(new Models.SnapModel("Abdomen", Resources.Res_Abdomen, new Point(347, 246)));
+            watermarksModels.Add(new Models.SnapModel("Bottom", Resources.Res_Bottom, new Point(345, 355)));
 
-            watermarksModels.Add(new Models.SnapModel("ThighLeft", "Left Thigh", new Point(320, 468)));
-            watermarksModels.Add(new Models.SnapModel("ThighRight", "Right Thigh", new Point(35, 466)));
-            watermarksModels.Add(new Models.SnapModel("LegLeft", "Left Leg", new Point(320, 616)));
-            watermarksModels.Add(new Models.SnapModel("LegRight", "Right Leg", new Point(40, 611)));
-            watermarksModels.Add(new Models.SnapModel("FootLeft", "Left Foot", new Point(315, 698)));
-            watermarksModels.Add(new Models.SnapModel("FootRight", "Right Foot", new Point(40, 700)));
+            watermarksModels.Add(new Models.SnapModel("ThighLeft", Resources.Res_ThighLeft, new Point(320, 468)));
+            watermarksModels.Add(new Models.SnapModel("ThighRight", Resources.Res_ThighRight, new Point(35, 466)));
+            watermarksModels.Add(new Models.SnapModel("LegLeft", Resources.Res_LegLeft, new Point(320, 616)));
+            watermarksModels.Add(new Models.SnapModel("LegRight", Resources.Res_LegRight, new Point(40, 611)));
+            watermarksModels.Add(new Models.SnapModel("FootLeft", Resources.Res_FootLeft, new Point(315, 698)));
+            watermarksModels.Add(new Models.SnapModel("FootRight", Resources.Res_FootRight, new Point(40, 700)));
 
-            watermarksModels.Add(new Models.SnapModel("ArmLeft", "Left Upperarm", new Point(350, 168)));
-            watermarksModels.Add(new Models.SnapModel("ArmRight", "Right Upperarm", new Point(5, 178)));
-            watermarksModels.Add(new Models.SnapModel("ForeArmLeft", "Left Forearm", new Point(353, 315)));
-            watermarksModels.Add(new Models.SnapModel("ForeArmRight", "Right Forearm", new Point(5, 314)));
-            watermarksModels.Add(new Models.SnapModel("HandLeft", "Left Hand", new Point(340, 424)));
-            watermarksModels.Add(new Models.SnapModel("HandRight", "Right Hand", new Point(5, 424)));
+            watermarksModels.Add(new Models.SnapModel("ArmLeft", Resources.Res_ArmLeft, new Point(350, 168)));
+            watermarksModels.Add(new Models.SnapModel("ArmRight", Resources.Res_ArmRight, new Point(5, 178)));
+            watermarksModels.Add(new Models.SnapModel("ForeArmLeft", Resources.Res_ForeArmLeft, new Point(353, 315)));
+            watermarksModels.Add(new Models.SnapModel("ForeArmRight", Resources.Res_ForeArmRight, new Point(5, 314)));
+            watermarksModels.Add(new Models.SnapModel("HandLeft", Resources.Res_HandLeft, new Point(340, 424)));
+            watermarksModels.Add(new Models.SnapModel("HandRight", Resources.Res_HandRight, new Point(5, 424)));
 
             // Font family
             resultsFontFamily = this.LoadFont(Path.Combine(System.Web.HttpContext.Current.Server.MapPath("~/fonts"), "GARABD.TTF"));

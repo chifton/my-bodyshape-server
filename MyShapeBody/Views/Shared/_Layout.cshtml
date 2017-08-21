@@ -39,13 +39,13 @@
 
             // Feedback
             $("#feedback").click(function () {
-                var response = jPrompt("Give us your comments :", '', 'Feedback !', function (r) {
+                var response = jPrompt("@Resources.Res_PromptFeedback :", '', '@Resources.Res_PromptFeedbackTitle !', function (r) {
                     if (r) {
                         $.ajax({
                             type: "POST",
                             url: "/Home/FeedBack?mailContent=" + r,
                             success: function () {
-                                alert("Your feedback has been successfully sent !");
+                                alert("@Resources.Res_Success_Feedback");
                                 location.reload();
                             }
                         });
@@ -64,7 +64,7 @@
                         location.href = result;
                     },
                     error: function (xhr, status, p3, p4) {
-                        alert("An error occured during privacy policy page loading... Try again later...");
+                        alert("@Resources.Res_Error_Policies");
                     }
                 });
             });
@@ -82,7 +82,7 @@
                         }
                     },
                     error: function (xhr, status, p3, p4) {
-                        alert("An error occured during language swipe... Try again later...");
+                        alert("@Resources.Res_Error_Trad");
                     }
                 });
             });
@@ -98,7 +98,7 @@
                         }
                     },
                     error: function (xhr, status, p3, p4) {
-                        alert("An error occured during language swipe... Try again later...");
+                        alert("@Resources.Res_Error_Trad");
                     }
                 });
             });
@@ -108,7 +108,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MyBodyShape - Generate your 3D bodyshape with member weights from your pictures</title>
+    <title>@Resources.Res_Title</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>

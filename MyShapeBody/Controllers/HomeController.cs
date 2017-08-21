@@ -458,7 +458,8 @@ namespace MyShapeBody.Controllers
         public string GetMyBodyShapePrivacyPolicyUrl()
         {
             var request = System.Web.HttpContext.Current.Request;
-            return $"{request.Url.Scheme}://{ request.Url.Authority }/Static/PrivacyPolicy.html";
+            var languagePage = Resources.Culture.Name == "en-US" ? "PrivacyPolicy.html" : "PrivacyPolicy_Fr.html";
+            return $"{request.Url.Scheme}://{ request.Url.Authority }/Static/{ languagePage }";
         }
 
         /// <summary>
