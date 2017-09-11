@@ -39,6 +39,22 @@
                 });
             });
 
+            // Traductions
+            $("#english_trad").click(function () {
+                $.ajax({
+                    type: "GET",
+                    url: '/Home/GetPrivacyPoliciesUrl?language=en-US',
+                    contentType: false,
+                    processData: false,
+                    success: function (result) {
+                        location.href = result;
+                    },
+                    error: function (xhr, status, p3, p4) {
+                        alert("Une erreur est survenue pendant la traduction... Réessayez plus tard...");
+                    }
+                });
+            });
+
             // Hide if mobile
             if (navigator.userAgent.toLowerCase().indexOf("android") != -1
                 || navigator.userAgent.toLowerCase().indexOf("webos") != -1
@@ -69,6 +85,9 @@
     <div id="titre_centre">
         <img style="display:inline-block;cursor:pointer;" src="../Images/myshapebody.png" width="500" />
     </div>
+    <div id="trads">
+        <img id="english_trad" style="height:30px;width:auto;cursor:pointer;display:inline;margin-left:5px;" src="../Images/english.png" alt="English" title="English" />
+    </div>
     <h1>Politique de confidentialité      <input id="backwebsite_button" class="gobutton" type="button" value="Retour à la simulation" /></h1><br/>
     <h2>Confidentialité MyBodyShape</h2>
     <p>Rédigé / Date d'effet : 23 Juillet 2017</p>
@@ -78,7 +97,7 @@
     <img style="float:right;display:inline;height:500px;width:auto;" src="../Images/examples/privacy_example.png" />
     </p>
     <h2>Où ?</h2>
-    <p>L'équipe MyBodyShape : CD 56 13790 Rousset-Sur-Arc, France<br/>Email : mybodyshapenotifs@gmail.com<br/>Créateurs : Chérif Tessilimi and François Druelle</p>
+    <p>L'équipe MyBodyShape : Aix-en-Provence, France<br/>Email : mybodyshapenotifs@gmail.com<br/>Créateurs : Chérif Tessilimi and François Druelle</p>
     <h2>Quoi ?</h2>
     <p>Deux photos d'utilisateurs sont nécessaires. MyBodyShape est une application qui simule et calcule vos masses individuelles de membres et génère un modèle 3D à partir de votre corps. Ce dernier sera analysé à l'aide de deux photos, une de face et une de profil. Seuls nos serveurs auront accès à ces images.</p>
     <h2>Comment et pourquoi ?</h2>

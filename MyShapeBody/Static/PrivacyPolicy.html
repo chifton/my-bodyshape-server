@@ -39,6 +39,22 @@
                 });
             });
 
+            // Traductions
+            $("#french_trad").click(function () {
+                $.ajax({
+                    type: "GET",
+                    url: '/Home/GetPrivacyPoliciesUrl?language=fr-FR',
+                    contentType: false,
+                    processData: false,
+                    success: function (result) {
+                        location.href = result;
+                    },
+                    error: function (xhr, status, p3, p4) {
+                        alert("An error occured during page translation... Try again later...");
+                    }
+                });
+            });
+
             // Hide if mobile
             if (navigator.userAgent.toLowerCase().indexOf("android") != -1
                 || navigator.userAgent.toLowerCase().indexOf("webos") != -1
@@ -68,6 +84,9 @@
 <body style="color:white;">
     <div id="titre_centre">
         <img style="display:inline-block;cursor:pointer;" src="../Images/myshapebody.png" width="500" />
+    </div>
+    <div id="trads">
+        <img id="french_trad" style="height:30px;width:auto;cursor:pointer;display:inline;margin-left:5px;" src="../Images/french.png" alt="Français" title="Français" />
     </div>
     <h1>Privacy policy      <input id="backwebsite_button" class="gobutton" type="button" value="Back to simulation" /></h1><br/>
     <h2>MyBodyShape Privacy Policy</h2>

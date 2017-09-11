@@ -452,6 +452,17 @@ namespace MyShapeBody.Controllers
         }
 
         /// <summary>
+        /// Gets MyBodyShape privacy policies url.
+        /// </summary>
+        [HttpGet]
+        public string GetPrivacyPoliciesUrl(string language)
+        {
+            var pageName = language == "fr-FR" ? "PrivacyPolicy_Fr.html" : "PrivacyPolicy.html";
+            var request = System.Web.HttpContext.Current.Request;
+            return $"{request.Url.Scheme}://{ request.Url.Authority }/Static/{ pageName }";
+        }
+        
+        /// <summary>
         /// Gets MyBodyShape privacy policy url.
         /// </summary>
         [HttpGet]
